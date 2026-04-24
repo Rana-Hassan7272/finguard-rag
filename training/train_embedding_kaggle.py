@@ -411,7 +411,12 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
     log_section("Final Evaluation (Best Checkpoint)")
     best_model = SentenceTransformer(str(save_path))
     final_score = evaluator(best_model)
-    log.info(f"Final IR eval score: {final_score:.4f}")
+    if isinstance(final_score, dict):
+        log.info(f"Final IR eval score dict: {final_score}")
+        score_for_log = float(final_score.get("cosine_accuracy@1", 0.0))
+    else:
+        log.info(f"Final IR eval score: {final_score:.4f}")
+        score_for_log = float(final_score)
     final_metrics = compute_val_retrieval_metrics(
         model=best_model,
         records=val_records,
@@ -434,7 +439,7 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
         "examples":      len(train_examples),
         "epochs":        train_cfg["epochs"],
         "batch_size":    train_cfg["batch_size"],
-        "final_score":   round(float(final_score), 4),
+        "final_score":   round(score_for_log, 4),
         "val_metrics_before": baseline_metrics,
         "val_metrics_after": final_metrics,
         "elapsed_sec":   round(elapsed, 1),
