@@ -1,0 +1,98 @@
+# embedding/embedding_train.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+# Finguard RAG — Phase 1: Embedding Model Training Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Model ────────────────────────────────────────────────────────────────────
+model:
+  base_model: "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+  # Why this model?
+  #   - Multilingual (handles Urdu, Roman Urdu, English natively)
+  #   - mpnet backbone → better than MiniLM for semantic accuracy
+  #   - Strong baseline for low-resource languages
+  #
+  # Alternative (faster, slightly lower quality):
+  # base_model: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+  max_seq_length: 256   # Urdu answers avg ~67 words — 256 tokens is safe
+  output_dim: 768       # mpnet hidden dim (do NOT reduce unless distilling)
+
+# ── Loss Function ────────────────────────────────────────────────────────────
+loss:
+  type: "MultipleNegativesRankingLoss"
+  # Why MNR Loss?
+  #   - Treats all other (query, positive) pairs in batch as negatives
+  #   - Works perfectly with our hard_negatives.jsonl structure
+  #   - Much more efficient than contrastive loss (no need for explicit neg pairs)
+  #
+  # Hard negatives are baked into batches via TripletLoss or MNR with negatives:
+  use_hard_negatives: true       # include hard_negative as explicit in-batch neg
+  scale: 20.0                    # temperature scaling (cosine similarity scaled)
+
+# ── Training ─────────────────────────────────────────────────────────────────
+training:
+  epochs: 4
+  # Why 4?
+  #   - 1510 records → ~1208 train after 80/10/10 split
+  #   - 4 epochs gives ~4800 gradient steps at batch=16 — enough to converge
+  #   - More epochs risk overfitting on 1.5k records
+
+  batch_size: 16
+  # Why 16?
+  #   - MNR Loss quality scales with batch size (more in-batch negatives = better)
+  #   - 16 is safe for 16GB Kaggle GPU; use 32 if you have 2x T4
+
+  warmup_ratio: 0.1              # 10% of steps = warmup (prevents early divergence)
+  learning_rate: 2.0e-5          # standard for fine-tuning sentence-transformers
+  weight_decay: 0.01
+  optimizer: "AdamW"
+  lr_scheduler: "cosine"         # cosine decay → smoother convergence than linear
+
+  gradient_accumulation_steps: 2 # effective batch = 16 * 2 = 32 (better MNR quality)
+  max_grad_norm: 1.0             # gradient clipping
+
+  fp16: true                     # mixed precision — essential for Kaggle GPU speed
+  dataloader_num_workers: 2
+
+# ── Evaluation ───────────────────────────────────────────────────────────────
+evaluation:
+  eval_steps: 100                # evaluate every 100 steps
+  eval_metric: "cosine_accuracy" # primary metric for MNR (accuracy@1)
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_cosine_accuracy"
+  greater_is_better: true
+
+  # InformationRetrieval evaluator config (on val split)
+  ir_eval:
+    enabled: true
+    corpus_key: "positive"
+    query_key: "query"
+    top_k: [1, 3, 10]             # report accuracy@1, @3, @10
+    score_function: "cos_sim"
+
+# ── Data ─────────────────────────────────────────────────────────────────────
+data:
+  train_file: "data/processed/splits/train.jsonl"
+  val_file:   "data/processed/splits/val.jsonl"
+  test_file:  "data/processed/splits/test.jsonl"
+
+  # Fields to use from JSONL records
+  query_col:         "query"
+  positive_col:      "positive"
+  hard_negative_col: "hard_negative"
+
+  # Augmentation: also use English query/positive pairs for cross-lingual boost
+  include_english_pairs: true    # adds (query_en, positive_en) pairs to training
+  english_pair_weight: 0.3       # 30% of training examples are English-only
+
+# ── Checkpointing ────────────────────────────────────────────────────────────
+output:
+  save_path: "models/finguard-embedding-v1"
+  checkpoint_steps: 200          # save intermediate checkpoints
+  save_total_limit: 2            # keep only 2 best checkpoints (saves disk)
+  final_model_name: "finguard-embedding-v1-final"
+
+# ── Logging ──────────────────────────────────────────────────────────────────
+logging:
+  report_to: "none"              # change to "wandb" if you want W&B tracking
+  logging_steps: 50

@@ -1,0 +1,50 @@
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and local run artifacts
+*.log
+training.log
+training_log.json
+
+# Model artifacts and checkpoints
+models/
+**/checkpoints/
+*.pt
+*.bin
+*.safetensors
+
+# Jupyter / notebook checkpoints
+.ipynb_checkpoints/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+credentials.json
+
+# Data outputs (regenerable)
+data/processed/train_pairs.jsonl
+data/processed/hard_negatives.jsonl
+data/processed/splits/
+
+# Keep raw data out of git (large/local)
+data/raw/

@@ -1,0 +1,23 @@
+# requirements.txt — Finguard RAG Phase 1
+# Minimal, Kaggle-compatible versions
+# Install: pip install -r requirements.txt
+
+# ── Core ML ──────────────────────────────────────────────────────────────────
+sentence-transformers>=2.7.0    # SentenceTransformer + MNR loss + evaluators
+torch>=2.0.0                    # PyTorch (Kaggle has this pre-installed)
+transformers>=4.40.0            # HuggingFace backbone
+datasets>=2.19.0                # for loading HuggingFace datasets if needed
+tokenizers>=0.19.0              # fast tokenizers (required by transformers)
+
+# ── Config ───────────────────────────────────────────────────────────────────
+pyyaml>=6.0                     # load training config YAML
+
+# ── Numerics ─────────────────────────────────────────────────────────────────
+numpy>=1.24.0
+scikit-learn>=1.3.0             # for stratified splits (optional fallback)
+
+# ── Utilities ────────────────────────────────────────────────────────────────
+tqdm>=4.66.0                    # progress bars
+
+# ── Optional: tracking (comment out if not using W&B) ────────────────────────
+# wandb>=0.17.0
