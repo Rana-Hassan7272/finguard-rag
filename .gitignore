@@ -42,9 +42,6 @@ dist/
 credentials.json
 
 # Data outputs (regenerable)
-data/processed/train_pairs.jsonl
-data/processed/hard_negatives.jsonl
-data/processed/splits/
 
-# Keep raw data out of git (large/local)
-data/raw/
+
+
