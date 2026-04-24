@@ -111,6 +111,28 @@ def pick_runtime_device() -> str:
     return "cuda"
 
 
+def normalize_scheduler_name(name: str) -> str:
+    """
+    Map config-friendly scheduler aliases to sentence-transformers names.
+    """
+    if not name:
+        return "WarmupCosine"
+
+    raw = str(name).strip()
+    key = raw.lower().replace("-", "").replace("_", "")
+    alias_map = {
+        "cosine": "WarmupCosine",
+        "warmupcosine": "WarmupCosine",
+        "linear": "WarmupLinear",
+        "warmuplinear": "WarmupLinear",
+        "constant": "WarmupConstant",
+        "warmupconstant": "WarmupConstant",
+        "cosinewithhardrestarts": "WarmupCosineWithHardRestarts",
+        "warmupcosinewithhardrestarts": "WarmupCosineWithHardRestarts",
+    }
+    return alias_map.get(key, raw)
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # TRAINING EXAMPLE BUILDERS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -361,6 +383,8 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
 
     # ── TRAIN ────────────────────────────────────────────────────
     log_section("Training Started")
+    scheduler_name = normalize_scheduler_name(train_cfg.get("lr_scheduler", "cosine"))
+    log.info(f"Scheduler    : {scheduler_name}")
     use_amp = train_cfg.get("fp16", True) and runtime_device == "cuda"
     if train_cfg.get("fp16", True) and runtime_device != "cuda":
         log.warning("fp16 requested but runtime device is CPU. Disabling AMP for this run.")
@@ -376,7 +400,7 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
         show_progress_bar    = True,
         optimizer_params     = {"lr": train_cfg["learning_rate"]},
         weight_decay         = train_cfg.get("weight_decay", 0.01),
-        scheduler            = train_cfg.get("lr_scheduler", "cosinewithhardrestarts"),
+        scheduler            = scheduler_name,
         use_amp              = use_amp,  # mixed precision only on supported CUDA
         checkpoint_path      = str(save_path / "checkpoints"),
         checkpoint_save_steps= output_cfg.get("checkpoint_steps", 200),
