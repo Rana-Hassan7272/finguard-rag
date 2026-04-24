@@ -34,6 +34,7 @@ from typing import Optional
 
 import yaml
 import numpy as np
+import torch
 from torch.utils.data import DataLoader
 
 from sentence_transformers import (
@@ -83,6 +84,31 @@ def log_section(title: str) -> None:
     log.info("─" * 60)
     log.info(f"  {title}")
     log.info("─" * 60)
+
+
+def pick_runtime_device() -> str:
+    """
+    Pick a safe runtime device for this environment.
+    Kaggle sometimes provides P100 (sm_60), while torch wheels may only support sm_70+.
+    """
+    if not torch.cuda.is_available():
+        log.info("CUDA not available. Using CPU.")
+        return "cpu"
+
+    major, minor = torch.cuda.get_device_capability(0)
+    gpu_name = torch.cuda.get_device_name(0)
+    log.info(f"Detected GPU: {gpu_name} (sm_{major}{minor})")
+
+    # Current Kaggle torch wheels in some images require >= sm_70.
+    if major < 7:
+        log.warning(
+            "GPU compute capability sm_%s%s is not supported by current torch build. Falling back to CPU.",
+            major,
+            minor,
+        )
+        return "cpu"
+
+    return "cuda"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -270,9 +296,10 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
 
     # ── Build model ──────────────────────────────────────────────
     log_section("Initializing Model")
-    model = SentenceTransformer(model_cfg["base_model"])
+    runtime_device = pick_runtime_device()
+    model = SentenceTransformer(model_cfg["base_model"], device=runtime_device)
     model.max_seq_length = model_cfg["max_seq_length"]
-    log.info(f"Model loaded: {model_cfg['base_model']}")
+    log.info(f"Model loaded: {model_cfg['base_model']} on {runtime_device}")
 
     # ── Build examples ───────────────────────────────────────────
     log_section("Building Training Examples")
@@ -334,6 +361,10 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
 
     # ── TRAIN ────────────────────────────────────────────────────
     log_section("Training Started")
+    use_amp = train_cfg.get("fp16", True) and runtime_device == "cuda"
+    if train_cfg.get("fp16", True) and runtime_device != "cuda":
+        log.warning("fp16 requested but runtime device is CPU. Disabling AMP for this run.")
+
     model.fit(
         train_objectives     = [(train_dataloader, loss_fn)],
         evaluator            = evaluator,
@@ -346,7 +377,7 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
         optimizer_params     = {"lr": train_cfg["learning_rate"]},
         weight_decay         = train_cfg.get("weight_decay", 0.01),
         scheduler            = train_cfg.get("lr_scheduler", "cosinewithhardrestarts"),
-        use_amp              = train_cfg.get("fp16", True),  # mixed precision
+        use_amp              = use_amp,  # mixed precision only on supported CUDA
         checkpoint_path      = str(save_path / "checkpoints"),
         checkpoint_save_steps= output_cfg.get("checkpoint_steps", 200),
         checkpoint_save_total_limit = output_cfg.get("save_total_limit", 2),
