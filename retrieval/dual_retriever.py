@@ -33,12 +33,15 @@ def _load_cfg() -> dict:
         return yaml.safe_load(f)
 
 
-def _intent_source_weights(intent: str) -> tuple[float, float]:
+def _intent_source_weights(cfg: dict, intent: str) -> tuple[float, float]:
+    routing = cfg.get("source_routing", {})
     if intent == "legal":
-        return (0.35, 0.65)  # qa, pdf
-    if intent == "practical":
-        return (0.70, 0.30)
-    return (0.50, 0.50)
+        weights = routing.get("legal_query", {"qa": 0.35, "pdf": 0.65})
+    elif intent == "practical":
+        weights = routing.get("practical_query", {"qa": 0.70, "pdf": 0.30})
+    else:
+        weights = routing.get("default", {"qa": 0.50, "pdf": 0.50})
+    return float(weights["qa"]), float(weights["pdf"])
 
 
 def _language_retriever_weights(cfg: dict, language: str) -> tuple[float, float]:
@@ -114,7 +117,7 @@ class DualRetriever:
         top_k: int = 10,
     ) -> DualRetrievalResult:
         bm25_w, vec_w = _language_retriever_weights(self.cfg, language)
-        qa_w, pdf_w = _intent_source_weights(query_intent)
+        qa_w, pdf_w = _intent_source_weights(self.cfg, query_intent)
 
         qa_vector = self.qa_vector.retrieve(query=query, k=top_k, category_filter=category_filter)
         qa_bm25 = self.qa_bm25.retrieve(query=query, k=top_k, category_filter=category_filter)

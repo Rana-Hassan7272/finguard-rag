@@ -38,12 +38,15 @@ import yaml
 
 from metadata.category_detector import CategoryDetector
 from metadata.filter_policy import FilterDecision, FilterPolicy
+from query.expander import expand_query
+from query.router import route_query
 from retrieval.bm25_retriever import BM25Retriever
 from retrieval.fusion import FusedResult, compute_fusion_stats, fuse
 from retrieval.language import LanguageResult, detect_and_get_weights
 from retrieval.mmr import MMRResult, run_mmr
 from retrieval.normalization import normalize_query
 from retrieval.vector_retriever import VectorRetriever
+from retrieval.dual_retriever import DualRetriever
 
 log = logging.getLogger(__name__)
 
@@ -106,6 +109,7 @@ class RetrievalPipeline:
         self._bm25_retriever: Optional[BM25Retriever] = None
         self._category_detector: Optional[CategoryDetector] = None
         self._filter_policy: Optional[FilterPolicy] = None
+        self._dual_retriever: Optional[DualRetriever] = None
 
     # ------------------------------------------------------------------
     # Loading
@@ -130,6 +134,11 @@ class RetrievalPipeline:
         # Register known categories from the loaded vector index
         known_cats = self._vector_retriever.available_categories()
         self._filter_policy = FilterPolicy(self.cfg, known_categories=known_cats)
+        try:
+            self._dual_retriever = DualRetriever(self.cfg)
+        except Exception as e:
+            self._dual_retriever = None
+            log.warning(f"DualRetriever unavailable, falling back to QA-only pipeline: {e}")
 
         self._loaded = True
         log.info(
@@ -176,16 +185,18 @@ class RetrievalPipeline:
         t_total = time.time()
         stage_times: dict[str, float] = {}
 
-        # ── Stage 1: Normalize ──────────────────────────────────────────
+        # ── Stage 1: Normalize + route + expand (Phase 7) ──────────────
         t = time.time()
-        query_normalized = normalize_query(query)
-        stage_times["normalize_ms"] = round((time.time() - t) * 1000, 2)
+        route = route_query(query)
+        query_normalized = route["normalized_query"]
+        query_expanded = expand_query(query_normalized, language=route["language"])
+        stage_times["normalize_route_expand_ms"] = round((time.time() - t) * 1000, 2)
 
         if not query_normalized:
             log.warning(f"Query normalized to empty string: '{query}'")
             return self._empty_output(query, query_normalized, stage_times)
 
-        # ── Stage 2: Language detection ─────────────────────────────────
+        # ── Stage 2: Language fusion weights ────────────────────────────
         t = time.time()
         lang_result, bm25_weight, vector_weight = detect_and_get_weights(
             query_normalized, self.cfg
@@ -226,11 +237,68 @@ class RetrievalPipeline:
             f"category={category_filter} | reason={filter_decision.reason}"
         )
 
-        # ── Stage 5: Vector retrieval ───────────────────────────────────
+        use_dual = bool(self._dual_retriever) and self.cfg.get("phase6_7", {}).get("enable_dual_retriever", True)
+
+        # ── Stage 5+: Dual retrieval path (Phase 6) ─────────────────────
+        if use_dual:
+            t = time.time()
+            ok = mmr_output_k or self._mmr_output_k
+            dual_out = self._dual_retriever.retrieve(
+                query=query_expanded,
+                language=route["language"],
+                query_intent=route["query_intent"],
+                category_filter=category_filter,
+                top_k=ok,
+            )
+            stage_times["dual_retrieve_ms"] = round((time.time() - t) * 1000, 2)
+
+            mmr_results = [
+                MMRResult(
+                    doc_id=d.get("doc_id", ""),
+                    relevance_score=round(float(d.get("_rrf_score", 0.0)), 4),
+                    novelty_score=1.0,
+                    mmr_score=round(float(d.get("_rrf_score", 0.0)), 4),
+                    rank=i + 1,
+                    metadata={"doc": d, "sources": d.get("_source", "unknown")},
+                )
+                for i, d in enumerate(dual_out.docs)
+            ]
+
+            total_ms = round((time.time() - t_total) * 1000, 2)
+            diagnostics = {
+                "query_raw": query,
+                "query_normalized": query_normalized,
+                "query_expanded": query_expanded,
+                "language_detected": lang_result.label,
+                "language_confidence": lang_result.confidence,
+                "weights_used": {"bm25": bm25_weight, "vector": vector_weight, "source": lang_result.label},
+                "query_intent": route["query_intent"],
+                "source_routing_weights": {"qa": dual_out.diagnostics.get("qa_weight"), "pdf": dual_out.diagnostics.get("pdf_weight")},
+                "category_detected": detection.predicted_category,
+                "category_confidence": detection.confidence,
+                "filter_applied": filter_decision.apply_filter,
+                "filter_reason": filter_decision.reason,
+                "source_mix": {
+                    "qa_docs": dual_out.diagnostics.get("qa_docs", 0),
+                    "pdf_docs": dual_out.diagnostics.get("pdf_docs", 0),
+                },
+                "stage_latency_ms": stage_times,
+                "total_ms": total_ms,
+                "mode": "dual_retriever",
+            }
+            return RetrievalOutput(
+                query_raw=query,
+                query_normalized=query_normalized,
+                docs=mmr_results,
+                diagnostics=diagnostics,
+                total_ms=total_ms,
+            )
+
+        # ── Stage 5: Vector retrieval (QA-only fallback) ────────────────
         t = time.time()
         vk = vector_k or self._vector_k
         vector_results = self._vector_retriever.retrieve(
-            query_normalized, k=vk, category_filter=category_filter
+            query_expanded, k=vk, category_filter=category_filter
         )
         stage_times["vector_ms"] = round((time.time() - t) * 1000, 2)
 
@@ -238,7 +306,7 @@ class RetrievalPipeline:
         t = time.time()
         bk = bm25_k or self._bm25_k
         bm25_results = self._bm25_retriever.retrieve(
-            query_normalized, k=bk, category_filter=category_filter
+            query_expanded, k=bk, category_filter=category_filter
         )
         stage_times["bm25_ms"] = round((time.time() - t) * 1000, 2)
 
@@ -266,7 +334,7 @@ class RetrievalPipeline:
         candidate_ids = [r.doc_id for r in fused]
         candidate_scores = [r.rrf_score for r in fused]
         candidate_embeddings = self._vector_retriever.encode_docs(candidate_ids)
-        query_vec = self._vector_retriever.encode_query(query_normalized)
+        query_vec = self._vector_retriever.encode_query(query_expanded)
         candidate_meta = [
             {
                 "doc": r.doc,
@@ -292,9 +360,11 @@ class RetrievalPipeline:
         diagnostics = self._build_diagnostics(
             query_raw=query,
             query_normalized=query_normalized,
+            query_expanded=query_expanded,
             lang_result=lang_result,
             bm25_weight=bm25_weight,
             vector_weight=vector_weight,
+            query_intent=route["query_intent"],
             detection=detection,
             filter_decision=filter_decision,
             vector_results=vector_results,
@@ -322,9 +392,11 @@ class RetrievalPipeline:
         self,
         query_raw: str,
         query_normalized: str,
+        query_expanded: str,
         lang_result: LanguageResult,
         bm25_weight: float,
         vector_weight: float,
+        query_intent: str,
         detection,
         filter_decision: FilterDecision,
         vector_results: list,
@@ -349,6 +421,7 @@ class RetrievalPipeline:
             # ── Query ──
             "query_raw": query_raw,
             "query_normalized": query_normalized,
+            "query_expanded": query_expanded,
 
             # ── Language detection ──
             "language_detected": lang_result.label,
@@ -365,6 +438,7 @@ class RetrievalPipeline:
                 "vector": vector_weight,
                 "source": lang_result.label,
             },
+            "query_intent": query_intent,
 
             # ── Phase 5: Category / filter ──
             "category_detected": detection.predicted_category,
