@@ -1,0 +1,41 @@
+{
+  "total_raw_chunks": 1626,
+  "total_removed_duplicates": 12,
+  "total_final_docs": 1614,
+  "chunk_size": 512,
+  "chunk_overlap": 100,
+  "category_distribution": {
+    "banking": 319,
+    "personal_finance": 6,
+    "insurance": 40,
+    "islamic_finance": 550,
+    "investment": 308,
+    "digital_finance": 317,
+    "general": 42,
+    "financial_education": 32
+  },
+  "file_distribution": {
+    "allied bank guide.pdf": 129,
+    "askari bank guide.pdf": 20,
+    "banking policy guide.pdf": 50,
+    "consumer banking.pdf": 45,
+    "crypto info.pdf": 31,
+    "digital payments.pdf": 36,
+    "easypaisa guide.pdf": 56,
+    "finance guide.pdf": 55,
+    "income tax return fbr.pdf": 16,
+    "ISLAMIC_JURISPRUDENCE.pdf": 544,
+    "jazz cash guide.pdf": 143,
+    "money management.pdf": 46,
+    "nbp guide.pdf": 25,
+    "pakistan investment guide.pdf": 109,
+    "pakistan stock market.pdf": 53,
+    "paksitan growth and investment.pdf": 87,
+    "saving guide.pdf": 16,
+    "secp education investor.pdf": 23,
+    "secp guide.pdf": 26,
+    "The Asaan Karobar Act, 2025.pdf": 16,
+    "The Virtual Assets Ordinance, 2025 (1).pdf": 88
+  },
+  "build_timestamp": "2026-04-27T18:07:35Z"
+}

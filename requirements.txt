@@ -21,3 +21,8 @@ tqdm>=4.66.0                    # progress bars
 
 # ── Optional: tracking (comment out if not using W&B) ────────────────────────
 # wandb>=0.17.0
+
+rank-bm25
+faiss-cpu
+llama-index-core
+llama-index-readers-file

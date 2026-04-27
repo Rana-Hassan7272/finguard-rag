@@ -1,0 +1,163 @@
+{
+  "overall": {
+    "vector_only": {
+      "acc@1": 0.7,
+      "acc@3": 0.875,
+      "acc@10": 0.975,
+      "mrr": 0.7979,
+      "n": 40
+    },
+    "hybrid": {
+      "acc@1": 0.6,
+      "acc@3": 0.775,
+      "acc@10": 0.975,
+      "mrr": 0.7163,
+      "n": 40
+    },
+    "hybrid_mmr": {
+      "acc@1": 0.65,
+      "acc@3": 0.875,
+      "acc@10": 0.975,
+      "mrr": 0.7713,
+      "n": 40
+    },
+    "hybrid_mmr_rerank": {
+      "acc@1": 0.625,
+      "acc@3": 0.725,
+      "acc@10": 0.725,
+      "mrr": 0.6625,
+      "n": 40
+    },
+    "hybrid_mmr_rerank_gate": {
+      "acc@1": 0.575,
+      "acc@3": 0.625,
+      "acc@10": 0.625,
+      "mrr": 0.5958,
+      "n": 40
+    }
+  },
+  "by_language": {
+    "vector_only": {
+      "urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "roman_urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "english": {
+        "acc@1": 0.6774,
+        "acc@3": 0.871,
+        "acc@10": 0.9677,
+        "mrr": 0.7796,
+        "n": 31
+      }
+    },
+    "hybrid": {
+      "urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "roman_urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "english": {
+        "acc@1": 0.5484,
+        "acc@3": 0.7742,
+        "acc@10": 0.9677,
+        "mrr": 0.6824,
+        "n": 31
+      }
+    },
+    "hybrid_mmr": {
+      "urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "roman_urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "english": {
+        "acc@1": 0.5806,
+        "acc@3": 0.8387,
+        "acc@10": 0.9677,
+        "mrr": 0.721,
+        "n": 31
+      }
+    },
+    "hybrid_mmr_rerank": {
+      "urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "roman_urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "english": {
+        "acc@1": 0.6129,
+        "acc@3": 0.6774,
+        "acc@10": 0.6774,
+        "mrr": 0.6398,
+        "n": 31
+      }
+    },
+    "hybrid_mmr_rerank_gate": {
+      "urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "roman_urdu": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "english": {
+        "acc@1": 0.5806,
+        "acc@3": 0.6452,
+        "acc@10": 0.6452,
+        "mrr": 0.6075,
+        "n": 31
+      }
+    }
+  },
+  "n_queries": 40,
+  "test_file": "retrieval/eval/english_paraphrase_test.jsonl",
+  "gate": {
+    "confidence_threshold": 0.7,
+    "rejections": 14,
+    "rejection_rate": 0.35
+  }
+}

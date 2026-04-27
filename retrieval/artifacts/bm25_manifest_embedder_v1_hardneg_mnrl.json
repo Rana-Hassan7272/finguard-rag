@@ -1,0 +1,16 @@
+{
+  "embedder_version_tag": "embedder_v1_hardneg_mnrl",
+  "tokenizer_mode": "whitespace",
+  "stopword_mode": "minimal",
+  "bm25_k1": 1.5,
+  "bm25_b": 0.75,
+  "corpus_doc_count": 1504,
+  "corpus_token_hash": "61698c963380f900",
+  "avg_tokens_per_doc": 12.06,
+  "empty_token_docs": 0,
+  "build_timestamp": "2026-04-25T18:33:50Z",
+  "artifact_paths": {
+    "bm25_tokens": "retrieval\\artifacts\\bm25_corpus_tokens_embedder_v1_hardneg_mnrl.json",
+    "manifest": "retrieval\\artifacts\\bm25_manifest_embedder_v1_hardneg_mnrl.json"
+  }
+}

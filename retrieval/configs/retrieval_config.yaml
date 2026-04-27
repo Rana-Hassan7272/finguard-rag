@@ -1,0 +1,312 @@
+# =============================================================================
+# FinGuard RAG — Retrieval Configuration
+# =============================================================================
+# All retrieval components read from this single source of truth.
+# Update version strings here when retraining; all safety checks use these.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Embedding Model
+# -----------------------------------------------------------------------------
+embedding_model:
+  # HuggingFace hub ID (used when local_path is null)
+  hub_id: "hassan7272/urdu-finance-embeddings"
+
+  # Set to a local directory path to use a local checkpoint instead of hub
+  # e.g. "models/urdu-finance-embeddings-v1"
+  # Set null to always pull from hub
+  local_path: null
+
+  # Version tag — MUST match index_manifest version at startup.
+  # If mismatch → system refuses to serve; rebuild index.
+  # Format: embedder_<version>_<training_strategy>
+  version_tag: "embedder_v1_hardneg_mnrl"
+
+  # Output dimension of the model (xlm-roberta-base = 768)
+  embedding_dim: 768
+
+  # Whether to L2-normalize embeddings before indexing/querying
+  # Must be true for IndexFlatIP to behave as cosine similarity
+  normalize_embeddings: true
+
+  # Batch size for encoding large corpus during index build
+  encode_batch_size: 64
+
+  # Use GPU if available during index build (encoding only)
+  use_gpu_if_available: true
+
+# -----------------------------------------------------------------------------
+# Retrieval K Values
+# -----------------------------------------------------------------------------
+retrieval:
+  # Stage 1: how many candidates to pull from vector index
+  vector_k: 10
+
+  # Stage 1: how many candidates to pull from BM25
+  bm25_k: 10
+
+  # Stage 2: merged candidate pool fed into MMR
+  # (vector_k + bm25_k deduplicated — keep headroom)
+  hybrid_candidate_k: 20
+
+  # Stage 3: MMR output — docs passed to reranker
+  mmr_output_k: 10
+
+  # Stage 4: reranker output — docs passed to LLM
+  reranker_output_k: 3
+
+# -----------------------------------------------------------------------------
+# FAISS Vector Index
+# -----------------------------------------------------------------------------
+faiss:
+  # IndexFlatIP: exact inner product (cosine on normalized vecs)
+  # Upgrade to IndexHNSWFlat for large corpus (>100k docs)
+  index_type: "IndexFlatIP"
+
+  # Dimension must match embedding_model.embedding_dim
+  dimension: 768
+
+  # HNSW settings (unused when index_type=IndexFlatIP, kept for easy upgrade)
+  hnsw:
+    M: 32               # neighbors per node — higher = better recall, more RAM
+    ef_construction: 200
+    ef_search: 64
+
+# -----------------------------------------------------------------------------
+# BM25 Index
+# -----------------------------------------------------------------------------
+bm25:
+  # Tokenizer mode: "whitespace" is fastest and correct for multilingual text
+  # "whitespace" splits on spaces only — preserves Urdu/Roman Urdu tokens
+  tokenizer_mode: "whitespace"
+
+  # Stopword behavior: "minimal" removes only the most common function words
+  # "none" keeps all tokens (safer for domain-specific terms like "zakat", "riba")
+  # "minimal" is recommended — removes "the", "a", "is", etc. in English
+  stopword_mode: "minimal"
+
+  # BM25 hyperparameters (rank_bm25 BM25Okapi defaults are good starting points)
+  k1: 1.5   # term frequency saturation — how quickly TF score plateaus
+  b: 0.75   # document length normalization — 0=no norm, 1=full norm
+
+# -----------------------------------------------------------------------------
+# Hybrid Search Fusion
+# -----------------------------------------------------------------------------
+fusion:
+  # Reciprocal Rank Fusion — no score calibration needed, robust across domains
+  method: "rrf"
+
+  # RRF constant k: higher = smoother, less sensitive to top ranks
+  # 60 is the standard; do not change without evaluation evidence
+  rrf_k: 60
+
+  # Language-aware weight table
+  # Weights control how much each modality contributes to final RRF score
+  # bm25_weight + vector_weight should sum to 1.0
+  language_weights:
+    roman_urdu:
+      bm25_weight: 0.30
+      vector_weight: 0.70
+      # Rationale: BM25 is weak on Roman Urdu (no standard spellings).
+      #            Vector search handles semantic similarity better.
+
+    urdu:
+      bm25_weight: 0.40
+      vector_weight: 0.60
+      # Rationale: Urdu script has consistent Unicode — BM25 works slightly
+      #            better here than Roman Urdu, but vector still dominates.
+
+    english:
+      bm25_weight: 0.45
+      vector_weight: 0.55
+      # Rationale: English BM25 is very strong (standard tokenization,
+      #            well-known stopwords). Lean into it for English queries.
+
+    unknown:
+      # Fallback when language detector is not confident
+      bm25_weight: 0.40
+      vector_weight: 0.60
+
+# -----------------------------------------------------------------------------
+# MMR (Max Marginal Relevance)
+# -----------------------------------------------------------------------------
+mmr:
+  # Lambda controls relevance-diversity tradeoff
+  # 1.0 = pure relevance (no diversity), 0.0 = pure diversity (no relevance)
+  # 0.7 is a strong production default for QA — slight diversity boost
+  lambda: 0.7
+
+  # Candidate pool size fed into MMR algorithm
+  # Should match retrieval.hybrid_candidate_k
+  candidate_pool_size: 20
+
+  # Output size from MMR (fed to reranker)
+  # Should match retrieval.mmr_output_k
+  output_k: 10
+
+# -----------------------------------------------------------------------------
+# Reranker
+# -----------------------------------------------------------------------------
+reranker:
+  # Cross-encoder model from HuggingFace
+  # BAAI/bge-reranker-base is multilingual-friendly (recommended for this dataset)
+  # Alternative: cross-encoder/ms-marco-MiniLM-L-6-v2 (faster, English-optimized)
+  model_id: "BAAI/bge-reranker-base"
+
+  # Minimum score for top-1 doc to proceed to LLM generation
+  # Below this threshold → return "insufficient information" without calling LLM
+  # Tune this on your eval set; 0.40 is a conservative starting point
+  confidence_threshold: 0.55
+
+  # Number of docs to pass to reranker (should match retrieval.mmr_output_k)
+  input_k: 10
+
+  # Number of docs to pass to LLM after reranking
+  output_k: 3
+
+  # Runtime settings
+  batch_size: 16
+  max_length: 512
+
+  # If gate fails, pipeline should return this response and skip LLM call
+  fallback_message: "I don't have enough information to answer this question."
+
+# -----------------------------------------------------------------------------
+# Metadata Filter (Phase 5)
+# -----------------------------------------------------------------------------
+metadata_filter:
+  enabled: false
+  confidence_threshold: 0.55
+  strict_mode: true
+  fallback_behavior: "search_all"
+
+  # Category keyword map (query-time detector)
+  # Format supports either plain strings or {keyword, weight}
+  keyword_map:
+    islamic_finance:
+      - { keyword: "zakat", weight: 1.0 }
+      - { keyword: "riba", weight: 1.0 }
+      - { keyword: "murabaha", weight: 1.0 }
+      - { keyword: "musharakah", weight: 1.0 }
+      - { keyword: "ijarah", weight: 1.0 }
+      - { keyword: "nisab", weight: 1.0 }
+    banking:
+      - { keyword: "account", weight: 0.9 }
+      - { keyword: "iban", weight: 0.9 }
+      - { keyword: "cheque", weight: 0.8 }
+      - { keyword: "hbl", weight: 0.7 }
+      - { keyword: "ubl", weight: 0.7 }
+      - { keyword: "meezan", weight: 0.7 }
+    loans_credit:
+      - { keyword: "loan", weight: 1.0 }
+      - { keyword: "credit", weight: 0.9 }
+      - { keyword: "installment", weight: 0.9 }
+      - { keyword: "emi", weight: 0.9 }
+      - { keyword: "qarz", weight: 0.9 }
+    digital_finance:
+      - { keyword: "easypaisa", weight: 1.0 }
+      - { keyword: "jazzcash", weight: 1.0 }
+      - { keyword: "raast", weight: 0.9 }
+      - { keyword: "wallet", weight: 0.8 }
+      - { keyword: "mobile payment", weight: 0.8 }
+    bills_payments:
+      - { keyword: "bill", weight: 0.9 }
+      - { keyword: "electricity bill", weight: 1.0 }
+      - { keyword: "gas bill", weight: 1.0 }
+      - { keyword: "water bill", weight: 1.0 }
+      - { keyword: "utility", weight: 0.8 }
+    investment:
+      - { keyword: "investment", weight: 0.9 }
+      - { keyword: "mutual fund", weight: 1.0 }
+      - { keyword: "stock", weight: 0.9 }
+      - { keyword: "psx", weight: 0.9 }
+      - { keyword: "prize bond", weight: 1.0 }
+    personal_finance:
+      - { keyword: "budget", weight: 0.9 }
+      - { keyword: "saving", weight: 0.8 }
+      - { keyword: "expense", weight: 0.8 }
+      - { keyword: "emergency fund", weight: 1.0 }
+      - { keyword: "monthly planning", weight: 0.7 }
+    financial_education:
+      - { keyword: "policy rate", weight: 0.9 }
+      - { keyword: "inflation", weight: 0.9 }
+      - { keyword: "fbr", weight: 0.9 }
+      - { keyword: "tax", weight: 0.8 }
+      - { keyword: "financial literacy", weight: 0.9 }
+
+# -----------------------------------------------------------------------------
+# Deduplication (used during corpus build)
+# -----------------------------------------------------------------------------
+deduplication:
+  # Cosine similarity threshold above which a pair is considered near-duplicate
+  # 0.97 is strict — only removes essentially identical questions
+  similarity_threshold: 0.97
+
+  # Which field to embed for dedup comparison
+  embed_field: "question"
+
+# -----------------------------------------------------------------------------
+# Semantic Cache
+# -----------------------------------------------------------------------------
+cache:
+  enabled: true
+
+  # Similarity threshold for cache hit (cosine similarity)
+  # 0.92 is tight — only return cached answer if query is very similar
+  similarity_threshold: 0.92
+
+  # Backend: "memory" (in-process dict, resets on restart)
+  # "redis" for persistent cross-process cache (requires redis server)
+  backend: "memory"
+
+  # TTL in seconds (86400 = 24 hours)
+  # Set null for no expiry (safe if corpus is static)
+  ttl_seconds: 86400
+
+  # Redis connection (only used when backend=redis)
+  redis:
+    host: "localhost"
+    port: 6379
+    db: 0
+
+# -----------------------------------------------------------------------------
+# Artifact Output Paths
+# -----------------------------------------------------------------------------
+artifacts:
+  # All build artifacts are saved under this root
+  root: "retrieval/artifacts"
+
+  # Corpus files (version-independent — rebuilt on any corpus change)
+  corpus_jsonl: "retrieval/artifacts/corpus.jsonl"
+  docstore_json: "retrieval/artifacts/docstore.json"
+  corpus_stats_json: "retrieval/artifacts/corpus_stats.json"
+
+  # FAISS index files (versioned — tied to embedding model version)
+  # {version} is replaced at runtime with embedding_model.version_tag
+  faiss_index: "retrieval/artifacts/faiss_{version}.index"
+  faiss_id_map: "retrieval/artifacts/id_map_{version}.json"
+  faiss_manifest: "retrieval/artifacts/index_manifest_{version}.json"
+
+  # BM25 index files (versioned)
+  bm25_tokens: "retrieval/artifacts/bm25_corpus_tokens_{version}.json"
+  bm25_manifest: "retrieval/artifacts/bm25_manifest_{version}.json"
+
+# -----------------------------------------------------------------------------
+# Index Version String Format
+# -----------------------------------------------------------------------------
+# Final artifact filenames follow this pattern:
+#   faiss_embedder_v1_hardneg_mnrl.index
+#   id_map_embedder_v1_hardneg_mnrl.json
+#   index_manifest_embedder_v1_hardneg_mnrl.json
+#   bm25_corpus_tokens_embedder_v1_hardneg_mnrl.json
+#   bm25_manifest_embedder_v1_hardneg_mnrl.json
+#
+# Version tag format: embedder_<version>_<training_strategy>
+# Examples:
+#   embedder_v1_hardneg_mnrl     ← current
+#   embedder_v2_hardneg_mnrl     ← after retraining same strategy
+#   embedder_v2_contrastive      ← after strategy change
+#
+# SAFETY RULE: Never overwrite an existing versioned index.
+# Always build to new version tag → swap in config → restart.
+# =============================================================================

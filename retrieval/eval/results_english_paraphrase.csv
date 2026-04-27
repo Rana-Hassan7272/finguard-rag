@@ -1,0 +1,41 @@
+query_id,query,language,latency_vector_ms,latency_hybrid_ms,latency_mmr_ms,vector_only_hit@1,vector_only_hit@3,vector_only_hit@10,vector_only_mrr,hybrid_hit@1,hybrid_hit@3,hybrid_hit@10,hybrid_mrr,hybrid_mmr_hit@1,hybrid_mmr_hit@3,hybrid_mmr_hit@10,hybrid_mmr_mrr
+doc_0349,For Pakistan: Could you clarify whether Easypaisa savings account offer profit i,unknown,325.3,164.2,760.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0027,Can you explain an IBAN number and where do I get it?,english,72.9,79.6,462.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0112,For Pakistan: Can you explain SBP's policy rate and how does it affect the commo,english,79.6,76.9,933.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1023,For Pakistan: Is Zakat due on money given as a gift in Pakistan?,english,81.7,76.5,782.7,0,0,1,0.25,1,1,1,1.0,1,1,1,1.0
+doc_0985,What are the best options for bank is more reliable in Pakistan — HBL or UBL?,english,88.5,90.3,900.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0724,For Pakistan: How much penalty is charged for delayed tax payments to FBR in Pak,english,86.4,97.0,911.0,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0402,For Pakistan: What's the best way to avoid fraud when buying or selling land in ,unknown,90.9,90.9,820.2,1,1,1,1.0,0,0,1,0.25,1,1,1,1.0
+doc_0847,What's the best way to avoid losses in the Pakistan Stock Exchange?,english,92.1,92.3,961.8,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0446,For Pakistan: Can you explain SBP's Financial Inclusion Strategy 2023–2027 in Pa,unknown,110.3,110.2,955.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0373,For Pakistan: Can you explain NBP's National Savings Digital Portal in Pakistan?,unknown,82.2,98.4,1211.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0919,What's the best way to pay a water bill online in Pakistan?,english,87.0,96.8,845.1,0,1,1,0.5,0,0,0,0.0,0,0,0,0.0
+doc_0329,For Pakistan: Is money in a digital wallet safer than in a bank account in Pakis,english,88.8,91.5,910.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0526,For Pakistan: What is the process to apply the Islamic Ijarah principle when ren,english,101.0,101.7,866.5,0,1,1,0.3333,0,0,0,0.0,0,0,0,0.0
+doc_1383,How important is credit score in Pakistan and how can it be improved?,english,85.0,89.5,908.9,0,1,1,0.3333,1,1,1,1.0,0,1,1,0.5
+doc_0220,"For Pakistan: If my salary account is at HBL, what personal finance options do I",unknown,90.6,107.2,887.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0780,For Pakistan: Can you explain a digital banking license in Pakistan and which ne,english,105.6,97.0,871.9,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0824,What are some Islamic ways to earn money from home?,english,96.8,101.9,885.2,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0439,For Pakistan: Can car insurance premiums be paid through JazzCash in Pakistan?,english,89.7,91.6,803.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0055,Can you explain Mudarabah and how is it used in banking in Pakistan?,english,93.2,93.5,813.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0295,Do I get a receipt after paying Zakat in Pakistan?,english,104.1,120.1,830.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1141,For Pakistan: Someone gave me a loan in Pakistan and I haven't returned it — can,unknown,99.1,92.7,994.7,0,1,1,0.5,1,1,1,1.0,1,1,1,1.0
+doc_0955,What's the best way to calculate Zakat on both gold and bank balance in Pakistan,english,92.7,105.0,1036.1,0,0,1,0.1667,0,1,1,0.5,0,1,1,0.5
+doc_1272,What is the process to avoid monthly maintenance charges in a UBL account?,english,92.5,94.8,1024.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0808,For Pakistan: What are the ways to invest in gold in Pakistan?,english,94.2,99.7,862.5,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0645,For Pakistan: Can you explain the difference between a bank account number and I,english,103.5,100.4,754.0,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_0651,Can you explain the financial benefit of shopping from Utility Stores in Pakista,english,204.5,86.3,1341.0,0,1,1,0.5,0,0,0,0.0,0,0,0,0.0
+doc_0767,For Pakistan: Why is double entry bookkeeping necessary for business accounting ,unknown,128.4,154.4,1418.5,1,1,1,1.0,0,0,1,0.25,0,1,1,0.5
+doc_1227,"If my bank account in NBP becomes inactive, how can I reactivate it in Pakistan?",english,236.6,121.4,978.0,0,1,1,0.3333,0,1,1,0.5,0,1,1,0.5
+doc_0606,Can you explain the Defence Savings Certificate in Pakistan?,english,121.4,117.5,753.1,1,1,1,1.0,0,0,0,0.0,0,0,0,0.0
+doc_1353,For Pakistan: What charges apply if I don’t pay full UBL credit card balance and,english,115.5,115.7,1076.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0939,Can you explain Ijarah in Islamic finance? Explain in simple terms. in Pakistan?,unknown,111.1,110.7,865.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1369,Can you explain a reliable way to identify halal stocks in the Pakistan Stock Ex,english,97.0,96.9,887.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1099,For Pakistan: Should Zakat be given to someone in full or in parts in Pakistan?,english,102.1,104.5,1236.7,0,0,0,0.0,0,0,0,0.0,0,0,0,0.0
+doc_1174,"If I save PKR 20,000 monthly, how much will I save in one year in Pakistan?",unknown,96.2,107.6,1323.6,0,0,1,0.25,1,1,1,1.0,1,1,1,1.0
+doc_0392,When is profit paid on NPC purchased through Roshan Digital Account in Pakistan?,english,106.9,105.3,1479.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0286,For Pakistan: What's the best way to register for the Benazir Income Support Pro,english,109.2,111.5,1008.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0974,For Pakistan: Are deposits safe if a bank closes in Pakistan?,english,101.7,100.6,827.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1124,What's the best way to protect my accounts from online fraud and phishing in Pak,english,97.1,103.9,905.1,0,1,1,0.5,1,1,1,1.0,1,1,1,1.0
+doc_1482,For Pakistan: How can electricity bill installment plans be availed in Pakistan ,english,102.2,109.5,1173.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1233,"If my utility bills are high, what steps can I take to control them in Pakistan?",english,191.8,201.3,2222.4,0,0,1,0.25,0,1,1,0.5,0,1,1,0.5

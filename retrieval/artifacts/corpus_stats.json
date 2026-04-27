@@ -1,0 +1,57 @@
+{
+  "total_raw": 1510,
+  "total_valid": 1510,
+  "total_skipped_invalid": 0,
+  "total_removed_duplicates": 6,
+  "total_final_corpus": 1504,
+  "dedup_threshold": 0.97,
+  "category_distribution": {
+    "islamic_finance": 240,
+    "banking": 222,
+    "digital_finance": 140,
+    "investment": 183,
+    "loans_credit": 158,
+    "personal_finance": 249,
+    "bills_payments": 77,
+    "financial_education": 235
+  },
+  "difficulty_distribution": {
+    "easy": 366,
+    "complex": 439,
+    "medium": 699
+  },
+  "removed_docs": [
+    {
+      "doc_id": "doc_0809",
+      "question": "اگر میں نے غلطی سے کسی غلط نمبر پر راست سے رقم بھیج دی تو کیا کریں؟",
+      "duplicate_of": "doc_0105"
+    },
+    {
+      "doc_id": "doc_1093",
+      "question": "Pakistan mein loan pe loan lena theek hai ya nahi?",
+      "duplicate_of": "doc_0976"
+    },
+    {
+      "doc_id": "doc_1180",
+      "question": "Emergency fund kitna hona chahiye Pakistan mein?",
+      "duplicate_of": "doc_0958"
+    },
+    {
+      "doc_id": "doc_1367",
+      "question": "Pakistan mein emergency fund kitna hona chahiye aur kahan rakhna best hai?",
+      "duplicate_of": "doc_1237"
+    },
+    {
+      "doc_id": "doc_1440",
+      "question": "Pakistan mein emergency fund kitna hona chahiye aur kahan rakhna best hai?",
+      "duplicate_of": "doc_1237"
+    },
+    {
+      "doc_id": "doc_1457",
+      "question": "Financial literacy improve karne ke liye Pakistan mein kaun se practical steps f",
+      "duplicate_of": "doc_1197"
+    }
+  ],
+  "build_timestamp": "2026-04-25T18:29:40Z",
+  "embedder_used_for_dedup": "hassan7272/urdu-finance-embeddings"
+}

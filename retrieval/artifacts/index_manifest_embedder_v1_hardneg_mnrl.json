@@ -1,0 +1,17 @@
+{
+  "embedder_hub_id": "hassan7272/urdu-finance-embeddings",
+  "embedder_local_path": null,
+  "embedder_version_tag": "embedder_v1_hardneg_mnrl",
+  "faiss_index_type": "IndexFlatIP",
+  "embedding_dim": 768,
+  "normalize_embeddings": true,
+  "corpus_doc_count": 1504,
+  "corpus_hash": "d07eae5463375344",
+  "faiss_ntotal": 1504,
+  "build_timestamp": "2026-04-25T18:31:23Z",
+  "artifact_paths": {
+    "faiss_index": "retrieval\\artifacts\\faiss_embedder_v1_hardneg_mnrl.index",
+    "id_map": "retrieval\\artifacts\\id_map_embedder_v1_hardneg_mnrl.json",
+    "manifest": "retrieval\\artifacts\\index_manifest_embedder_v1_hardneg_mnrl.json"
+  }
+}

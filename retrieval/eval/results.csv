@@ -1,0 +1,159 @@
+query_id,query,language,latency_vector_ms,latency_hybrid_ms,latency_mmr_ms,vector_only_hit@1,vector_only_hit@3,vector_only_hit@10,vector_only_mrr,hybrid_hit@1,hybrid_hit@3,hybrid_hit@10,hybrid_mrr,hybrid_mmr_hit@1,hybrid_mmr_hit@3,hybrid_mmr_hit@10,hybrid_mmr_mrr
+doc_0349,Pakistan میں Easypaisa savings account پر منافع ملتا ہے؟,urdu,6182.2,158.1,708.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0027,IBAN number کیا ہوتی ہے اور یہ کہاں سے ملتی ہے؟,urdu,87.5,88.2,753.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0112,SBP کی policy rate کیا ہے اور یہ عام آدمی کو کیسے متاثر کرتی ہے؟,urdu,92.5,89.5,989.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1023,Pakistan mein kisi ko hadiya ya gift mein paise dene par Zakat hoti hai?,roman_urdu,97.2,108.4,1571.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0985,HBL aur UBL mein se kaun sا bank zyada reliable hai Pakistan mein?,roman_urdu,328.8,297.4,8002.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0724,پاکستان میں ایف بی آر کو ادائیگی میں تاخیر پر کتنا جرمانہ لگتا ہے؟,urdu,512.8,934.0,4627.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0402,Pakistan میں زمین کی خرید و فروخت میں دھوکے سے کیسے بچیں؟,urdu,174.0,167.2,1631.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0847,پاکستان میں شیئر بازار میں نقصان سے کیسے بچیں؟,urdu,153.7,294.4,1324.8,0,1,1,0.5,1,1,1,1.0,1,1,1,1.0
+doc_0446,Pakistan میں SBP کی Financial Inclusion Strategy 2023–2027 کیا ہے؟,urdu,100.2,139.6,1107.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0373,Pakistan میں NBP کا National Savings Digital Portal کیا ہے؟,urdu,104.7,105.1,961.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0919,پاکستان میں واٹر بل کیسے آن لائن ادا کریں؟,urdu,93.2,102.3,910.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0329,Pakistan میں digital wallet کا پیسہ کیا بینک account سے محفوظ ہے؟,urdu,98.5,94.6,876.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0526,پاکستان میں گھر کو کرایہ پر دینے کے لیے اسلامی اجارہ کا اصول کیسے استعمال کریں؟,urdu,106.0,103.3,880.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1383,Pakistan mein credit score ka concept kitna important hai aur kaise improve kiya,roman_urdu,275.3,210.0,1748.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0220,اگر میرا salary account HBL میں ہے تو مجھے personal finance کے لیے کیا آپشن ملتے,urdu,108.0,105.8,1063.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0780,پاکستان میں ڈیجیٹل بینکنگ لائسنس کیا ہے اور کون سے نئے ادارے حاصل کر رہے ہیں؟,urdu,103.7,118.9,1070.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0824,گھر بیٹھے کمانے کے اسلامی طریقے کون سے ہیں؟,urdu,94.3,108.7,944.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0439,Pakistan میں کیا JazzCash سے car insurance premium pay کی جا سکتی ہے؟,urdu,99.9,93.6,742.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0055,Mudarabah کیا ہے اور یہ بینکنگ میں کیسے استعمال ہوتی ہے؟,urdu,97.4,104.1,906.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0295,Pakistan میں Zakat ادا کرنے کے بعد کیا receipt ملتی ہے؟,urdu,89.1,101.4,795.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1141,Pakistan mein kisi ne mujhe loan diya aur wapas nahi deta — kya court case kar s,roman_urdu,106.7,114.0,1076.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0955,Zakat mein sona aur bank balance dono par hisab kaise lagayein?,roman_urdu,94.5,97.2,1048.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1272,UBL account mein monthly maintenance charges kaise avoid karein?,roman_urdu,95.1,95.2,1034.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0808,پاکستان میں سونے کی سرمایہ کاری کے کیا طریقے ہیں؟,urdu,89.3,96.1,853.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0645,پاکستان میں بینک اکاونٹ نمبر اور آئی بی اے این میں کیا فرق ہے؟,urdu,107.1,104.3,991.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0651,پاکستان میں یوٹیلٹی اسٹور سے خریداری میں کیا مالی فائدہ ہے؟,urdu,100.7,107.5,1030.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0767,پاکستان میں کاروباری حساب کتاب کے لیے ڈبل انٹری بک کیپنگ کیوں ضروری ہے؟,urdu,100.2,118.8,964.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1227,Agar mera bank account NBP mein inactive ho jaye to usay dobara kaise activate k,roman_urdu,100.2,106.2,1246.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0606,پاکستان میں ڈیفنس سیونگز سرٹیفکیٹ کیا ہے؟,urdu,119.4,105.7,1900.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1353,UBL credit card ka balance full pay na karne par kya charges lagte hain aur hala,roman_urdu,408.9,429.7,2095.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0939,Islamic finance mein Ijarah kya hota hai? Simple language mein samjhao.,roman_urdu,148.1,186.5,2294.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1369,Pakistan Stock Exchange mein halal stocks identify karne ka reliable tareeqa kya,roman_urdu,236.6,279.1,2263.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1099,Pakistan mein zakat ki raqam kisi ko poori ya baat baat mein deni chahiye?,roman_urdu,237.1,202.9,2963.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1174,"Agar main har mahine 20,00 save karun to 1 saal mein kitni saving ho sakti hai?",roman_urdu,212.7,240.0,2339.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0392,Pakistan میں Roshan Digital Account سے NPC خریدنے پر منافع کب ملتا ہے؟,urdu,354.5,412.5,1052.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0286,Pakistan میں Benazir Income Support Programm (BISP) کے لیے registration کیسے ہوت,urdu,119.2,100.1,813.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0974,Pakistan mein agar bank closed ho jaye to kya deposits safe hain?,roman_urdu,85.9,95.7,1514.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1124,Pakistan mein online fraud aur phishing se apne accounts ko kaise protect karein,roman_urdu,106.4,106.1,1094.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1482,Pakistan mein electricity bill installment plan kaise avail karein aur kya condi,roman_urdu,99.5,100.5,986.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1233,Agar mera utility bill zyada aa raha hai to usay control karne ke liye kya steps,roman_urdu,111.8,110.6,1222.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0085,کیا Pakistan میں government jobs کو private jobs سے زیادہ financial security ملت,urdu,134.1,110.8,937.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0561,پاکستان میں کیا ریٹائرمنٹ کے بعد بینک قرضہ مل سکتا ہے؟,urdu,114.1,111.6,980.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0823,ایچ بی ایل موبائل بینکنگ پر ٹرانزیکشن لمٹ کتنی ہے؟,urdu,91.0,96.7,961.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0488,Pakistan میں Zakat کا حساب cryptocurrency پر کیسے لگایا جائے؟,urdu,96.1,100.2,777.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1266,"Meri salary 120,00 PKR hai, main har mahine kitna save karun taake 2 saal mein b",roman_urdu,113.7,134.3,1863.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0440,Pakistan میں inflation کے دوران business کیسے survive کرے؟,urdu,122.1,128.5,1335.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0628,پاکستان میں اپنی ملازمت کی ترقی کے ساتھ مالی اہداف کیسے بڑھائیں؟,urdu,134.3,349.7,1891.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1262,Agar main apni credit history improve karna chahta hoon to kya steps lene chahiy,roman_urdu,170.5,172.9,1664.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0106,Pension کا پیسہ کیسے invest کریں retirement میں؟,urdu,107.2,109.4,1039.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0973,Agar meri company mujhe bonus nahi deti to kya koi haq hai?,roman_urdu,109.9,106.0,1361.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0133,کسی کو پیسے ادھار دینے سے پہلے کیا سوچنا چاہیے؟,urdu,116.9,134.2,1266.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0166,HBL کی Konnect app کیا ہے؟,urdu,116.8,114.2,1761.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0499,Pakistan میں اگر میں نے غلطی سے Zakat کم دی ہو تو کیا کروں؟,urdu,104.2,105.3,1103.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0871,پاکستان میں ویلتھ مینجمنٹ سروس کیا ہے؟,urdu,94.9,102.5,887.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0580,پاکستان میں سی ڈی اے منظور شدہ پلاٹ خریدنا کیوں ضروری ہے؟,urdu,89.2,92.2,931.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0660,پاکستان میں اسٹوڈنٹ لون کے لیے گریجویشن کے بعد کتنا وقت ملتا ہے؟,urdu,95.5,103.0,869.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1384,Pakistan mein retirement planning ke liye kaun se financial options best hain?,roman_urdu,93.1,96.1,951.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0966,Pakistan mein bache ki paidaish par savings kaise shuru karein?,roman_urdu,97.4,94.2,973.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0369,Pakistan میں کیا گھر کرایے پر لینے کے لیے Islamic finance مل سکتی ہے؟,urdu,85.1,103.2,849.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0980,Pakistan mein kaun si bank account ki type sabse zyada faydemand hai?,roman_urdu,82.8,90.8,858.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0354,Pakistan میں SBP کا Banking Mohtasib کیا کرتا ہے؟,urdu,94.4,98.8,830.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1181,Agar main freelance income earn karta hoon to tax kaise file karun Pakistan mein,roman_urdu,89.7,101.1,992.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1379,Pakistan mein apni monthly expenses tracking ke liye kaun si digital tools best ,roman_urdu,97.3,109.2,994.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0206,Online banking میں beneficiary add کیسے کریں؟,urdu,86.2,88.9,847.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0638,پاکستان میں کاروباری ناکامی کے بعد دوبارہ شروع کرنے کے لیے کیا اقدامات کریں؟,urdu,80.4,91.8,829.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0233,Pakistan میں HBL Mobile app سے کتنی رقم transfer کر سکتے ہیں؟,urdu,96.1,100.3,997.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0523,پاکستان میں کرپشن کی وجہ سے کاروبار کو مالی نقصان ہو تو کیا کریں؟,urdu,88.3,92.0,831.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1319,Agar main short-term loan le kar invest karun to kya yeh financially sahi strate,roman_urdu,118.4,99.2,991.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0690,پاکستان میں سرمایہ کاری پر منافع کو ٹیکس کے بعد کیسے حساب کریں؟,urdu,88.3,91.5,820.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0037,کیا Easypaisa account سے loan لیا جا سکتا ہے؟,urdu,81.8,84.2,826.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0713,پاکستان میں خاندانی کاروبار کی مالی خامیاں کیا ہیں اور انہیں کیسے دور کریں؟,urdu,101.7,99.2,788.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0636,پاکستان میں این بی پی کا گرین بینکنگ پروگرام کیا ہے؟,urdu,115.5,105.2,905.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0254,اگر میں Pakistan میں کسی کو Raast سے پیسے بھیجوں تو کیا وہ فوری پہنچتے ہیں؟,urdu,93.1,103.1,929.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0920,شادی کے اخراجات کے لیے اسلامی طریقے سے قرض لینا جائز ہے؟,urdu,91.7,94.1,705.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0152,کیا non-Muslim Pakistan میں Islamic banking استعمال کر سکتے ہیں؟,urdu,93.9,94.2,845.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0323,Pakistan میں Allied Bank سے personal loan کیسے لیں؟,urdu,86.0,79.8,875.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1115,Pakistan mein ek naya dukandaar ki kaunsi common financial mistakes hoti hain?,roman_urdu,94.6,103.0,868.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0605,پاکستان میں کیا خواتین کا الگ بینک اکاونٹ ہونا ضروری ہے؟,urdu,91.2,98.0,915.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0574,پاکستان میں اگر دوست یا رشتہ دار قرضہ واپس نہ کرے تو کیا کریں؟,urdu,93.5,101.8,879.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0953,Apne bachon ke naam par investment kaise shuru karein?,roman_urdu,97.7,84.2,983.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0880,سولر پینل لگانے کے لیے قرض کہاں سے ملے گا؟,urdu,98.9,117.6,1038.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1043,Pakistan mein mutual fund mein invest karne ke liye minimum raqam kitni hai?,roman_urdu,112.2,113.9,940.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0512,پاکستان میں ایزی پیسہ اور جیز کیش کے علاوہ کون سے موبائل والٹ ہیں؟,urdu,113.9,126.8,1137.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0889,پاکستان میں اگر کمپنی بند ہو جائے تو ملازمین کو تنخواہ کیسے ملے گی؟,urdu,126.2,133.7,2322.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0639,پاکستان میں ایزی پیسہ کی مرچنٹ فیس کتنی ہے؟,urdu,448.3,401.1,1758.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1062,Pakistan mein Bahbood Certificate par tax lagta hai ya nahi?,roman_urdu,316.4,258.3,1897.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0947,Nayapay se paisa kaise bhejna hai kisi ko?,roman_urdu,354.6,332.8,2475.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0335,Pakistan میں tax deductible allowances کون سی ہیں؟,urdu,311.9,349.7,1707.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0572,پاکستان میں کیا اسلامی بینک قرضہ نہ دینے کی صورت میں اثاثے ضبط کر سکتا ہے؟,urdu,331.3,341.5,1963.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1474,Pakistan mein online business ke liye payment gateway choose karte waqt kya fact,roman_urdu,374.2,828.6,1225.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0039,Roshan Digital Account کیا ہے اور overseas Pakistanis اسے کیسے کھولیں؟,urdu,97.2,94.8,900.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0469,Pakistan میں کیا Halal stocks میں leverage (margin trading) جائز ہے؟,urdu,108.2,108.8,816.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0752,پاکستان میں تجارتی قرضے اور ذاتی قرضے میں کیا بنیادی فرق ہے؟,urdu,103.1,108.7,1079.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0663,پاکستان میں کیا کوئی شخص ایک سے زیادہ اسلامی بینک میں اکاونٹ رکھ سکتا ہے؟,urdu,88.6,106.6,960.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1018,Pakistan mein ATM se kitni baar paisa nikal sakte hain ek din mein?,roman_urdu,102.0,106.1,959.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1282,Pakistan mein credit score ka concept kya hai aur loan lene par kaise affect kar,roman_urdu,95.2,104.7,984.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0434,Pakistan میں Islamic banking میں 'declared rate' کیا ہوتا ہے؟,urdu,86.3,92.9,745.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1476,Financial goals set karte waqt Pakistan mein realistic approach kya honi chahiye,roman_urdu,85.6,87.2,989.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0153,Pakistan میں کون سے halal food stocks ہیں PSX پر؟,urdu,108.1,106.8,960.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1422,Raast سے بڑی رقم جیسے 10 لاکھ روپے بھیجنے کی کیا حدود ہیں؟,urdu,101.0,98.1,872.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0302,Pakistan میں Takaful policy surrender کرنے پر کیا ملتا ہے؟,urdu,92.9,89.4,770.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0676,پاکستان میں گھر کی تزئین و آرائش کا بجٹ کیسے بنائیں؟,urdu,99.1,99.3,802.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0707,پاکستان میں کمزور آمدنی کے وقت گھر کا کرایہ ادا کرنے کی حکمت عملی کیا ہے؟,urdu,102.6,95.4,847.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0656,پاکستان میں جائیداد کی خریداری میں ہاوسنگ سوسائٹی اور ڈی ایچ اے میں کیا فرق ہے؟,urdu,103.2,98.1,934.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0728,پاکستان میں اگر میرے کاروبار کو نقصان ہو تو زکوٰۃ دینی ہوگی؟,urdu,87.8,93.2,916.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0709,پاکستان میں اوور ڈرافٹ سے بچنے کے طریقے کیا ہیں؟,urdu,87.7,89.6,832.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0252,Pakistan میں health emergency کے لیے financial planning کیسے کریں؟,urdu,81.0,89.2,869.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0476,Pakistan میں غریب مسلمان کو Zakat نہ لینے کی صورت میں کیا کریں؟,urdu,98.1,110.8,1067.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0722,پاکستان میں سود کے بغیر گھر خریدنا ممکن ہے تو کیا مجھے روایتی قرضہ نہیں لینا چاہ,urdu,99.3,106.3,877.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0470,Pakistan میں gas connection لینے کا طریقہ کیا ہے؟,urdu,77.9,88.8,815.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1467,Pakistan mein digital fraud jaise fake calls ya SMS se bachne ke liye kya strate,roman_urdu,103.0,105.9,936.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0963,Bijli ka bill zyada aane par kaise objection karein?,roman_urdu,88.9,83.1,990.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1497,Pakistan mein import/export business ke liye initial financial setup kaise plan ,roman_urdu,83.9,96.5,885.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0528,پاکستان میں کیا کوئی بھی شخص فری لانسنگ شروع کر سکتا ہے؟,urdu,82.8,95.0,833.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0076,Inflation کے دور میں گھر کا بجٹ کیسے manage کریں؟,urdu,103.4,108.6,1007.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0080,Rent agreement بنواتے وقت مالی لحاظ سے کیا باتیں دھیان میں رکھیں؟,urdu,89.9,98.5,832.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0491,Pakistan میں کیا Easypaisa سے gold خریدا جا سکتا ہے؟,urdu,93.2,95.3,778.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0177,Ijara Sukuk اور Government bonds میں کیا فرق ہے؟,urdu,92.9,91.9,956.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1475,Pakistan mein personal loan refinance karne ka faida aur risk kya hai?,roman_urdu,97.1,94.5,984.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0222,کیا Pakistan میں بچوں کے نام property رکھنا ممکن ہے؟,urdu,85.8,93.5,865.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0954,Pakistan mein tax filer aur non-filer mein kya farq padta hai practically?,roman_urdu,100.0,90.8,963.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1423,پاکستان میں اگر کوئی شخص tax نہ دے تو FBR کیا کارروائی کر سکتا ہے؟,urdu,102.2,96.0,883.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0107,Debt trap سے کیسے بچیں؟,urdu,76.1,64.6,669.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0016,Mutual funds اور bank savings account میں کیا فرق ہے؟,urdu,92.9,88.0,893.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1296,Pakistan mein Islamic insurance (Takaful) aur conventional insurance mein kya ma,roman_urdu,105.3,89.6,913.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1187,"Agar mere paas 10 tola sona, 3 lakh cash aur business stock hai to zakat ka tota",roman_urdu,92.0,105.4,1189.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0311,Pakistan میں NBP Tijara Islamic finance کیا ہے؟,urdu,88.1,88.7,821.5,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0618,پاکستان میں کمپنی کا سالانہ ریٹرن ایس ای سی پی میں کیسے جمع کریں؟,urdu,90.4,84.4,895.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1110,Pakistan mein e-commerce business ke liye konsa payment gateway best hai?,roman_urdu,89.4,99.9,921.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0674,پاکستان میں سونے کی قیمت کا تعین کیسے ہوتا ہے؟,urdu,83.3,95.6,798.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0630,پاکستان میں بینک سے سرٹیفائیڈ چیک کیسے حاصل کریں؟,urdu,87.4,91.9,711.2,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0268,Pakistan میں house rent allowance (HRA) پر tax کیسے لگتا ہے؟,urdu,84.0,101.5,770.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1440,Pakistan mein gold invest karte waqt physical gold aur digital gold mein kya dif,roman_urdu,88.8,98.2,844.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0001,"میری تنخواہ 80,00 روپے ہے اور میرے پاس 2 تولہ سونا بھی ہے — زکوٰۃ کیسے نکالوں؟",urdu,101.3,98.2,1020.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0742,پاکستان میں ماہانہ تنخواہ بڑھنے پر مالی اہداف کیسے بدلیں؟,urdu,87.5,100.9,869.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1456,Pakistan mein rent income ko properly manage aur tax declare kaise karein?,roman_urdu,94.8,122.7,991.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0342,Pakistan میں کاروبار کے لیے Musharakah finance کیسے apply کریں؟,urdu,89.3,97.3,848.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1167,"Meri salary 100,00 hai aur har mahine bill zyada aa jate hain, saving kaise karu",roman_urdu,98.0,99.7,1192.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0539,پاکستان میں حلال طریقے سے پیسہ دگنا کرنے کا طریقہ کیا ہے؟,urdu,90.2,93.1,819.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0113,Pakistan میں بچوں کی education کے لیے savings کیسے کریں؟,urdu,83.6,93.8,793.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0377,Pakistan میں Murabaha financing لیتے وقت کیا hidden charges ہو سکتے ہیں؟,urdu,93.1,93.3,839.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0972,Pakistan mein mutual fund mein invest kaise karein step by step?,roman_urdu,87.0,90.1,892.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0201,اپنے بچوں کی شادی کے لیے savings کیسے کریں؟,urdu,86.6,82.7,780.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1044,Pakistan mein bijli ka bill zyada aane par DISCO se kaise shikayat karein?,roman_urdu,96.5,99.9,878.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1478,Agar main apni income ka 10% invest karta hoon to long-term compounding ka impac,roman_urdu,102.2,107.3,1076.8,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0602,پاکستان میں ایکسیئر بینک کیا ہے؟,urdu,76.4,83.3,840.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0321,HBL Konnect اور JazzCash میں کیا فرق ہے؟,urdu,87.5,95.6,833.7,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1370,Agar mera electricity bill galat aaye to usay correct karwane ka legal process k,roman_urdu,96.4,95.8,1013.4,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0234,اگر میں salary سے زیادہ خرچ کر رہا ہوں تو کیسے پتہ چلے اور کیا کریں؟,urdu,97.0,96.6,906.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0115,Sukuk کیا ہے اور یہ bond سے کیسے مختلف ہے؟,urdu,84.7,90.1,835.0,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0009,JazzCash wallet سے بجلی کا بل کیسے بھریں؟,urdu,95.4,92.8,717.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1427,Meezan Bank ke halal investment funds mein risk aur return ka balance kaise eval,roman_urdu,101.2,93.9,986.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1471,Islamic finance ke mutabiq insurance ka halal alternative kya hai Pakistan mein?,roman_urdu,80.4,99.0,934.3,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0846,میں اپنے بچوں کے لیے اسلامی تعلیمی فنڈ کیسے بناوں؟,urdu,99.4,97.2,912.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0869,اسکاری بینک میں ڈیجیٹل اکاونٹ کے کیا فوائد ہیں؟,urdu,93.3,100.0,805.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0103,Meezan Bank ka Roshan Apna Ghar kya hai?,roman_urdu,81.8,84.3,958.9,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_0026,پاکستان میں inflation سے بچانے کے لیے پیسے کہاں رکھیں؟,urdu,92.2,95.4,1032.1,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0
+doc_1238,Agar main HBL aur Meezan Bank dono use karta hoon to funds ko efficiently kaise ,roman_urdu,102.0,103.4,1232.6,1,1,1,1.0,1,1,1,1.0,1,1,1,1.0

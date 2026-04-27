@@ -1,0 +1,92 @@
+{
+  "n_queries": 158,
+  "filter_applied_count": 10,
+  "filter_applied_rate": 0.0633,
+  "wrong_filter_count": 3,
+  "wrong_filter_rate": 0.3,
+  "overall": {
+    "no_filter": {
+      "acc@1": 1.0,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 1.0,
+      "n": 158
+    },
+    "with_filter": {
+      "acc@1": 0.981,
+      "acc@3": 0.981,
+      "acc@10": 0.981,
+      "mrr": 0.981,
+      "n": 158
+    },
+    "delta": {
+      "acc@1": -0.019,
+      "acc@3": -0.019,
+      "acc@10": -0.019,
+      "mrr": -0.019,
+      "latency_ms": -35.12
+    }
+  },
+  "by_language": {
+    "urdu": {
+      "no_filter": {
+        "acc@1": 1.0,
+        "acc@3": 1.0,
+        "acc@10": 1.0,
+        "mrr": 1.0,
+        "n": 105
+      },
+      "with_filter": {
+        "acc@1": 0.981,
+        "acc@3": 0.981,
+        "acc@10": 0.981,
+        "mrr": 0.981,
+        "n": 105
+      },
+      "delta": {
+        "acc@1": -0.019,
+        "mrr": -0.019
+      }
+    },
+    "roman_urdu": {
+      "no_filter": {
+        "acc@1": 1.0,
+        "acc@3": 1.0,
+        "acc@10": 1.0,
+        "mrr": 1.0,
+        "n": 53
+      },
+      "with_filter": {
+        "acc@1": 0.9811,
+        "acc@3": 0.9811,
+        "acc@10": 0.9811,
+        "mrr": 0.9811,
+        "n": 53
+      },
+      "delta": {
+        "acc@1": -0.0189,
+        "mrr": -0.0189
+      }
+    },
+    "english": {
+      "no_filter": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "with_filter": {
+        "acc@1": 0.0,
+        "acc@3": 0.0,
+        "acc@10": 0.0,
+        "mrr": 0.0,
+        "n": 0
+      },
+      "delta": {
+        "acc@1": 0.0,
+        "mrr": 0.0
+      }
+    }
+  }
+}
