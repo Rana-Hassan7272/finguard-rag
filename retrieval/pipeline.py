@@ -42,6 +42,7 @@ from cache.cache_stats import get_tracker
 from generation.generator import GenerationOutput, get_generator
 from query.expander import expand_query
 from query.router import route_query
+from reranking.reranker import CrossEncoderReranker
 from retrieval.bm25_retriever import BM25Retriever
 from retrieval.fusion import FusedResult, compute_fusion_stats, fuse
 from retrieval.language import LanguageResult, detect_and_get_weights
@@ -121,6 +122,7 @@ class RetrievalPipeline:
         self._filter_policy: Optional[FilterPolicy] = None
         self._dual_retriever: Optional[DualRetriever] = None
         self._generator = None
+        self._reranker = None
 
     # ------------------------------------------------------------------
     # Loading
@@ -155,6 +157,11 @@ class RetrievalPipeline:
         except Exception as e:
             self._generator = None
             log.warning(f"Generator unavailable, retrieval-only mode: {e}")
+        try:
+            self._reranker = CrossEncoderReranker()
+        except Exception as e:
+            self._reranker = None
+            log.warning(f"Reranker unavailable for answer() path, using retrieval order: {e}")
 
         self._loaded = True
         log.info(
@@ -409,8 +416,36 @@ class RetrievalPipeline:
         if self._generator is None:
             raise RuntimeError("Generator is not initialized. Check Phase 8/9 setup.")
 
-        reranked_docs = [r.metadata.get("doc", {}) for r in retrieval_output.docs]
-        reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
+        candidate_docs = [dict(r.metadata.get("doc", {})) for r in retrieval_output.docs]
+        for d in candidate_docs:
+            if not d.get("doc_text"):
+                d["doc_text"] = (
+                    d.get("retrieval_text")
+                    or d.get("chunk_text")
+                    or d.get("answer")
+                    or d.get("question")
+                    or ""
+                )
+
+        if self._reranker and candidate_docs:
+            try:
+                top_k = int(self.cfg.get("reranker", {}).get("output_k", 3))
+                rerank_results, top_score = self._reranker.rerank(query=query, docs=candidate_docs, top_k=top_k)
+                reranked_docs = []
+                reranker_scores = []
+                by_id = {d.get("doc_id"): d for d in candidate_docs}
+                for rr in rerank_results:
+                    doc = dict(by_id.get(rr.doc_id, {}))
+                    doc["reranker_score"] = rr.reranker_score
+                    reranked_docs.append(doc)
+                    reranker_scores.append(float(rr.reranker_score))
+            except Exception as e:
+                log.warning(f"Reranker failed in answer(); falling back to retrieval order: {e}")
+                reranked_docs = candidate_docs
+                reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
+        else:
+            reranked_docs = candidate_docs
+            reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
         query_expanded = retrieval_output.diagnostics.get("query_expanded", retrieval_output.query_normalized)
         query_embedding = self._vector_retriever.encode_query(query_expanded)
 
@@ -447,6 +482,12 @@ class RetrievalPipeline:
                 "prompt_template_used": generation_output.prompt.template_used if generation_output.prompt else None,
                 "prompt_context_chars": generation_output.prompt.context_chars if generation_output.prompt else 0,
                 "llm": llm_meta,
+                "reranker": {
+                    "enabled": self._reranker is not None,
+                    "input_docs": len(candidate_docs),
+                    "output_docs": len(reranked_docs),
+                    "top_score": reranker_scores[0] if reranker_scores else 0.0,
+                },
                 "stage_ms": generation_output.stage_ms,
                 "total_ms": generation_output.total_ms,
             },
