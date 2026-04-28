@@ -176,7 +176,7 @@ class Generator:
 
         # ── Stage 3: Build prompt ────────────────────────────────────────
         t = time.time()
-        built_prompt = build_prompt(query=query, docs=reranked_docs)
+        built_prompt = build_prompt(question=query, docs=reranked_docs)
         stage_ms["prompt_build_ms"] = round((time.time() - t) * 1000, 2)
 
         # ── Stage 4: LLM call ────────────────────────────────────────────
