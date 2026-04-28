@@ -38,6 +38,8 @@ import yaml
 
 from metadata.category_detector import CategoryDetector
 from metadata.filter_policy import FilterDecision, FilterPolicy
+from cache.cache_stats import get_tracker
+from generation.generator import GenerationOutput, get_generator
 from query.expander import expand_query
 from query.router import route_query
 from retrieval.bm25_retriever import BM25Retriever
@@ -77,6 +79,14 @@ class RetrievalOutput:
     total_ms: float
 
 
+@dataclass
+class PipelineAnswerOutput:
+    answer: str
+    retrieval: RetrievalOutput
+    generation: GenerationOutput
+    diagnostics: dict
+
+
 # ---------------------------------------------------------------------------
 # Pipeline
 # ---------------------------------------------------------------------------
@@ -110,6 +120,7 @@ class RetrievalPipeline:
         self._category_detector: Optional[CategoryDetector] = None
         self._filter_policy: Optional[FilterPolicy] = None
         self._dual_retriever: Optional[DualRetriever] = None
+        self._generator = None
 
     # ------------------------------------------------------------------
     # Loading
@@ -139,6 +150,11 @@ class RetrievalPipeline:
         except Exception as e:
             self._dual_retriever = None
             log.warning(f"DualRetriever unavailable, falling back to QA-only pipeline: {e}")
+        try:
+            self._generator = get_generator(cfg=self.cfg)
+        except Exception as e:
+            self._generator = None
+            log.warning(f"Generator unavailable, retrieval-only mode: {e}")
 
         self._loaded = True
         log.info(
@@ -382,6 +398,66 @@ class RetrievalPipeline:
             docs=mmr_results,
             diagnostics=diagnostics,
             total_ms=total_ms,
+        )
+
+    def answer(self, query: str) -> PipelineAnswerOutput:
+        """
+        End-to-end runtime flow: retrieval -> generation.
+        Returns answer text plus merged retrieval/generation diagnostics.
+        """
+        retrieval_output = self.run(query)
+        if self._generator is None:
+            raise RuntimeError("Generator is not initialized. Check Phase 8/9 setup.")
+
+        reranked_docs = [r.metadata.get("doc", {}) for r in retrieval_output.docs]
+        reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
+        query_expanded = retrieval_output.diagnostics.get("query_expanded", retrieval_output.query_normalized)
+        query_embedding = self._vector_retriever.encode_query(query_expanded)
+
+        generation_output = self._generator.generate(
+            query=query_expanded,
+            query_embedding=query_embedding,
+            reranked_docs=reranked_docs,
+            reranker_scores=reranker_scores,
+            language=retrieval_output.diagnostics.get("language_detected", "roman_urdu"),
+        )
+
+        llm_meta = None
+        if generation_output.llm_response is not None:
+            llm_meta = {
+                "success": generation_output.llm_response.success,
+                "provider": generation_output.llm_response.provider,
+                "model": generation_output.llm_response.model,
+                "latency_ms": generation_output.llm_response.latency_ms,
+                "prompt_tokens": generation_output.llm_response.prompt_tokens,
+                "completion_tokens": generation_output.llm_response.completion_tokens,
+                "retries_used": generation_output.llm_response.retries_used,
+                "error": generation_output.llm_response.error,
+            }
+
+        merged_diag = {
+            **retrieval_output.diagnostics,
+            "generation": {
+                "gate_passed": generation_output.gate.passed,
+                "gate_reason": generation_output.gate.reason,
+                "gate_top_score": generation_output.gate.top_score,
+                "cache_hit": generation_output.cache_hit,
+                "cache_level": generation_output.cache_level,
+                "retrieval_doc_ids_from_cache": generation_output.retrieval_doc_ids,
+                "prompt_template_used": generation_output.prompt.template_used if generation_output.prompt else None,
+                "prompt_context_chars": generation_output.prompt.context_chars if generation_output.prompt else 0,
+                "llm": llm_meta,
+                "stage_ms": generation_output.stage_ms,
+                "total_ms": generation_output.total_ms,
+            },
+            "cache_stats": get_tracker().snapshot(),
+        }
+
+        return PipelineAnswerOutput(
+            answer=generation_output.answer,
+            retrieval=retrieval_output,
+            generation=generation_output,
+            diagnostics=merged_diag,
         )
 
     # ------------------------------------------------------------------

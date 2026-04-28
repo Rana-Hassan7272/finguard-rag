@@ -26,3 +26,6 @@ rank-bm25
 faiss-cpu
 llama-index-core
 llama-index-readers-file
+groq
+openai
+python-dotenv

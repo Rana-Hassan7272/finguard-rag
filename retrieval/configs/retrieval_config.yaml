@@ -279,12 +279,30 @@ cache:
   # TTL in seconds (86400 = 24 hours)
   # Set null for no expiry (safe if corpus is static)
   ttl_seconds: 86400
+  max_entries: 2000
+  l1_threshold: 0.95
+  l2_threshold: 0.90
 
   # Redis connection (only used when backend=redis)
   redis:
     host: "localhost"
     port: 6379
     db: 0
+
+# -----------------------------------------------------------------------------
+# Generation (Phase 9)
+# -----------------------------------------------------------------------------
+generation:
+  primary_provider: "groq"
+  primary_model: "llama3-70b-8192"
+  fallback_enabled: true
+  fallback_provider: "openai"
+  fallback_model: "gpt-4o-mini"
+  max_tokens: 300
+  temperature: 0.1
+  timeout_seconds: 10
+  max_retries_primary: 3
+  max_retries_fallback: 2
 
 # -----------------------------------------------------------------------------
 # Artifact Output Paths
