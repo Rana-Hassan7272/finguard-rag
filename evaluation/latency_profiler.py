@@ -102,6 +102,8 @@ class LatencyProfiler:
         # Dual mode currently exposes aggregate retrieval time and source mix.
         dual_ms = float(stage.get("dual_retrieve_ms", 0.0))
         source_mix = rdiag.get("source_mix", {})
+        if not isinstance(source_mix, dict):
+            source_mix = {}
         qa_docs = source_mix.get("qa_docs", 0) or source_mix.get("qa", 0)
         pdf_docs = source_mix.get("pdf_docs", 0) or source_mix.get("pdf", 0)
         total_docs = max(qa_docs + pdf_docs, 1)
@@ -115,7 +117,7 @@ class LatencyProfiler:
         llm_meta = gdiag.get("llm", {}) if isinstance(gdiag, dict) else {}
         timings["llm_ms"] = float(gstage.get("llm_ms", llm_meta.get("latency_ms", 0.0)))
         timings["cache_store_ms"] = float(gstage.get("cache_store_ms", 0.0))
-        timings["cache_hit"] = bool(gdiag.get("cache_hit", False))
+        timings["cache_hit"] = bool(gdiag.get("cache_hit", False)) if isinstance(gdiag, dict) else False
         return timings
 
     def _init_components(self) -> None:
