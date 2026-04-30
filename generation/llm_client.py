@@ -26,7 +26,7 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-GROQ_DEFAULT_MODEL = "llama3-70b-8192"
+GROQ_DEFAULT_MODEL = "llama-3.3-70b-versatile"
 OPENAI_DEFAULT_MODEL = "gpt-4o-mini"
 
 HARD_TIMEOUT_SECONDS = 10.0

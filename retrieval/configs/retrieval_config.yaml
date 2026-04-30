@@ -294,7 +294,7 @@ cache:
 # -----------------------------------------------------------------------------
 generation:
   primary_provider: "groq"
-  primary_model: "llama3-70b-8192"
+  primary_model: "llama-3.3-70b-versatile"
   fallback_enabled: true
   fallback_provider: "openai"
   fallback_model: "gpt-4o-mini"
