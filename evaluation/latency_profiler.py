@@ -86,10 +86,15 @@ class LatencyProfiler:
     def profile_query(self, query_raw: str) -> dict:
         timings: dict[str, float] = {s: 0.0 for s in STAGES}
         out = self._pipeline.answer(query_raw)
-        rdiag = out.retrieval.diagnostics
-        gdiag = out.diagnostics.get("generation", {})
+        rdiag = out.retrieval.diagnostics if isinstance(out.retrieval.diagnostics, dict) else {}
+        root_diag = out.diagnostics if isinstance(out.diagnostics, dict) else {}
+        gdiag = root_diag.get("generation", {})
+        if not isinstance(gdiag, dict):
+            gdiag = {}
 
         stage = rdiag.get("stage_latency_ms", {})
+        if not isinstance(stage, dict):
+            stage = {}
         timings["normalize_ms"] = float(stage.get("normalize_route_expand_ms", 0.0))
         timings["lang_detect_ms"] = float(stage.get("language_ms", 0.0))
         timings["category_detect_ms"] = float(stage.get("category_detect_ms", 0.0))
@@ -110,14 +115,18 @@ class LatencyProfiler:
         timings["qa_vector_ms"] = round(dual_ms * (qa_docs / total_docs), 2)
         timings["pdf_vector_ms"] = round(dual_ms * (pdf_docs / total_docs), 2)
 
-        gstage = gdiag.get("stage_ms", {}) if isinstance(gdiag, dict) else {}
+        gstage = gdiag.get("stage_ms", {})
+        if not isinstance(gstage, dict):
+            gstage = {}
         timings["cache_lookup_ms"] = float(gstage.get("cache_lookup_ms", 0.0))
         timings["reranker_ms"] = float(gstage.get("reranker_ms", 0.0))
         timings["gate_ms"] = float(gstage.get("gate_ms", 0.0))
-        llm_meta = gdiag.get("llm", {}) if isinstance(gdiag, dict) else {}
+        llm_meta = gdiag.get("llm", {})
+        if not isinstance(llm_meta, dict):
+            llm_meta = {}
         timings["llm_ms"] = float(gstage.get("llm_ms", llm_meta.get("latency_ms", 0.0)))
         timings["cache_store_ms"] = float(gstage.get("cache_store_ms", 0.0))
-        timings["cache_hit"] = bool(gdiag.get("cache_hit", False)) if isinstance(gdiag, dict) else False
+        timings["cache_hit"] = bool(gdiag.get("cache_hit", False))
         return timings
 
     def _init_components(self) -> None:
