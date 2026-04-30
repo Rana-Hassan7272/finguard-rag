@@ -95,7 +95,9 @@ class LatencyProfiler:
         timings["category_detect_ms"] = float(stage.get("category_detect_ms", 0.0))
         timings["rrf_fusion_ms"] = float(stage.get("fusion_ms", 0.0))
         timings["mmr_ms"] = float(stage.get("mmr_ms", 0.0))
-        timings["total_ms"] = float(rdiag.get("total_ms", out.retrieval.total_ms))
+        # End-to-end total must include retrieval + generation.
+        # Previous code only used retrieval total, which understated latency.
+        timings["total_ms"] = float(out.retrieval.total_ms) + float(out.generation.total_ms)
 
         # Dual mode currently exposes aggregate retrieval time and source mix.
         dual_ms = float(stage.get("dual_retrieve_ms", 0.0))
@@ -110,7 +112,8 @@ class LatencyProfiler:
         timings["cache_lookup_ms"] = float(gstage.get("cache_lookup_ms", 0.0))
         timings["reranker_ms"] = float(gstage.get("reranker_ms", 0.0))
         timings["gate_ms"] = float(gstage.get("gate_ms", 0.0))
-        timings["llm_ms"] = float(gstage.get("llm_ms", 0.0))
+        llm_meta = gdiag.get("llm", {}) if isinstance(gdiag, dict) else {}
+        timings["llm_ms"] = float(gstage.get("llm_ms", llm_meta.get("latency_ms", 0.0)))
         timings["cache_store_ms"] = float(gstage.get("cache_store_ms", 0.0))
         timings["cache_hit"] = bool(gdiag.get("cache_hit", False))
         return timings
