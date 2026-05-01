@@ -334,6 +334,8 @@ HF_ARTIFACTS_DATASET=hassan7272/finguard-artifacts
 - Source files: `data/documents/` (not in git — add your own or download from the Space dataset)
 - Built PDF corpus: `retrieval/artifacts/pdf_corpus.jsonl`
 
+**LlamaIndex for PDFs — yes.** It is used **only at build time** in `ingestion/pdf_chunker.py`: `SimpleDirectoryReader` loads PDFs, `SentenceSplitter` chunks them; that output feeds `ingestion/pdf_corpus_builder.py`. **Runtime retrieval** is custom (FAISS + BM25 + fusion + rerank); LlamaIndex query engines are **not** used.
+
 ### Pre-built Indexes
 All FAISS indexes, BM25 token corpora, and manifests live under `retrieval/artifacts/` and are git-ignored due to size. They are stored in the private HuggingFace dataset [`hassan7272/finguard-artifacts`](https://huggingface.co/datasets/hassan7272/finguard-artifacts) and downloaded automatically during Space startup.
 
