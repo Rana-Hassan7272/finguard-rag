@@ -305,6 +305,16 @@ generation:
   max_retries_fallback: 2
 
 # -----------------------------------------------------------------------------
+# Deployment (HF Spaces / production)
+# -----------------------------------------------------------------------------
+# When FAISS indexes are not in Git, set Space secret HF_ARTIFACTS_DATASET to a
+# Hugging Face *Dataset* repo whose files mirror paths under retrieval/artifacts/.
+# Env overrides YAML below.
+deployment:
+  hf_artifacts_dataset: null
+  # artifacts_revision: null
+
+# -----------------------------------------------------------------------------
 # Artifact Output Paths
 # -----------------------------------------------------------------------------
 artifacts:

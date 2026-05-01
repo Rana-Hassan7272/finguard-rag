@@ -16,9 +16,26 @@ from typing import Optional
 
 import yaml
 
-# Repo root (parent of app/). Required when running `python app/app.py` — Python
-# puts `app/` on sys.path, not the project root, so `retrieval` would not import.
-_ROOT = Path(__file__).resolve().parents[1]
+
+def _repo_root() -> Path:
+    """
+    Directory that contains retrieval/, generation/, etc.
+
+    - HF Spaces: app.py lives at repo root next to retrieval/ → use parent of __file__.
+    - Local dev: app/app/app.py → repo root is one level up from app/.
+    """
+    here = Path(__file__).resolve().parent
+    cfg = Path("retrieval") / "configs" / "retrieval_config.yaml"
+    if (here / cfg).exists():
+        return here
+    parent = here.parent
+    if (parent / cfg).exists():
+        return parent
+    # Spaces: never use parents[1] blindly — it can be filesystem "/" if app.py is at /app/app.py.
+    return here
+
+
+_ROOT = _repo_root()
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
@@ -54,8 +71,31 @@ def _load_config() -> dict:
 def startup() -> None:
     global _cfg, _pipeline, _reranker, _generator, _obs_logger, _ready, _startup_error
     try:
+        # Relative paths like Path("retrieval/...") expect cwd == repo root on Spaces.
+        os.chdir(_ROOT)
+
+        # Local .env (Space injects secrets as env vars — no file needed there).
+        try:
+            from dotenv import load_dotenv
+
+            load_dotenv(_ROOT / ".env")
+        except Exception:
+            pass
+
+        # HF Spaces inject secrets as env vars — verify names match Space Settings (case-sensitive).
+        log.info(
+            "Env: GROQ_API_KEY=%s | HF_TOKEN=%s | HF_ARTIFACTS_DATASET=%s",
+            "set" if os.environ.get("GROQ_API_KEY") else "MISSING",
+            "set" if os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN") else "MISSING",
+            os.environ.get("HF_ARTIFACTS_DATASET") or "(not set)",
+        )
+
         log.info("FinGuard startup: loading configuration...")
         _cfg = _load_config()
+
+        from deployment.ensure_hf_artifacts import ensure_hf_artifacts
+
+        ensure_hf_artifacts(_ROOT, _cfg, log)
 
         log.info("Loading retrieval pipeline...")
         from retrieval.pipeline import RetrievalPipeline

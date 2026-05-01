@@ -184,11 +184,35 @@ class Generator:
         llm_response = self.llm.generate(built_prompt.prompt)
         stage_ms["llm_ms"] = round((time.time() - t) * 1000, 2)
 
-        if not llm_response.success or not llm_response.text:
+        if not llm_response.success or not llm_response.text.strip():
+            extractive = ""
+            for d in reranked_docs:
+                a = (d.get("answer") or "").strip()
+                if len(a) >= 60:
+                    extractive = a
+                    break
+            if extractive:
+                log.warning(
+                    "LLM failed (%s); serving top QA answer as extractive fallback | query='%s'",
+                    llm_response.error or "empty text",
+                    query[:50],
+                )
+                return GenerationOutput(
+                    answer=extractive,
+                    gate=gate,
+                    cache_level=None,
+                    cache_hit=False,
+                    prompt=built_prompt,
+                    llm_response=llm_response,
+                    language=language,
+                    retrieval_doc_ids=[d.get("doc_id", "") for d in reranked_docs[:5]],
+                    total_ms=round((time.time() - t_total) * 1000, 2),
+                    stage_ms=stage_ms,
+                )
             fallback = build_fallback_message(language)
             log.warning(
                 f"LLM failed: {llm_response.error} | "
-                f"returning fallback for query='{query[:50]}'"
+                f"returning generic fallback for query='{query[:50]}'"
             )
             return GenerationOutput(
                 answer=fallback,

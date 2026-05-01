@@ -169,8 +169,8 @@ def build_prompt(
 
 def build_fallback_message(language: str = "roman_urdu") -> str:
     """
-    Return the confidence-gate fallback message in the appropriate language.
-    Called when reranker score is below threshold — LLM is never invoked.
+    Return the generic fallback message in the appropriate language.
+    Used when the confidence gate blocks, or when the LLM fails and no extractive QA answer exists.
     """
     messages = {
         "urdu": "معذرت، مجھے اس سوال کا جواب دینے کے لیے کافی معلومات نہیں ملیں۔ براہ کرم سوال کو دوبارہ واضح طریقے سے پوچھیں۔",

@@ -29,3 +29,5 @@ llama-index-readers-file
 groq
 openai
 python-dotenv
+huggingface_hub>=0.26.0
+gradio>=5.0.0
