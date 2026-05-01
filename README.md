@@ -457,18 +457,18 @@ Hardware: **CPU Basic** works; GPU tier speeds up reranker/embedding if you upgr
 If you use FinGuard, the embedding model, or the dataset in your work:
 
 ```bibtex
-@misc{finguard2025,
+@misc{finguard2026,
   author    = {Hassan},
   title     = {FinGuard RAG: Production Multilingual RAG for Pakistani Finance},
-  year      = {2025},
+  year      = {2026},
   publisher = {HuggingFace},
   url       = {https://huggingface.co/spaces/hassan7272/finguard-rag}
 }
 
-@misc{urdufinanceembeddings2025,
+@misc{urdufinanceembeddings2026,
   author    = {Hassan},
   title     = {urdu-finance-embeddings: Fine-tuned Multilingual Embeddings for Pakistani Finance},
-  year      = {2025},
+  year      = {2026},
   publisher = {HuggingFace},
   url       = {https://huggingface.co/hassan7272/urdu-finance-embeddings}
 }
