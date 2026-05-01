@@ -1,0 +1,159 @@
+query,language,true_category,detected_category,det_confidence,source_type,gate_passed,top_reranker_score,high_confidence,grounding,qa_docs_in_top3,pdf_docs_in_top3
+Pakistan میں Easypaisa savings account پر منافع ملتا ہے؟,urdu,digital_finance,digital_finance,0.5,qa,1,0.9985,1,qa,3,0
+IBAN number کیا ہوتی ہے اور یہ کہاں سے ملتی ہے؟,urdu,banking,banking,0.45,qa,1,0.9998,1,qa,3,0
+SBP کی policy rate کیا ہے اور یہ عام آدمی کو کیسے متاثر کرتی ہے؟,urdu,financial_education,financial_education,0.45,qa,1,0.9903,1,qa,3,0
+Pakistan mein kisi ko hadiya ya gift mein paise dene par Zakat hoti hai?,roman_urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9995,1,qa,3,0
+HBL aur UBL mein se kaun sا bank zyada reliable hai Pakistan mein?,roman_urdu,banking,banking,0.7,qa,1,0.9969,1,qa,3,0
+پاکستان میں ایف بی آر کو ادائیگی میں تاخیر پر کتنا جرمانہ لگتا ہے؟,urdu,financial_education,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Pakistan میں زمین کی خرید و فروخت میں دھوکے سے کیسے بچیں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9976,1,qa,3,0
+پاکستان میں شیئر بازار میں نقصان سے کیسے بچیں؟,urdu,investment,unknown,0.0,qa,1,0.7954,1,qa,3,0
+Pakistan میں SBP کی Financial Inclusion Strategy 2023–2027 کیا ہے؟,urdu,financial_education,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Pakistan میں NBP کا National Savings Digital Portal کیا ہے؟,urdu,investment,unknown,0.0,qa,1,0.9995,1,qa,3,0
+پاکستان میں واٹر بل کیسے آن لائن ادا کریں؟,urdu,bills_payments,unknown,0.0,qa,1,0.9935,1,qa,3,0
+Pakistan میں digital wallet کا پیسہ کیا بینک account سے محفوظ ہے؟,urdu,digital_finance,banking,0.45,qa,1,0.9996,1,qa,3,0
+پاکستان میں گھر کو کرایہ پر دینے کے لیے اسلامی اجارہ کا اصول کیسے استعمال کریں؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Pakistan mein credit score ka concept kitna important hai aur kaise improve kiya,roman_urdu,loans_credit,loans_credit,0.45,qa,1,0.9993,1,qa,3,0
+اگر میرا salary account HBL میں ہے تو مجھے personal finance کے لیے کیا آپشن ملتے,urdu,loans_credit,banking,0.8,qa,1,0.9999,1,qa,3,0
+پاکستان میں ڈیجیٹل بینکنگ لائسنس کیا ہے اور کون سے نئے ادارے حاصل کر رہے ہیں؟,urdu,banking,unknown,0.0,qa,1,0.9952,1,qa,3,0
+گھر بیٹھے کمانے کے اسلامی طریقے کون سے ہیں؟,urdu,financial_education,unknown,0.0,qa,1,0.9939,1,qa,3,0
+Pakistan میں کیا JazzCash سے car insurance premium pay کی جا سکتی ہے؟,urdu,bills_payments,digital_finance,0.5,qa,1,0.9997,1,qa,3,0
+Mudarabah کیا ہے اور یہ بینکنگ میں کیسے استعمال ہوتی ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Pakistan میں Zakat ادا کرنے کے بعد کیا receipt ملتی ہے؟,urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9994,1,qa,3,0
+Pakistan mein kisi ne mujhe loan diya aur wapas nahi deta — kya court case kar s,roman_urdu,loans_credit,loans_credit,0.5,qa,1,0.9997,1,qa,3,0
+Zakat mein sona aur bank balance dono par hisab kaise lagayein?,roman_urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9992,1,qa,3,0
+UBL account mein monthly maintenance charges kaise avoid karein?,roman_urdu,banking,banking,0.8,qa,1,0.9895,1,qa,3,0
+پاکستان میں سونے کی سرمایہ کاری کے کیا طریقے ہیں؟,urdu,investment,unknown,0.0,qa,1,1.0,1,qa,3,0
+پاکستان میں بینک اکاونٹ نمبر اور آئی بی اے این میں کیا فرق ہے؟,urdu,banking,unknown,0.0,qa,1,0.9991,1,qa,3,0
+پاکستان میں یوٹیلٹی اسٹور سے خریداری میں کیا مالی فائدہ ہے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9983,1,qa,3,0
+پاکستان میں کاروباری حساب کتاب کے لیے ڈبل انٹری بک کیپنگ کیوں ضروری ہے؟,urdu,financial_education,unknown,0.0,qa,1,1.0,1,qa,3,0
+Agar mera bank account NBP mein inactive ho jaye to usay dobara kaise activate k,roman_urdu,banking,banking,0.45,qa,1,0.9997,1,qa,3,0
+پاکستان میں ڈیفنس سیونگز سرٹیفکیٹ کیا ہے؟,urdu,investment,unknown,0.0,qa,1,0.995,1,qa,3,0
+UBL credit card ka balance full pay na karne par kya charges lagte hain aur hala,roman_urdu,loans_credit,loans_credit,0.45,qa,1,0.9997,1,qa,3,0
+Islamic finance mein Ijarah kya hota hai? Simple language mein samjhao.,roman_urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9996,1,qa,3,0
+Pakistan Stock Exchange mein halal stocks identify karne ka reliable tareeqa kya,roman_urdu,investment,investment,0.45,qa,1,0.9995,1,qa,3,0
+Pakistan mein zakat ki raqam kisi ko poori ya baat baat mein deni chahiye?,roman_urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9995,1,qa,3,0
+"Agar main har mahine 20,00 save karun to 1 saal mein kitni saving ho sakti hai?",roman_urdu,personal_finance,personal_finance,0.4,qa,1,0.9102,1,qa,3,0
+Pakistan میں Roshan Digital Account سے NPC خریدنے پر منافع کب ملتا ہے؟,urdu,investment,banking,0.45,qa,1,0.9995,1,qa,3,0
+Pakistan میں Benazir Income Support Programm (BISP) کے لیے registration کیسے ہوت,urdu,personal_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Pakistan mein agar bank closed ho jaye to kya deposits safe hain?,roman_urdu,banking,unknown,0.0,qa,1,0.9988,1,qa,3,0
+Pakistan mein online fraud aur phishing se apne accounts ko kaise protect karein,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Pakistan mein electricity bill installment plan kaise avail karein aur kya condi,roman_urdu,bills_payments,bills_payments,0.95,qa,1,0.9968,1,qa,3,0
+Agar mera utility bill zyada aa raha hai to usay control karne ke liye kya steps,roman_urdu,bills_payments,bills_payments,0.85,qa,1,0.9996,1,qa,3,0
+کیا Pakistan میں government jobs کو private jobs سے زیادہ financial security ملت,urdu,financial_education,unknown,0.0,qa,1,0.9999,1,qa,3,0
+پاکستان میں کیا ریٹائرمنٹ کے بعد بینک قرضہ مل سکتا ہے؟,urdu,loans_credit,unknown,0.0,qa,1,0.9906,1,qa,3,0
+ایچ بی ایل موبائل بینکنگ پر ٹرانزیکشن لمٹ کتنی ہے؟,urdu,banking,unknown,0.0,qa,1,0.9996,1,qa,3,0
+Pakistan میں Zakat کا حساب cryptocurrency پر کیسے لگایا جائے؟,urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9273,1,qa,3,0
+"Meri salary 120,00 PKR hai, main har mahine kitna save karun taake 2 saal mein b",roman_urdu,personal_finance,unknown,0.0,qa,1,0.9857,1,qa,3,0
+Pakistan میں inflation کے دوران business کیسے survive کرے؟,urdu,financial_education,financial_education,0.45,qa,1,0.9929,1,qa,3,0
+پاکستان میں اپنی ملازمت کی ترقی کے ساتھ مالی اہداف کیسے بڑھائیں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Agar main apni credit history improve karna chahta hoon to kya steps lene chahiy,roman_urdu,loans_credit,loans_credit,0.45,qa,1,0.9998,1,qa,3,0
+Pension کا پیسہ کیسے invest کریں retirement میں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9971,1,qa,3,0
+Agar meri company mujhe bonus nahi deti to kya koi haq hai?,roman_urdu,financial_education,unknown,0.0,qa,1,0.9993,1,qa,3,0
+کسی کو پیسے ادھار دینے سے پہلے کیا سوچنا چاہیے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9984,1,qa,3,0
+HBL کی Konnect app کیا ہے؟,urdu,digital_finance,banking,0.35,qa,1,0.9999,1,qa,3,0
+Pakistan میں اگر میں نے غلطی سے Zakat کم دی ہو تو کیا کروں؟,urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9946,1,qa,3,0
+پاکستان میں ویلتھ مینجمنٹ سروس کیا ہے؟,urdu,banking,unknown,0.0,qa,1,0.9996,1,qa,3,0
+پاکستان میں سی ڈی اے منظور شدہ پلاٹ خریدنا کیوں ضروری ہے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+پاکستان میں اسٹوڈنٹ لون کے لیے گریجویشن کے بعد کتنا وقت ملتا ہے؟,urdu,loans_credit,unknown,0.0,qa,1,0.9984,1,qa,3,0
+Pakistan mein retirement planning ke liye kaun se financial options best hain?,roman_urdu,personal_finance,unknown,0.0,qa,1,0.9988,1,qa,3,0
+Pakistan mein bache ki paidaish par savings kaise shuru karein?,roman_urdu,personal_finance,unknown,0.0,qa,1,0.9946,1,qa,3,0
+Pakistan میں کیا گھر کرایے پر لینے کے لیے Islamic finance مل سکتی ہے؟,urdu,loans_credit,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Pakistan mein kaun si bank account ki type sabse zyada faydemand hai?,roman_urdu,banking,banking,0.45,qa,1,0.9984,1,qa,3,0
+Pakistan میں SBP کا Banking Mohtasib کیا کرتا ہے؟,urdu,financial_education,unknown,0.0,qa,1,0.999,1,qa,3,0
+Agar main freelance income earn karta hoon to tax kaise file karun Pakistan mein,roman_urdu,financial_education,financial_education,0.4,qa,1,0.9994,1,qa,3,0
+Pakistan mein apni monthly expenses tracking ke liye kaun si digital tools best ,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9991,1,qa,3,0
+Online banking میں beneficiary add کیسے کریں؟,urdu,banking,unknown,0.0,qa,1,1.0,1,qa,3,0
+پاکستان میں کاروباری ناکامی کے بعد دوبارہ شروع کرنے کے لیے کیا اقدامات کریں؟,urdu,financial_education,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Pakistan میں HBL Mobile app سے کتنی رقم transfer کر سکتے ہیں؟,urdu,digital_finance,banking,0.35,qa,1,0.9998,1,qa,3,0
+پاکستان میں کرپشن کی وجہ سے کاروبار کو مالی نقصان ہو تو کیا کریں؟,urdu,financial_education,unknown,0.0,qa,1,0.9988,1,qa,3,0
+Agar main short-term loan le kar invest karun to kya yeh financially sahi strate,roman_urdu,loans_credit,loans_credit,0.5,qa,1,0.9999,1,qa,3,0
+پاکستان میں سرمایہ کاری پر منافع کو ٹیکس کے بعد کیسے حساب کریں؟,urdu,investment,unknown,0.0,qa,1,0.9999,1,qa,3,0
+کیا Easypaisa account سے loan لیا جا سکتا ہے؟,urdu,loans_credit,loans_credit,0.5,qa,1,0.9998,1,qa,3,0
+پاکستان میں خاندانی کاروبار کی مالی خامیاں کیا ہیں اور انہیں کیسے دور کریں؟,urdu,financial_education,unknown,0.0,qa,1,0.9998,1,qa,3,0
+پاکستان میں این بی پی کا گرین بینکنگ پروگرام کیا ہے؟,urdu,banking,unknown,0.0,qa,1,0.9993,1,qa,3,0
+اگر میں Pakistan میں کسی کو Raast سے پیسے بھیجوں تو کیا وہ فوری پہنچتے ہیں؟,urdu,digital_finance,digital_finance,0.45,qa,1,0.9999,1,qa,3,0
+شادی کے اخراجات کے لیے اسلامی طریقے سے قرض لینا جائز ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9996,1,qa,3,0
+کیا non-Muslim Pakistan میں Islamic banking استعمال کر سکتے ہیں؟,urdu,banking,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Pakistan میں Allied Bank سے personal loan کیسے لیں؟,urdu,loans_credit,loans_credit,0.5,qa,1,0.998,1,qa,3,0
+Pakistan mein ek naya dukandaar ki kaunsi common financial mistakes hoti hain?,roman_urdu,financial_education,unknown,0.0,qa,1,1.0,1,qa,3,0
+پاکستان میں کیا خواتین کا الگ بینک اکاونٹ ہونا ضروری ہے؟,urdu,banking,unknown,0.0,qa,1,0.9995,1,qa,3,0
+پاکستان میں اگر دوست یا رشتہ دار قرضہ واپس نہ کرے تو کیا کریں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+Apne bachon ke naam par investment kaise shuru karein?,roman_urdu,personal_finance,investment,0.45,qa,1,0.9988,1,qa,3,0
+سولر پینل لگانے کے لیے قرض کہاں سے ملے گا؟,urdu,loans_credit,unknown,0.0,qa,1,0.9996,1,qa,3,0
+Pakistan mein mutual fund mein invest karne ke liye minimum raqam kitni hai?,roman_urdu,investment,investment,0.5,qa,1,0.9998,1,qa,3,0
+پاکستان میں ایزی پیسہ اور جیز کیش کے علاوہ کون سے موبائل والٹ ہیں؟,urdu,digital_finance,unknown,0.0,qa,1,1.0,1,qa,3,0
+پاکستان میں اگر کمپنی بند ہو جائے تو ملازمین کو تنخواہ کیسے ملے گی؟,urdu,financial_education,unknown,0.0,qa,1,0.9996,1,qa,3,0
+پاکستان میں ایزی پیسہ کی مرچنٹ فیس کتنی ہے؟,urdu,digital_finance,unknown,0.0,qa,1,0.9988,1,qa,3,0
+Pakistan mein Bahbood Certificate par tax lagta hai ya nahi?,roman_urdu,investment,financial_education,0.4,qa,1,0.9998,1,qa,3,0
+Nayapay se paisa kaise bhejna hai kisi ko?,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9987,1,qa,3,0
+Pakistan میں tax deductible allowances کون سی ہیں؟,urdu,financial_education,financial_education,0.4,qa,1,0.9993,1,qa,3,0
+پاکستان میں کیا اسلامی بینک قرضہ نہ دینے کی صورت میں اثاثے ضبط کر سکتا ہے؟,urdu,loans_credit,unknown,0.0,qa,1,0.9998,1,qa,3,0
+Pakistan mein online business ke liye payment gateway choose karte waqt kya fact,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Roshan Digital Account کیا ہے اور overseas Pakistanis اسے کیسے کھولیں؟,urdu,banking,banking,0.45,qa,1,0.9998,1,qa,3,0
+Pakistan میں کیا Halal stocks میں leverage (margin trading) جائز ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9954,1,qa,3,0
+پاکستان میں تجارتی قرضے اور ذاتی قرضے میں کیا بنیادی فرق ہے؟,urdu,loans_credit,unknown,0.0,qa,1,1.0,1,qa,3,0
+پاکستان میں کیا کوئی شخص ایک سے زیادہ اسلامی بینک میں اکاونٹ رکھ سکتا ہے؟,urdu,banking,unknown,0.0,qa,1,0.8232,1,qa,3,0
+Pakistan mein ATM se kitni baar paisa nikal sakte hain ek din mein?,roman_urdu,banking,unknown,0.0,qa,1,0.9988,1,qa,3,0
+Pakistan mein credit score ka concept kya hai aur loan lene par kaise affect kar,roman_urdu,financial_education,loans_credit,0.95,qa,1,0.9997,1,qa,3,0
+Pakistan میں Islamic banking میں 'declared rate' کیا ہوتا ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9993,1,qa,3,0
+Financial goals set karte waqt Pakistan mein realistic approach kya honi chahiye,roman_urdu,financial_education,unknown,0.0,qa,1,0.9755,1,qa,3,0
+Pakistan میں کون سے halal food stocks ہیں PSX پر؟,urdu,investment,investment,0.45,qa,1,0.9997,1,qa,3,0
+Raast سے بڑی رقم جیسے 10 لاکھ روپے بھیجنے کی کیا حدود ہیں؟,urdu,digital_finance,digital_finance,0.45,qa,1,0.9993,1,qa,3,0
+Pakistan میں Takaful policy surrender کرنے پر کیا ملتا ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9995,1,qa,3,0
+پاکستان میں گھر کی تزئین و آرائش کا بجٹ کیسے بنائیں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+پاکستان میں کمزور آمدنی کے وقت گھر کا کرایہ ادا کرنے کی حکمت عملی کیا ہے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9958,1,qa,3,0
+پاکستان میں جائیداد کی خریداری میں ہاوسنگ سوسائٹی اور ڈی ایچ اے میں کیا فرق ہے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9944,1,qa,3,0
+پاکستان میں اگر میرے کاروبار کو نقصان ہو تو زکوٰۃ دینی ہوگی؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9998,1,qa,3,0
+پاکستان میں اوور ڈرافٹ سے بچنے کے طریقے کیا ہیں؟,urdu,banking,unknown,0.0,qa,1,0.9993,1,qa,3,0
+Pakistan میں health emergency کے لیے financial planning کیسے کریں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9991,1,qa,3,0
+Pakistan میں غریب مسلمان کو Zakat نہ لینے کی صورت میں کیا کریں؟,urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9903,1,qa,3,0
+پاکستان میں سود کے بغیر گھر خریدنا ممکن ہے تو کیا مجھے روایتی قرضہ نہیں لینا چاہ,urdu,islamic_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+Pakistan میں gas connection لینے کا طریقہ کیا ہے؟,urdu,bills_payments,unknown,0.0,qa,1,0.9962,1,qa,3,0
+Pakistan mein digital fraud jaise fake calls ya SMS se bachne ke liye kya strate,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9979,1,qa,3,0
+Bijli ka bill zyada aane par kaise objection karein?,roman_urdu,bills_payments,bills_payments,0.45,qa,1,0.9869,1,qa,3,0
+Pakistan mein import/export business ke liye initial financial setup kaise plan ,roman_urdu,financial_education,unknown,0.0,qa,1,0.9963,1,qa,3,0
+پاکستان میں کیا کوئی بھی شخص فری لانسنگ شروع کر سکتا ہے؟,urdu,financial_education,unknown,0.0,qa,1,0.9858,1,qa,3,0
+Inflation کے دور میں گھر کا بجٹ کیسے manage کریں؟,urdu,personal_finance,financial_education,0.45,qa,1,0.9993,1,qa,3,0
+Rent agreement بنواتے وقت مالی لحاظ سے کیا باتیں دھیان میں رکھیں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9991,1,qa,3,0
+Pakistan میں کیا Easypaisa سے gold خریدا جا سکتا ہے؟,urdu,investment,digital_finance,0.5,qa,1,0.9997,1,qa,3,0
+Ijara Sukuk اور Government bonds میں کیا فرق ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9995,1,qa,3,0
+Pakistan mein personal loan refinance karne ka faida aur risk kya hai?,roman_urdu,loans_credit,loans_credit,0.5,qa,1,0.9978,1,qa,3,0
+کیا Pakistan میں بچوں کے نام property رکھنا ممکن ہے؟,urdu,personal_finance,unknown,0.0,qa,1,0.9977,1,qa,3,0
+Pakistan mein tax filer aur non-filer mein kya farq padta hai practically?,roman_urdu,financial_education,financial_education,0.4,qa,1,0.9997,1,qa,3,0
+پاکستان میں اگر کوئی شخص tax نہ دے تو FBR کیا کارروائی کر سکتا ہے؟,urdu,financial_education,financial_education,0.85,qa,1,0.9995,1,qa,3,0
+Debt trap سے کیسے بچیں؟,urdu,loans_credit,unknown,0.0,qa,1,0.9995,1,qa,3,0
+Mutual funds اور bank savings account میں کیا فرق ہے؟,urdu,investment,investment,0.5,qa,1,0.9999,1,qa,3,0
+Pakistan mein Islamic insurance (Takaful) aur conventional insurance mein kya ma,roman_urdu,islamic_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+"Agar mere paas 10 tola sona, 3 lakh cash aur business stock hai to zakat ka tota",roman_urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9996,1,qa,3,0
+Pakistan میں NBP Tijara Islamic finance کیا ہے؟,urdu,banking,unknown,0.0,qa,1,0.999,1,qa,3,0
+پاکستان میں کمپنی کا سالانہ ریٹرن ایس ای سی پی میں کیسے جمع کریں؟,urdu,financial_education,unknown,0.0,qa,1,1.0,1,qa,3,0
+Pakistan mein e-commerce business ke liye konsa payment gateway best hai?,roman_urdu,digital_finance,unknown,0.0,qa,1,0.9999,1,qa,3,0
+پاکستان میں سونے کی قیمت کا تعین کیسے ہوتا ہے؟,urdu,investment,unknown,0.0,qa,1,0.9999,1,qa,3,0
+پاکستان میں بینک سے سرٹیفائیڈ چیک کیسے حاصل کریں؟,urdu,banking,unknown,0.0,qa,1,0.999,1,qa,3,0
+Pakistan میں house rent allowance (HRA) پر tax کیسے لگتا ہے؟,urdu,financial_education,financial_education,0.4,qa,1,0.9992,1,qa,3,0
+Pakistan mein gold invest karte waqt physical gold aur digital gold mein kya dif,roman_urdu,investment,unknown,0.0,qa,1,0.9997,1,qa,3,0
+"میری تنخواہ 80,00 روپے ہے اور میرے پاس 2 تولہ سونا بھی ہے — زکوٰۃ کیسے نکالوں؟",urdu,islamic_finance,unknown,0.0,qa,1,0.9201,1,qa,3,0
+پاکستان میں ماہانہ تنخواہ بڑھنے پر مالی اہداف کیسے بدلیں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9998,1,qa,3,0
+Pakistan mein rent income ko properly manage aur tax declare kaise karein?,roman_urdu,financial_education,financial_education,0.4,qa,1,0.9901,1,qa,3,0
+Pakistan میں کاروبار کے لیے Musharakah finance کیسے apply کریں؟,urdu,loans_credit,islamic_finance,0.5,qa,1,0.9994,1,qa,3,0
+"Meri salary 100,00 hai aur har mahine bill zyada aa jate hain, saving kaise karu",roman_urdu,personal_finance,bills_payments,0.45,qa,1,0.983,1,qa,3,0
+پاکستان میں حلال طریقے سے پیسہ دگنا کرنے کا طریقہ کیا ہے؟,urdu,investment,unknown,0.0,qa,1,0.9903,1,qa,3,0
+Pakistan میں بچوں کی education کے لیے savings کیسے کریں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9995,1,qa,3,0
+Pakistan میں Murabaha financing لیتے وقت کیا hidden charges ہو سکتے ہیں؟,urdu,islamic_finance,islamic_finance,0.5,qa,1,0.9987,1,qa,3,0
+Pakistan mein mutual fund mein invest kaise karein step by step?,roman_urdu,investment,investment,0.5,qa,1,0.9996,1,qa,3,0
+اپنے بچوں کی شادی کے لیے savings کیسے کریں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9944,1,qa,3,0
+Pakistan mein bijli ka bill zyada aane par DISCO se kaise shikayat karein?,roman_urdu,bills_payments,bills_payments,0.45,qa,1,0.9998,1,qa,3,0
+Agar main apni income ka 10% invest karta hoon to long-term compounding ka impac,roman_urdu,investment,unknown,0.0,qa,1,0.9996,1,qa,3,0
+پاکستان میں ایکسیئر بینک کیا ہے؟,urdu,banking,unknown,0.0,qa,1,0.9896,1,qa,3,0
+HBL Konnect اور JazzCash میں کیا فرق ہے؟,urdu,digital_finance,digital_finance,0.5,qa,1,0.9999,1,qa,3,0
+Agar mera electricity bill galat aaye to usay correct karwane ka legal process k,roman_urdu,bills_payments,bills_payments,0.95,qa,1,0.98,1,qa,3,0
+اگر میں salary سے زیادہ خرچ کر رہا ہوں تو کیسے پتہ چلے اور کیا کریں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9998,1,qa,3,0
+Sukuk کیا ہے اور یہ bond سے کیسے مختلف ہے؟,urdu,islamic_finance,unknown,0.0,qa,1,0.9998,1,qa,3,0
+JazzCash wallet سے بجلی کا بل کیسے بھریں؟,urdu,bills_payments,digital_finance,0.9,qa,1,0.9993,1,qa,3,0
+Meezan Bank ke halal investment funds mein risk aur return ka balance kaise eval,roman_urdu,investment,investment,0.45,qa,1,0.9998,1,qa,3,0
+Islamic finance ke mutabiq insurance ka halal alternative kya hai Pakistan mein?,roman_urdu,islamic_finance,unknown,0.0,qa,1,0.9953,1,qa,3,0
+میں اپنے بچوں کے لیے اسلامی تعلیمی فنڈ کیسے بناوں؟,urdu,personal_finance,unknown,0.0,qa,1,0.9997,1,qa,3,0
+اسکاری بینک میں ڈیجیٹل اکاونٹ کے کیا فوائد ہیں؟,urdu,banking,unknown,0.0,qa,1,0.9959,1,qa,3,0
+Meezan Bank ka Roshan Apna Ghar kya hai?,roman_urdu,islamic_finance,banking,0.35,qa,1,0.9994,1,qa,3,0
+پاکستان میں inflation سے بچانے کے لیے پیسے کہاں رکھیں؟,urdu,investment,financial_education,0.45,qa,1,0.9943,1,qa,3,0
+Agar main HBL aur Meezan Bank dono use karta hoon to funds ko efficiently kaise ,roman_urdu,banking,banking,0.7,qa,1,0.9997,1,qa,3,0

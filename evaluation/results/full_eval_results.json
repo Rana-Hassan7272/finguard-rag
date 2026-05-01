@@ -1,0 +1,83 @@
+{
+  "n_qa_queries": 158,
+  "n_pdf_queries": 0,
+  "ablation": [
+    {
+      "system": "01_bm25_only",
+      "label": "Baseline BM25 only",
+      "acc@1": 1.0,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 1.0,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "02_embedding_only",
+      "label": "+ Fine-tuned embeddings",
+      "acc@1": 0.9937,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 0.9968,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "03_hybrid",
+      "label": "+ Hybrid search",
+      "acc@1": 1.0,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 1.0,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "04_hybrid_mmr",
+      "label": "+ MMR",
+      "acc@1": 1.0,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 1.0,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "05_hybrid_mmr_reranker",
+      "label": "+ Reranker",
+      "acc@1": 0.981,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 0.9905,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "06_hybrid_mmr_reranker_filter",
+      "label": "+ Metadata filter",
+      "acc@1": 0.981,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 0.9905,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    },
+    {
+      "system": "07_full_dual_index",
+      "label": "+ PDF corpus dual-index (Full system)",
+      "acc@1": 1.0,
+      "acc@3": 1.0,
+      "acc@10": 1.0,
+      "mrr": 1.0,
+      "p50_ms": 0.0,
+      "p95_ms": 0.0,
+      "n": 158
+    }
+  ]
+}

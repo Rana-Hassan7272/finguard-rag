@@ -1,0 +1,94 @@
+{
+  "overall": {
+    "n": 158,
+    "gate_pass_rate": 1.0,
+    "gate_fail_rate": 0.0,
+    "high_conf_rate": 1.0,
+    "qa_grounded_rate": 1.0,
+    "pdf_grounded_rate": 0.0,
+    "mixed_rate": 0.0
+  },
+  "by_category": {
+    "digital_finance": {
+      "n": 15,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "banking": {
+      "n": 23,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "financial_education": {
+      "n": 25,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "islamic_finance": {
+      "n": 24,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "personal_finance": {
+      "n": 26,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "investment": {
+      "n": 19,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "bills_payments": {
+      "n": 9,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    },
+    "loans_credit": {
+      "n": 17,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0,
+      "mixed_rate": 0.0
+    }
+  },
+  "by_language": {
+    "urdu": {
+      "n": 105,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0
+    },
+    "roman_urdu": {
+      "n": 53,
+      "gate_pass_rate": 1.0,
+      "high_conf_rate": 1.0,
+      "qa_grounded_rate": 1.0,
+      "pdf_grounded_rate": 0.0
+    }
+  },
+  "high_conf_threshold_used": 0.7
+}
