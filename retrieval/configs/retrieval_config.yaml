@@ -175,6 +175,11 @@ reranker:
   # Tune this on your eval set; 0.40 is a conservative starting point
   confidence_threshold: 0.55
 
+  # If top reranker score is below confidence_threshold but >= this floor and the
+  # top doc has usable text, return that text as an extractive answer (no LLM).
+  # Reduces false "no information" when the cross-encoder is strict but retrieval is plausible.
+  extractive_gate_floor: 0.22
+
   # Number of docs to pass to reranker (should match retrieval.mmr_output_k)
   input_k: 10
 

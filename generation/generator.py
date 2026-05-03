@@ -78,9 +78,11 @@ class Generator:
 
         reranker_cfg = cfg.get("reranker", {})
         self.confidence_threshold: float = reranker_cfg.get("confidence_threshold", 0.40)
+        self.extractive_gate_floor: float = reranker_cfg.get("extractive_gate_floor", 0.22)
 
         log.info(
             f"Generator initialized: confidence_threshold={self.confidence_threshold} | "
+            f"extractive_gate_floor={self.extractive_gate_floor} | "
             f"primary={cfg.get('generation', {}).get('primary_provider', 'groq')}"
         )
 
@@ -119,6 +121,37 @@ class Generator:
         stage_ms["gate_ms"] = round((time.time() - t) * 1000, 2)
 
         if not gate.passed:
+            extractive = self._answer_from_docs(reranked_docs, language, min_len=60)
+            if (
+                extractive
+                and gate.top_score >= self.extractive_gate_floor
+                and gate.reason.startswith("score_below_threshold")
+            ):
+                relaxed = GateResult(
+                    passed=True,
+                    top_score=gate.top_score,
+                    reason=(
+                        f"extractive_gate_floor ({gate.top_score:.4f} ≥ {self.extractive_gate_floor}, "
+                        f"below llm_threshold {self.confidence_threshold})"
+                    ),
+                )
+                log.info(
+                    "Gate strict fail → extractive_floor path | score=%.4f | query='%s'",
+                    gate.top_score,
+                    query[:50],
+                )
+                return GenerationOutput(
+                    answer=extractive,
+                    gate=relaxed,
+                    cache_level=None,
+                    cache_hit=False,
+                    prompt=None,
+                    llm_response=None,
+                    language=language,
+                    retrieval_doc_ids=[d.get("doc_id", "") for d in reranked_docs[:5]],
+                    total_ms=round((time.time() - t_total) * 1000, 2),
+                    stage_ms=stage_ms,
+                )
             fallback = build_fallback_message(language)
             log.info(f"Gate BLOCKED: {gate.reason} | query='{query[:50]}'")
             return GenerationOutput(
@@ -185,12 +218,7 @@ class Generator:
         stage_ms["llm_ms"] = round((time.time() - t) * 1000, 2)
 
         if not llm_response.success or not llm_response.text.strip():
-            extractive = ""
-            for d in reranked_docs:
-                a = (d.get("answer") or "").strip()
-                if len(a) >= 60:
-                    extractive = a
-                    break
+            extractive = self._answer_from_docs(reranked_docs, language, min_len=60)
             if extractive:
                 log.warning(
                     "LLM failed (%s); serving top QA answer as extractive fallback | query='%s'",
@@ -288,6 +316,71 @@ class Generator:
             else:
                 scores.append(float(getattr(item, "mmr_score", 0.0)))
         return docs, scores
+
+    @staticmethod
+    def _urdu_script_ratio(text: str) -> float:
+        non_ws = [c for c in text if not c.isspace()]
+        if not non_ws:
+            return 0.0
+        urdu = sum(
+            1
+            for c in non_ws
+            if ("\u0600" <= c <= "\u06ff") or ("\ufb50" <= c <= "\ufdff")
+        )
+        return urdu / len(non_ws)
+
+    @classmethod
+    def _pick_answer_for_language(
+        cls,
+        docs: list[dict],
+        language: str,
+        min_len: int = 60,
+    ) -> str:
+        """
+        Prefer an extractive snippet whose script matches the query language.
+        If none match heuristics, pick the best-effort candidate (most/least Urdu)
+        while preserving rerank order for ties.
+        """
+        lang = language if language in ("urdu", "english", "roman_urdu") else "roman_urdu"
+        candidates: list[tuple[float, str]] = []
+        for d in docs:
+            a = (d.get("answer") or d.get("retrieval_text") or "").strip()
+            if len(a) < min_len:
+                continue
+            candidates.append((cls._urdu_script_ratio(a), a))
+        if not candidates:
+            return ""
+
+        if lang == "urdu":
+            for ur, txt in candidates:
+                if ur >= 0.08:
+                    return txt
+            return max(candidates, key=lambda x: x[0])[1]
+
+        if lang == "english":
+            for ur, txt in candidates:
+                if ur < 0.06:
+                    return txt
+            return min(candidates, key=lambda x: x[0])[1]
+
+        for ur, txt in candidates:
+            if ur < 0.25:
+                return txt
+        return min(candidates, key=lambda x: x[0])[1]
+
+    def _answer_from_docs(self, docs: list[dict], language: str, min_len: int = 60) -> str:
+        picked = self._pick_answer_for_language(docs, language, min_len=min_len)
+        if picked:
+            return picked
+        return self._first_long_answer(docs, min_len=min_len)
+
+    @staticmethod
+    def _first_long_answer(docs: list[dict], min_len: int = 60) -> str:
+        for d in docs:
+            a = (d.get("answer") or d.get("retrieval_text") or "").strip()
+            if len(a) >= min_len:
+                return a
+        return ""
 
     def _evaluate_gate(
         self,

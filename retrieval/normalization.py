@@ -68,9 +68,10 @@ URDU_CHAR_MAP = {
     "\uFEFF": "",          # BOM
 }
 
-# Urdu diacritics to strip (not meaningful for retrieval matching)
+# Urdu diacritics to strip (harakat — not used in most typed Urdu).
+# U+0670 (superscript alef) is kept: it is part of standard spellings like زکوٰۃ.
 URDU_DIACRITICS = re.compile(
-    "[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]"
+    "[\u0610-\u061A\u064B-\u065F\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED]"
 )
 
 
@@ -121,6 +122,7 @@ ROMAN_URDU_SUBSTITUTIONS = {
     "kaisa": "kaise",    # gender variant flattened for retrieval
     "hai": "hai",
     "hain": "hain",
+    "hein": "hain",      # common misspelling of hain
     "hy": "hai",         # SMS-style shorthand
     "hei": "hai",
     "ka": "ka",
@@ -154,6 +156,117 @@ def apply_roman_urdu_substitutions(tokens: list[str]) -> list[str]:
     return [ROMAN_URDU_SUBSTITUTIONS.get(tok, tok) for tok in tokens]
 
 
+# Common misspellings / OCR-style variants → canonical token (ASCII queries + Roman Urdu)
+DOMAIN_SPELL_FIXES = {
+    "paksitan": "pakistan",
+    "pakstan": "pakistan",
+    "pakistn": "pakistan",
+    "pakistaan": "pakistan",
+}
+
+
+def apply_domain_spell_fixes(tokens: list[str]) -> list[str]:
+    """Fix frequent domain typos after lowercasing (whole-token replacement)."""
+    return [DOMAIN_SPELL_FIXES.get(tok, tok) for tok in tokens]
+
+
+# ---------------------------------------------------------------------------
+# Fuzzy typo correction (vocabulary-backed, conservative)
+# ---------------------------------------------------------------------------
+# At most one Levenshtein edit; only if exactly one vocabulary word matches.
+# Avoids new dependencies; skips short tokens and non-ASCII tokens.
+
+_TYPO_VOCAB_CACHE: Optional[frozenset[str]] = None
+
+
+def _levenshtein_at_most_one(a: str, b: str) -> bool:
+    """True if edit distance between a and b is 0 or 1."""
+    if a == b:
+        return True
+    la, lb = len(a), len(b)
+    if abs(la - lb) > 1:
+        return False
+    i = j = edits = 0
+    while i < la and j < lb:
+        if a[i] == b[j]:
+            i += 1
+            j += 1
+        else:
+            edits += 1
+            if edits > 1:
+                return False
+            if la == lb:
+                i += 1
+                j += 1
+            elif la > lb:
+                i += 1
+            else:
+                j += 1
+    edits += (la - i) + (lb - j)
+    return edits <= 1
+
+
+def get_typo_vocabulary() -> frozenset[str]:
+    """Lazy-built set of domain tokens for fuzzy correction (>=3 chars)."""
+    global _TYPO_VOCAB_CACHE
+    if _TYPO_VOCAB_CACHE is not None:
+        return _TYPO_VOCAB_CACHE
+    words: set[str] = set()
+    try:
+        from query.expander import EXPANSION_MAP, ROMAN_URDU_EXPANSION_MAP
+
+        for m in (EXPANSION_MAP, ROMAN_URDU_EXPANSION_MAP):
+            for key in m:
+                for w in key.lower().replace("-", " ").split():
+                    if len(w) >= 3:
+                        words.add(w)
+    except ImportError:
+        pass
+    for k, v in ROMAN_URDU_SUBSTITUTIONS.items():
+        if len(k) >= 3:
+            words.add(k)
+        if len(v) >= 3:
+            words.add(v)
+    for v in DOMAIN_SPELL_FIXES.values():
+        words.add(v)
+    try:
+        from retrieval.language import ENGLISH_WORD_SET, ROMAN_URDU_SIGNALS
+
+        words.update(w for w in ENGLISH_WORD_SET if len(w) >= 3)
+        words.update(w for w in ROMAN_URDU_SIGNALS if len(w) >= 3)
+    except ImportError:
+        pass
+    _TYPO_VOCAB_CACHE = frozenset(words)
+    return _TYPO_VOCAB_CACHE
+
+
+def apply_fuzzy_typo_correction(
+    tokens: list[str],
+    min_token_len: int = 4,
+) -> list[str]:
+    """
+    Correct obvious single-edit typos against a domain vocabulary.
+    Only replaces when exactly one vocab word matches at distance ≤ 1.
+    """
+    vocab = get_typo_vocabulary()
+    out: list[str] = []
+    for tok in tokens:
+        if (
+            len(tok) < min_token_len
+            or not tok.isascii()
+            or not tok.isalpha()
+            or tok in vocab
+        ):
+            out.append(tok)
+            continue
+        matches = [w for w in vocab if _levenshtein_at_most_one(tok, w)]
+        if len(matches) == 1:
+            out.append(matches[0])
+        else:
+            out.append(tok)
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Core normalization pipeline
 # ---------------------------------------------------------------------------
@@ -163,6 +276,7 @@ def normalize_query(
     apply_urdu_unicode: bool = True,
     apply_roman_urdu: bool = True,
     lowercase_latin: bool = True,
+    fuzzy_typo_correction: bool = True,
 ) -> str:
     """
     Main normalization entrypoint for all query types.
@@ -183,6 +297,7 @@ def normalize_query(
     apply_urdu_unicode : run Urdu char normalization (default: True)
     apply_roman_urdu   : run Roman Urdu substitution map (default: True)
     lowercase_latin    : lowercase Latin chars (default: True)
+    fuzzy_typo_correction : vocab-backed single-edit fixes for Latin tokens (default: True)
 
     Returns
     -------
@@ -216,10 +331,13 @@ def normalize_query(
         parts.append(segment)
     text = "".join(parts)
 
-    # Step 7: Roman Urdu token substitutions
+    # Step 7: Roman Urdu token substitutions + domain spelling fixes
     if apply_roman_urdu:
         tokens = text.split()
         tokens = apply_roman_urdu_substitutions(tokens)
+        tokens = apply_domain_spell_fixes(tokens)
+        if fuzzy_typo_correction:
+            tokens = apply_fuzzy_typo_correction(tokens)
         text = " ".join(tokens)
 
     # Step 8: Collapse multiple spaces
@@ -290,6 +408,9 @@ if __name__ == "__main__":
         ("", ""),
         ("riba kya hein???", "riba kya hain"),
         ("savings pe profit milta hein ya nhn", "savings pe profit milta hain ya nahi"),
+        ("freelance in paksitan", "freelance in pakistan"),
+        ("investment growth in pakstan", "investment growth in pakistan"),
+        ("investmnt options in pakistan", "investment options in pakistan"),
     ]
 
     print(f"\n{'Input':<50} {'Output'}")

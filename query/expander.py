@@ -41,10 +41,16 @@ EXPANSION_MAP: dict[str, str] = {
     "insurance": "insurance Pakistan conventional takaful policy",
     "bancassurance": "bancassurance bank insurance Pakistan policy",
     "microfinance": "microfinance Pakistan small loan poor rural",
+    "freelance": "freelance freelancing Pakistan income tax FBR export services registration benefits",
+    "freelancing": "freelancing Pakistan freelance income Upwork Fiverr tax FBR registration benefits",
     "sme": "SME small medium enterprise financing Pakistan",
     "agriculture": "agriculture loan financing Pakistan Zarai Taraqiati Bank",
     "ztbl": "ZTBL Zarai Taraqiati Bank Limited agriculture loan Pakistan",
 }
+
+# Expand even when the query has many tokens (substring match); avoids missing long Roman Urdu questions.
+ALWAYS_EXPAND_SUBSTR_KEYS = frozenset({"freelance", "freelancing", "investment"})
+
 
 ROMAN_URDU_EXPANSION_MAP: dict[str, str] = {
     "zakat": "zakat calculation nisab Pakistan 2.5 gold silver",
@@ -58,6 +64,8 @@ ROMAN_URDU_EXPANSION_MAP: dict[str, str] = {
     "qarz": "qarz loan interest riba Islamic finance",
     "sood": "sood riba interest prohibition Islamic banking",
     "munafa": "munafa profit rate bank saving account",
+    "freelance": "freelance freelancing Pakistan kamai tax FBR registration faida nuqsan",
+    "freelancing": "freelancing Pakistan freelance income kamai tax FBR registration",
 }
 
 URDU_EXPANSION_MAP: dict[str, str] = {
@@ -88,6 +96,8 @@ def expand_query(query: str, language: str = "english") -> str:
     if normalized in expansion_map:
         return f"{query} {expansion_map[normalized]}"
     for key, expansion in expansion_map.items():
-        if key in normalized and len(normalized.split()) <= 2:
+        if key not in normalized:
+            continue
+        if len(normalized.split()) <= 2 or key in ALWAYS_EXPAND_SUBSTR_KEYS:
             return f"{query} {expansion}"
     return query

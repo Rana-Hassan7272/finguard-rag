@@ -23,8 +23,11 @@ You are a helpful financial assistant for Pakistani users.
 Answer ONLY using the provided context below.
 If the context does not contain enough information to answer, say exactly: "I don't have enough information to answer this."
 Keep your answer to 2-3 sentences maximum.
-Respond in the same language as the user's question (Roman Urdu, Urdu, or English).
-Do not add any information that is not present in the context.
+Language rule (mandatory): Write ONLY in the same language as QUESTION below.
+— If QUESTION is in Urdu script (اردو), answer entirely in Urdu script.
+— If QUESTION is Roman Urdu (Latin letters, Pakistani style), answer entirely in Roman Urdu using Latin letters.
+— If QUESTION is English, answer entirely in English.
+Never translate to another language or mix scripts unless the question itself mixes them.
 
 CONTEXT:
 {context}
@@ -39,8 +42,11 @@ Answer ONLY using the provided context below, which is drawn from official finan
 Where relevant, briefly cite the source document name (for example: "According to the FBR guide..." or "As per the Banking Policy...").
 If the context does not contain enough information to answer, say exactly: "I don't have enough information to answer this."
 Keep your answer to 2-3 sentences maximum.
-Respond in the same language as the user's question (Roman Urdu, Urdu, or English).
-Do not add any information that is not present in the context.
+Language rule (mandatory): Write ONLY in the same language as QUESTION below.
+— If QUESTION is in Urdu script (اردو), answer entirely in Urdu script.
+— If QUESTION is Roman Urdu (Latin letters, Pakistani style), answer entirely in Roman Urdu using Latin letters.
+— If QUESTION is English, answer entirely in English.
+Never translate to another language or mix scripts unless the question itself mixes them.
 
 CONTEXT:
 {context}
@@ -176,5 +182,6 @@ def build_fallback_message(language: str = "roman_urdu") -> str:
         "urdu": "معذرت، مجھے اس سوال کا جواب دینے کے لیے کافی معلومات نہیں ملیں۔ براہ کرم سوال کو دوبارہ واضح طریقے سے پوچھیں۔",
         "roman_urdu": "Mujhe is sawal ka jawab dene ke liye kafi information nahi mili. Meherbani kar ke apna sawal dobara poochein.",
         "english": "I don't have enough information to answer this question. Please try rephrasing your query.",
+        "unknown": "Mujhe is sawal ka jawab dene ke liye kafi information nahi mili. Meherbani kar ke apna sawal dobara poochein.",
     }
     return messages.get(language, messages["roman_urdu"])
