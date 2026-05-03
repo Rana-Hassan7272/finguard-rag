@@ -180,6 +180,19 @@ reranker:
   # Reduces false "no information" when the cross-encoder is strict but retrieval is plausible.
   extractive_gate_floor: 0.22
 
+  # Adaptive confidence gate:
+  # adjusts threshold per query using reranker score gap and query length.
+  adaptive_gate:
+    enabled: true
+    min_threshold: 0.45
+    max_threshold: 0.62
+    strong_gap: 0.08
+    weak_gap: 0.02
+    strong_gap_bonus: 0.05
+    weak_gap_penalty: 0.03
+    short_query_bonus: 0.02
+    short_query_max_tokens: 3
+
   # Number of docs to pass to reranker (should match retrieval.mmr_output_k)
   input_k: 10
 

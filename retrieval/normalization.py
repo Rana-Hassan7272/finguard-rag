@@ -9,6 +9,7 @@ Responsibilities:
   - Strip punctuation that interferes with retrieval
   - Light Roman Urdu normalization (repeated char collapse, common substitutions)
   - Urdu Unicode normalization (multiple encodings of same letter → canonical)
+  - Optional fuzzy typo correction for Latin tokens (domain vocab, edit distance ≤ 1)
 
 Design principles:
   - Deterministic — same input always produces same output

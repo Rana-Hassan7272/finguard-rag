@@ -79,10 +79,21 @@ class Generator:
         reranker_cfg = cfg.get("reranker", {})
         self.confidence_threshold: float = reranker_cfg.get("confidence_threshold", 0.40)
         self.extractive_gate_floor: float = reranker_cfg.get("extractive_gate_floor", 0.22)
+        adaptive_cfg = reranker_cfg.get("adaptive_gate", {})
+        self.adaptive_gate_enabled: bool = adaptive_cfg.get("enabled", True)
+        self.gate_min_threshold: float = adaptive_cfg.get("min_threshold", 0.45)
+        self.gate_max_threshold: float = adaptive_cfg.get("max_threshold", 0.62)
+        self.gate_strong_gap: float = adaptive_cfg.get("strong_gap", 0.08)
+        self.gate_weak_gap: float = adaptive_cfg.get("weak_gap", 0.02)
+        self.gate_strong_gap_bonus: float = adaptive_cfg.get("strong_gap_bonus", 0.05)
+        self.gate_weak_gap_penalty: float = adaptive_cfg.get("weak_gap_penalty", 0.03)
+        self.gate_short_query_bonus: float = adaptive_cfg.get("short_query_bonus", 0.02)
+        self.gate_short_query_max_tokens: int = adaptive_cfg.get("short_query_max_tokens", 3)
 
         log.info(
             f"Generator initialized: confidence_threshold={self.confidence_threshold} | "
             f"extractive_gate_floor={self.extractive_gate_floor} | "
+            f"adaptive_gate_enabled={self.adaptive_gate_enabled} | "
             f"primary={cfg.get('generation', {}).get('primary_provider', 'groq')}"
         )
 
@@ -117,7 +128,11 @@ class Generator:
 
         # ── Stage 1: Confidence gate ─────────────────────────────────────
         t = time.time()
-        gate = self._evaluate_gate(reranked_docs, reranker_scores)
+        gate = self._evaluate_gate(
+            query=query,
+            reranked_docs=reranked_docs,
+            reranker_scores=reranker_scores,
+        )
         stage_ms["gate_ms"] = round((time.time() - t) * 1000, 2)
 
         if not gate.passed:
@@ -382,8 +397,44 @@ class Generator:
                 return a
         return ""
 
+    def _compute_effective_threshold(
+        self,
+        query: str,
+        reranker_scores: list[float],
+    ) -> tuple[float, str]:
+        """
+        Compute an adaptive confidence threshold for this query.
+        Keeps the score gate bounded to avoid over-relaxing.
+        """
+        base = self.confidence_threshold
+        if not self.adaptive_gate_enabled:
+            return base, f"static threshold={base:.4f}"
+
+        adjustment = 0.0
+        reasons: list[str] = []
+
+        if len(reranker_scores) >= 2:
+            gap = float(reranker_scores[0]) - float(reranker_scores[1])
+            if gap >= self.gate_strong_gap:
+                adjustment -= self.gate_strong_gap_bonus
+                reasons.append(f"strong_gap={gap:.4f}")
+            elif gap <= self.gate_weak_gap:
+                adjustment += self.gate_weak_gap_penalty
+                reasons.append(f"weak_gap={gap:.4f}")
+
+        token_count = len(query.split())
+        if token_count <= self.gate_short_query_max_tokens:
+            adjustment -= self.gate_short_query_bonus
+            reasons.append(f"short_query_tokens={token_count}")
+
+        effective = max(self.gate_min_threshold, min(self.gate_max_threshold, base + adjustment))
+        if not reasons:
+            reasons.append("no_adjustment")
+        return effective, ", ".join(reasons)
+
     def _evaluate_gate(
         self,
+        query: str,
         reranked_docs: list[dict],
         reranker_scores: list[float],
     ) -> GateResult:
@@ -420,17 +471,28 @@ class Generator:
                 reason="empty_doc_text",
             )
 
-        if top_score < self.confidence_threshold:
+        effective_threshold, threshold_reason = self._compute_effective_threshold(
+            query=query,
+            reranker_scores=reranker_scores,
+        )
+
+        if top_score < effective_threshold:
             return GateResult(
                 passed=False,
                 top_score=top_score,
-                reason=f"score_below_threshold ({top_score:.4f} < {self.confidence_threshold})",
+                reason=(
+                    f"score_below_threshold ({top_score:.4f} < {effective_threshold:.4f}) | "
+                    f"base={self.confidence_threshold:.4f} | {threshold_reason}"
+                ),
             )
 
         return GateResult(
             passed=True,
             top_score=top_score,
-            reason=f"passed ({top_score:.4f} >= {self.confidence_threshold})",
+            reason=(
+                f"passed ({top_score:.4f} >= {effective_threshold:.4f}) | "
+                f"base={self.confidence_threshold:.4f} | {threshold_reason}"
+            ),
         )
 
 

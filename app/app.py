@@ -540,7 +540,8 @@ EXAMPLES = [
 # Gradio UI
 # ---------------------------------------------------------------------------
 
-def build_ui():
+def _gradio_theme_and_css():
+    """Gradio 6+: pass `theme` and `css` to `launch()`, not `Blocks()`."""
     import gradio as gr
 
     css = """
@@ -549,12 +550,14 @@ def build_ui():
     footer { display: none !important; }
     #title-block { text-align: center; padding-bottom: 8px; }
     """
+    theme = gr.themes.Soft(primary_hue="blue", neutral_hue="slate")
+    return theme, css
 
-    with gr.Blocks(
-        title="FinGuard — Pakistani Finance Assistant",
-        theme=gr.themes.Soft(primary_hue="blue", neutral_hue="slate"),
-        css=css,
-    ) as demo:
+
+def build_ui():
+    import gradio as gr
+
+    with gr.Blocks(title="FinGuard — Pakistani Finance Assistant") as demo:
 
         # ── Header ──────────────────────────────────────────────────────
         with gr.Column(elem_id="title-block"):
@@ -677,12 +680,18 @@ if __name__ == "__main__":
     else:
         demo = build_ui()
 
-    demo.launch(
+    _launch_kw = dict(
         server_name="0.0.0.0",
         server_port=int(os.environ.get("PORT", 7860)),
         share=False,
         show_error=True,
     )
+    if _ready:
+        _theme, _css = _gradio_theme_and_css()
+        _launch_kw["theme"] = _theme
+        _launch_kw["css"] = _css
+
+    demo.launch(**_launch_kw)
 else:
     startup()
     if _ready:
