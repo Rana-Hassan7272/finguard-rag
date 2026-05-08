@@ -135,14 +135,22 @@ source_routing:
     qa: 0.35
     pdf: 0.65
   practical_query:
-    qa: 0.70
-    pdf: 0.30
+    qa: 0.55
+    pdf: 0.45
   default:
     qa: 0.50
     pdf: 0.50
 
 phase6_7:
   enable_dual_retriever: true
+  # Minimum number of PDF chunks to keep in final top-K when PDFs are retrieved.
+  # Prevents QA scores from monopolizing top-K for queries that benefit from
+  # official document evidence (laws, regulations, policy docs).
+  pdf_min_quota: 1
+  # When the gate would block (top reranker score below confidence_threshold),
+  # retry retrieval forcing PDF-only candidates. If reranker score on PDF-only
+  # candidates is higher, use those.
+  gate_retry_pdf_only: true
 
 # -----------------------------------------------------------------------------
 # MMR (Max Marginal Relevance)
@@ -180,6 +188,12 @@ reranker:
   # Reduces false "no information" when the cross-encoder is strict but retrieval is plausible.
   extractive_gate_floor: 0.22
 
+  # Lower gate threshold used ONLY when the PDF-only gate-retry path is taken.
+  # Cross-encoder scores PDF chunks lower than tight QA matches because PDF
+  # chunks are longer and more abstract. Without a separate threshold the QA-
+  # calibrated 0.55 bar blocks otherwise-correct PDF answers.
+  pdf_retry_threshold: 0.30
+
   # Adaptive confidence gate:
   # adjusts threshold per query using reranker score gap and query length.
   adaptive_gate:
@@ -194,14 +208,17 @@ reranker:
     short_query_max_tokens: 3
 
   # Number of docs to pass to reranker (should match retrieval.mmr_output_k)
-  input_k: 10
+  # Lowered from 10 → 6: cross-encoder cost is dominant on CPU; reranking the
+  # bottom 4 candidates rarely changes the top-3 selection.
+  input_k: 6
 
   # Number of docs to pass to LLM after reranking
   output_k: 3
 
   # Runtime settings
   batch_size: 16
-  max_length: 512
+  # 512 → 384: ~25% faster per pair while still covering typical QA + PDF chunks.
+  max_length: 384
 
   # If gate fails, pipeline should return this response and skip LLM call
   fallback_message: "I don't have enough information to answer this question."

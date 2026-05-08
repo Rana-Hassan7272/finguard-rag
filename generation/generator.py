@@ -104,6 +104,7 @@ class Generator:
         reranked_docs: list[dict],
         reranker_scores: list[float],
         language: str = "roman_urdu",
+        threshold_override: Optional[float] = None,
     ) -> GenerationOutput:
         """
         Run the full generation flow for one query.
@@ -132,6 +133,7 @@ class Generator:
             query=query,
             reranked_docs=reranked_docs,
             reranker_scores=reranker_scores,
+            threshold_override=threshold_override,
         )
         stage_ms["gate_ms"] = round((time.time() - t) * 1000, 2)
 
@@ -437,6 +439,7 @@ class Generator:
         query: str,
         reranked_docs: list[dict],
         reranker_scores: list[float],
+        threshold_override: Optional[float] = None,
     ) -> GateResult:
         """
         Evaluate confidence gate.
@@ -471,10 +474,14 @@ class Generator:
                 reason="empty_doc_text",
             )
 
-        effective_threshold, threshold_reason = self._compute_effective_threshold(
-            query=query,
-            reranker_scores=reranker_scores,
-        )
+        if threshold_override is not None:
+            effective_threshold = float(threshold_override)
+            threshold_reason = f"override (pdf_retry_threshold={effective_threshold:.4f})"
+        else:
+            effective_threshold, threshold_reason = self._compute_effective_threshold(
+                query=query,
+                reranker_scores=reranker_scores,
+            )
 
         if top_score < effective_threshold:
             return GateResult(

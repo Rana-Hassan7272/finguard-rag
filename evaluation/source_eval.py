@@ -68,7 +68,15 @@ class SourceEvaluator:
         detector = CategoryDetector(self.cfg)
 
         qa_records  = _load_jsonl(test_path)
-        pdf_records = _load_jsonl(pdf_test_path) if pdf_test_path and Path(pdf_test_path).exists() else []
+        if pdf_test_path and Path(pdf_test_path).exists():
+            pdf_records = _load_jsonl(pdf_test_path)
+            print(f"[source_eval] Loaded {len(pdf_records)} PDF-dependent eval queries from {pdf_test_path}")
+        else:
+            pdf_records = []
+            print(
+                f"[source_eval] WARNING: PDF eval file not found at '{pdf_test_path}'. "
+                "PDF grounding metrics will be 0% — provide a PDF test set to validate the PDF path."
+            )
 
         all_records = [
             {**r, "_source_type": "qa"}  for r in qa_records

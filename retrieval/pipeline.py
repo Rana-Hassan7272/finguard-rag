@@ -427,34 +427,70 @@ class RetrievalPipeline:
                     or ""
                 )
 
-        if self._reranker and candidate_docs:
+        rerank_top_k = int(self.cfg.get("reranker", {}).get("output_k", 3))
+        rerank_input_k = int(self.cfg.get("reranker", {}).get("input_k", len(candidate_docs)))
+        confidence_threshold = float(self.cfg.get("reranker", {}).get("confidence_threshold", 0.40))
+        pdf_retry_threshold = float(self.cfg.get("reranker", {}).get("pdf_retry_threshold", 0.30))
+        gate_retry_pdf_only = bool(self.cfg.get("phase6_7", {}).get("gate_retry_pdf_only", True))
+
+        rerank_pool = candidate_docs[: max(rerank_top_k, rerank_input_k)] if rerank_input_k > 0 else candidate_docs
+        reranked_docs, reranker_scores = self._rerank_or_fallback(query, rerank_pool, retrieval_output, rerank_top_k)
+        gate_retry_used = False
+        gate_retry_pdf_score = None
+
+        if (
+            gate_retry_pdf_only
+            and self._dual_retriever is not None
+            and reranker_scores
+            and reranker_scores[0] < confidence_threshold
+        ):
             try:
-                top_k = int(self.cfg.get("reranker", {}).get("output_k", 3))
-                rerank_results, top_score = self._reranker.rerank(query=query, docs=candidate_docs, top_k=top_k)
-                reranked_docs = []
-                reranker_scores = []
-                by_id = {d.get("doc_id"): d for d in candidate_docs}
-                for rr in rerank_results:
-                    doc = dict(by_id.get(rr.doc_id, {}))
-                    doc["reranker_score"] = rr.reranker_score
-                    reranked_docs.append(doc)
-                    reranker_scores.append(float(rr.reranker_score))
+                pdf_only_out = self._dual_retriever.retrieve(
+                    query=retrieval_output.diagnostics.get("query_expanded", retrieval_output.query_normalized),
+                    language=retrieval_output.diagnostics.get("language_detected", "english"),
+                    query_intent=retrieval_output.diagnostics.get("query_intent", "practical"),
+                    category_filter=None,
+                    top_k=rerank_top_k * 3,
+                    force_pdf_only=True,
+                )
+                pdf_candidates = []
+                for d in pdf_only_out.docs:
+                    doc = dict(d)
+                    if not doc.get("doc_text"):
+                        doc["doc_text"] = (
+                            doc.get("retrieval_text")
+                            or doc.get("chunk_text")
+                            or doc.get("answer")
+                            or doc.get("question")
+                            or ""
+                        )
+                    pdf_candidates.append(doc)
+
+                if pdf_candidates:
+                    pdf_reranked, pdf_scores = self._rerank_or_fallback(query, pdf_candidates, retrieval_output, rerank_top_k)
+                    if pdf_scores and pdf_scores[0] > reranker_scores[0]:
+                        log.info(
+                            f"Gate retry: switching to PDF-only candidates "
+                            f"(qa_top={reranker_scores[0]:.4f} → pdf_top={pdf_scores[0]:.4f})"
+                        )
+                        reranked_docs = pdf_reranked
+                        reranker_scores = pdf_scores
+                        gate_retry_used = True
+                        gate_retry_pdf_score = pdf_scores[0]
             except Exception as e:
-                log.warning(f"Reranker failed in answer(); falling back to retrieval order: {e}")
-                reranked_docs = candidate_docs
-                reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
-        else:
-            reranked_docs = candidate_docs
-            reranker_scores = [float(r.mmr_score) for r in retrieval_output.docs]
+                log.warning(f"Gate retry PDF-only path failed; keeping QA candidates: {e}")
+
         query_expanded = retrieval_output.diagnostics.get("query_expanded", retrieval_output.query_normalized)
         query_embedding = self._vector_retriever.encode_query(query_expanded)
 
+        gate_threshold_override = pdf_retry_threshold if gate_retry_used else None
         generation_output = self._generator.generate(
             query=query_expanded,
             query_embedding=query_embedding,
             reranked_docs=reranked_docs,
             reranker_scores=reranker_scores,
             language=retrieval_output.diagnostics.get("language_detected", "roman_urdu"),
+            threshold_override=gate_threshold_override,
         )
 
         llm_meta = None
@@ -488,6 +524,10 @@ class RetrievalPipeline:
                     "output_docs": len(reranked_docs),
                     "top_score": reranker_scores[0] if reranker_scores else 0.0,
                 },
+                "gate_retry": {
+                    "used": gate_retry_used,
+                    "pdf_top_score": gate_retry_pdf_score,
+                },
                 "stage_ms": generation_output.stage_ms,
                 "total_ms": generation_output.total_ms,
             },
@@ -500,6 +540,40 @@ class RetrievalPipeline:
             generation=generation_output,
             diagnostics=merged_diag,
         )
+
+    def _rerank_or_fallback(
+        self,
+        query: str,
+        candidate_docs: list[dict],
+        retrieval_output: "RetrievalOutput",
+        top_k: int,
+    ) -> tuple[list[dict], list[float]]:
+        """
+        Run reranker on candidate_docs. Falls back to retrieval order if
+        reranker is unavailable or fails. Always returns parallel doc/score lists.
+        """
+        if self._reranker and candidate_docs:
+            try:
+                rerank_results, _ = self._reranker.rerank(query=query, docs=candidate_docs, top_k=top_k)
+                reranked_docs: list[dict] = []
+                reranker_scores: list[float] = []
+                by_id = {d.get("doc_id"): d for d in candidate_docs}
+                for rr in rerank_results:
+                    doc = dict(by_id.get(rr.doc_id, {}))
+                    doc["reranker_score"] = rr.reranker_score
+                    reranked_docs.append(doc)
+                    reranker_scores.append(float(rr.reranker_score))
+                return reranked_docs, reranker_scores
+            except Exception as e:
+                log.warning(f"Reranker failed; falling back to retrieval order: {e}")
+
+        if not candidate_docs:
+            return [], []
+
+        scores = [float(getattr(r, "mmr_score", 0.0)) for r in retrieval_output.docs[: len(candidate_docs)]]
+        if len(scores) < len(candidate_docs):
+            scores.extend([0.0] * (len(candidate_docs) - len(scores)))
+        return candidate_docs, scores
 
     # ------------------------------------------------------------------
     # Diagnostics builder

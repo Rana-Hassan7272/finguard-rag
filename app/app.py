@@ -557,13 +557,13 @@ def _gradio_theme_and_css():
 def build_ui():
     import gradio as gr
 
-    with gr.Blocks(title="FinGuard — Pakistani Finance Assistant") as demo:
+    with gr.Blocks(title="Pakistan Finance Assistant") as demo:
 
         # ── Header ──────────────────────────────────────────────────────
         with gr.Column(elem_id="title-block"):
             gr.Markdown(
                 """
-                # 🏦 FinGuard — Pakistani Finance Assistant
+                # 🏦 Pakistan Finance Assistant
                 **Ask anything about Islamic finance, banking, investments, tax, digital payments, and more.**
                 Supports Roman Urdu 🔤 · Urdu 🇵🇰 · English 🇬🇧
                 """,

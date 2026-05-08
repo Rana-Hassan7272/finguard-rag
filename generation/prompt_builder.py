@@ -21,8 +21,12 @@ log = logging.getLogger(__name__)
 QA_TEMPLATE = """\
 You are a helpful financial assistant for Pakistani users.
 Answer ONLY using the provided context below.
+At the END of your answer, on a new line, write: Source: <type — name>
+— Use "Source: Community QA" when the answer comes from QA pairs (Source labels [QA …]).
+— Use "Source: <document name>" when the answer comes from an official document chunk (Source labels [PDF — …]).
+— If the answer mixes both, write: Source: Community QA + <document name>.
 If the context does not contain enough information to answer, say exactly: "I don't have enough information to answer this."
-Keep your answer to 2-3 sentences maximum.
+Keep your answer (excluding the Source line) to 2-3 sentences maximum.
 Language rule (mandatory): Write ONLY in the same language as QUESTION below.
 — If QUESTION is in Urdu script (اردو), answer entirely in Urdu script.
 — If QUESTION is Roman Urdu (Latin letters, Pakistani style), answer entirely in Roman Urdu using Latin letters.
@@ -39,9 +43,12 @@ ANSWER:"""
 PDF_TEMPLATE = """\
 You are a helpful financial assistant for Pakistani users.
 Answer ONLY using the provided context below, which is drawn from official financial documents and regulations.
-Where relevant, briefly cite the source document name (for example: "According to the FBR guide..." or "As per the Banking Policy...").
+At the END of your answer, on a new line, write: Source: <document name(s)>
+— Use the document name shown in the Source label (e.g. "Source: Income Tax Return Fbr").
+— If the answer combines multiple documents, list them comma-separated.
+If only Community QA chunks are present, write: Source: Community QA.
 If the context does not contain enough information to answer, say exactly: "I don't have enough information to answer this."
-Keep your answer to 2-3 sentences maximum.
+Keep your answer (excluding the Source line) to 2-3 sentences maximum.
 Language rule (mandatory): Write ONLY in the same language as QUESTION below.
 — If QUESTION is in Urdu script (اردو), answer entirely in Urdu script.
 — If QUESTION is Roman Urdu (Latin letters, Pakistani style), answer entirely in Roman Urdu using Latin letters.
@@ -70,8 +77,8 @@ def _format_qa_doc(doc: dict, rank: int) -> str:
     question = doc.get("question", "").strip()
     answer = doc.get("answer", "").strip()
     if question and answer:
-        return f"[Source {rank}]\nQ: {question}\nA: {answer}"
-    return f"[Source {rank}]\n{answer or question}"
+        return f"[QA Source {rank} — Community QA]\nQ: {question}\nA: {answer}"
+    return f"[QA Source {rank} — Community QA]\n{answer or question}"
 
 
 def _format_pdf_doc(doc: dict, rank: int) -> str:
@@ -92,16 +99,19 @@ def _format_pdf_doc(doc: dict, rank: int) -> str:
     page = doc.get("page_no")
     page_str = f" (p.{page})" if page else ""
 
-    return f"[Source {rank} — {header}{page_str}]\n{text}"
+    return f"[PDF Source {rank} — {header}{page_str}]\n{text}"
 
 
 def _select_template(docs: list[dict]) -> str:
+    """
+    Use the PDF template when ANY top-3 doc is a PDF chunk so the LLM reliably
+    cites the official document name. Falls back to the QA template otherwise.
+    """
     if not docs:
         return "qa"
-    top_doc = docs[0]
-    doc_type = top_doc.get("doc_type", "")
-    if doc_type == "pdf_chunk":
-        return "pdf"
+    for d in docs[:3]:
+        if d.get("doc_type") == "pdf_chunk":
+            return "pdf"
     return "qa"
 
 

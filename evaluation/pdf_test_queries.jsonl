@@ -1,0 +1,20 @@
+{"query": "Pakistan mein salaried person ka income tax slab 2025 mein kya hai?", "category": "financial_education", "expected_source": "income tax return fbr"}
+{"query": "FBR IRIS portal pe tax return file kaise karein step by step?", "category": "financial_education", "expected_source": "income tax return fbr"}
+{"query": "What are the withholding tax rates for non-filers in Pakistan?", "category": "financial_education", "expected_source": "income tax return fbr"}
+{"query": "SBP ki banking policy mein consumer protection ke kya rules hain?", "category": "banking", "expected_source": "banking policy guide"}
+{"query": "Pakistan mein bank account kholne ke liye CDD requirements kya hain?", "category": "banking", "expected_source": "consumer banking"}
+{"query": "What is the Virtual Assets Ordinance 2025 of Pakistan?", "category": "investment", "expected_source": "the virtual assets ordinance, 2025"}
+{"query": "Asaan Karobar Act 2025 se SMEs ko kya benefits milte hain?", "category": "investment", "expected_source": "the asaan karobar act, 2025"}
+{"query": "PSX par account kholne aur trade karne ka process kya hai?", "category": "investment", "expected_source": "pakistan stock market"}
+{"query": "SECP guidelines for new investors in mutual funds?", "category": "investment", "expected_source": "secp education investor"}
+{"query": "Easypaisa merchant account kaise register karte hain shopkeeper ke liye?", "category": "digital_finance", "expected_source": "easypaisa guide"}
+{"query": "JazzCash daily transaction limits kya hain regular vs upgraded account ke liye?", "category": "digital_finance", "expected_source": "jazz cash guide"}
+{"query": "How does Allied Bank Roshan Digital Account work for overseas Pakistanis?", "category": "banking", "expected_source": "allied bank guide"}
+{"query": "NBP foreign currency account kholne ka procedure kya hai?", "category": "banking", "expected_source": "nbp guide"}
+{"query": "Crypto trading Pakistan mein legal hai ya nahi current rules ke mutabiq?", "category": "investment", "expected_source": "crypto info"}
+{"query": "Islamic jurisprudence ke mutabiq insurance ya takaful mein kya farq hai?", "category": "islamic_finance", "expected_source": "islamic_jurisprudence"}
+{"query": "Murabaha financing ka step-by-step process Islamic bank mein?", "category": "islamic_finance", "expected_source": "islamic_jurisprudence"}
+{"query": "Pakistan mein investment growth aur economic outlook 2025 ka kya hai?", "category": "investment", "expected_source": "paksitan growth and investment"}
+{"query": "Saving account vs current account difference Pakistan banks ke hisab se?", "category": "banking", "expected_source": "saving guide"}
+{"query": "Money management basics Pakistan ke salaried families ke liye?", "category": "personal_finance", "expected_source": "money management"}
+{"query": "Digital payments Pakistan mein Raast aur 1Link kaise kaam karte hain?", "category": "digital_finance", "expected_source": "digital payments"}
