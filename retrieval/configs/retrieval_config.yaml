@@ -132,8 +132,8 @@ fusion:
 # -----------------------------------------------------------------------------
 source_routing:
   legal_query:
-    qa: 0.35
-    pdf: 0.65
+    qa: 0.25
+    pdf: 0.75
   practical_query:
     qa: 0.55
     pdf: 0.45
@@ -192,7 +192,7 @@ reranker:
   # Cross-encoder scores PDF chunks lower than tight QA matches because PDF
   # chunks are longer and more abstract. Without a separate threshold the QA-
   # calibrated 0.55 bar blocks otherwise-correct PDF answers.
-  pdf_retry_threshold: 0.30
+  pdf_retry_threshold: 0.40
 
   # Adaptive confidence gate:
   # adjusts threshold per query using reranker score gap and query length.

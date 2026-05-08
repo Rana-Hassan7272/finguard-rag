@@ -18,8 +18,8 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-CHUNK_SIZE = 512
-CHUNK_OVERLAP = 100
+CHUNK_SIZE = 384
+CHUNK_OVERLAP = 80
 
 
 def _infer_section_title(text: str) -> Optional[str]:

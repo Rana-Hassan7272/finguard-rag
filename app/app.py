@@ -104,8 +104,13 @@ def startup() -> None:
 
         log.info("Loading cross-encoder reranker (sentence-transformers, matches eval path)...")
         from sentence_transformers import CrossEncoder
-        reranker_model = _cfg.get("reranker", {}).get("model_id", "BAAI/bge-reranker-base")
-        _reranker = CrossEncoder(reranker_model)
+        reranker_cfg = _cfg.get("reranker", {})
+        reranker_model = reranker_cfg.get("model_id", "BAAI/bge-reranker-base")
+        _reranker = CrossEncoder(
+            reranker_model,
+            max_length=int(reranker_cfg.get("max_length", 384)),
+            device=reranker_cfg.get("device"),
+        )
 
         log.info("Building semantic cache and generator...")
         from cache.semantic_cache import build_cache_from_config
@@ -245,14 +250,64 @@ def process_query(query: str):
         t_rerank = time.time()
         reranker_scores: list[float] = []
         reranked_docs: list[dict] = []
+        gate_retry_used = False
+        gate_retry_pdf_score = None
+        reranker_cfg = _cfg.get("reranker", {}) if _cfg else {}
+        rerank_input_k = int(reranker_cfg.get("input_k", len(candidate_docs) or 0))
+        confidence_threshold = float(reranker_cfg.get("confidence_threshold", 0.55))
+        pdf_retry_threshold = float(reranker_cfg.get("pdf_retry_threshold", 0.40))
+        batch_size = int(reranker_cfg.get("batch_size", 16))
 
         if candidate_docs:
             rerank_q = diag.get("query_expanded") or query_normalized
-            pairs = [(rerank_q, _doc_snippet(doc, max_chars=512)) for doc in candidate_docs]
-            scores = _reranker.predict(pairs).tolist()
-            ranked = sorted(zip(scores, candidate_docs), key=lambda x: x[0], reverse=True)
+            rerank_pool = candidate_docs[: max(3, rerank_input_k)] if rerank_input_k > 0 else candidate_docs
+            pairs = [(rerank_q, _doc_snippet(doc, max_chars=384)) for doc in rerank_pool]
+            scores = _reranker.predict(pairs, batch_size=batch_size, show_progress_bar=False).tolist()
+            ranked = sorted(zip(scores, rerank_pool), key=lambda x: x[0], reverse=True)
             reranked_docs = [doc for _, doc in ranked[:3]]
             reranker_scores = [score for score, _ in ranked[:3]]
+
+            if (
+                _cfg.get("phase6_7", {}).get("gate_retry_pdf_only", True)
+                and getattr(_pipeline, "_dual_retriever", None) is not None
+                and reranker_scores
+                and float(reranker_scores[0]) < confidence_threshold
+            ):
+                pdf_out = _pipeline._dual_retriever.retrieve(
+                    query=rerank_q,
+                    language=diag.get("language_detected", lang_result.label),
+                    query_intent="legal",
+                    category_filter=None,
+                    top_k=max(9, rerank_input_k),
+                    force_pdf_only=True,
+                )
+                pdf_docs = []
+                for d in pdf_out.docs:
+                    doc = dict(d)
+                    if not doc.get("doc_text"):
+                        doc["doc_text"] = (
+                            doc.get("retrieval_text")
+                            or doc.get("chunk_text")
+                            or doc.get("answer")
+                            or doc.get("question")
+                            or ""
+                        )
+                    pdf_docs.append(doc)
+
+                if pdf_docs:
+                    pdf_pool = pdf_docs[: max(3, rerank_input_k)] if rerank_input_k > 0 else pdf_docs
+                    pdf_pairs = [(rerank_q, _doc_snippet(doc, max_chars=384)) for doc in pdf_pool]
+                    pdf_raw_scores = _reranker.predict(
+                        pdf_pairs,
+                        batch_size=batch_size,
+                        show_progress_bar=False,
+                    ).tolist()
+                    pdf_ranked = sorted(zip(pdf_raw_scores, pdf_pool), key=lambda x: x[0], reverse=True)
+                    if pdf_ranked and float(pdf_ranked[0][0]) > float(reranker_scores[0]):
+                        reranked_docs = [doc for _, doc in pdf_ranked[:3]]
+                        reranker_scores = [score for score, _ in pdf_ranked[:3]]
+                        gate_retry_used = True
+                        gate_retry_pdf_score = float(reranker_scores[0])
 
         reranker_ms = (time.time() - t_rerank) * 1000
 
@@ -275,6 +330,7 @@ def process_query(query: str):
             reranked_docs=reranked_docs,
             reranker_scores=reranker_scores,
             language=lang_result.label,
+            threshold_override=pdf_retry_threshold if gate_retry_used else None,
         )
         llm_ms = (time.time() - t_gen) * 1000
 

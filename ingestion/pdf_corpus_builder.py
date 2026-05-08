@@ -146,8 +146,8 @@ def build_corpus(args: argparse.Namespace) -> None:
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Build PDF retrieval corpus")
     p.add_argument("--pdf_dir", default=DEFAULT_PDF_DIR)
-    p.add_argument("--chunk_size", type=int, default=512)
-    p.add_argument("--chunk_overlap", type=int, default=100)
+    p.add_argument("--chunk_size", type=int, default=384)
+    p.add_argument("--chunk_overlap", type=int, default=80)
     p.add_argument("--dry_run", action="store_true")
     return p.parse_args()
 

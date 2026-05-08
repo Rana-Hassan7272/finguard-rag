@@ -6,13 +6,21 @@ from pathlib import Path
 CONFIG_PATH = Path("retrieval/configs/retrieval_config.yaml")
 
 LEGAL_KEYWORDS = {
-    "law", "act", "regulation", "section", "sbp", "secp", "ordinance", "clause",
-    "statute", "schedule", "circular", "directive", "rule", "provision", "subsection",
-    "qanoon", "dafa", "zabita", "ain", "hukm",
+    "law", "act", "regulation", "regulations", "section", "sbp", "secp", "fbr",
+    "ordinance", "clause", "statute", "schedule", "circular", "directive", "rule",
+    "rules", "provision", "subsection", "exemption", "exemptions", "slab", "slabs",
+    "taxable", "withholding", "filers", "non-filers", "nonfilers", "qanoon", "dafa",
+    "zabita", "ain", "hukm",
+}
+
+LEGAL_PHRASES = {
+    "government employee", "government employees", "sarkari mulazim", "sarkari employee",
+    "tax slab", "tax slabs", "income tax", "digital lending", "lending apps",
 }
 
 ROMAN_URDU_LEGAL_KEYWORDS = {
-    "qanoon", "dafa", "zabita", "ain", "hukm", "shart", "shaq",
+    "qanoon", "dafa", "zabita", "ain", "hukm", "shart", "shaq", "sarkari",
+    "mulazim", "hukoomati",
 }
 
 URDU_LEGAL_KEYWORDS = {
@@ -80,6 +88,10 @@ def normalize_query(text: str) -> str:
 
 
 def detect_query_intent(text: str, language: str) -> str:
+    lowered = text.lower()
+    if any(phrase in lowered for phrase in LEGAL_PHRASES):
+        return "legal"
+
     words = set(text.lower().split())
     if language == "urdu":
         if words & URDU_LEGAL_KEYWORDS:
