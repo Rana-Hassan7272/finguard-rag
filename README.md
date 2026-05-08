@@ -91,16 +91,17 @@ Parallel Dual Retrieval
     └── PDF FAISS + BM25     (language-weighted RRF)
     │
     ▼
-RRF Fusion                   (source-routing weights: QA 0.7 / PDF 0.3 practical)
+RRF Fusion                   (source routing: QA 0.55 / PDF 0.45 practical, QA 0.25 / PDF 0.75 legal)
     │
     ▼
 MMR  top-20 → top-10         (diversity filter, λ=0.7)
     │
     ▼
-Cross-Encoder Reranker       (BAAI/bge-reranker-base, top-10 → top-3)
+Cross-Encoder Reranker       (BAAI/bge-reranker-base, top-6 → top-3)
     │
     ▼
-Confidence Gate              (threshold 0.55 in config — hard block, no LLM call)
+Adaptive Confidence Gate     (base 0.55, adaptive 0.45–0.62; PDF retry path with 0.35 threshold;
+                              extractive floor 0.22)
     │ PASS
     ▼
 Prompt Builder               (QA template vs PDF/policy template)
@@ -178,8 +179,11 @@ Cache hits (L1) skip retrieval and LLM. Language and category detection stay sub
 - **Fine-tuned embeddings** — `paraphrase-multilingual-mpnet-base-v2` fine-tuned with Multiple Negatives Ranking Loss and domain-aware hard negative mining; Acc@1 = 93.9%, MRR@10 = 0.966
 - **Hybrid retrieval** — FAISS (IndexFlatIP) + BM25 (rank_bm25) fused via Reciprocal Rank Fusion with language-aware weights
 - **MMR diversity** — Max Marginal Relevance at λ=0.7 prevents duplicate results in top-10
-- **Cross-encoder reranking** — BAAI/bge-reranker-base scores all 10 candidates, selects top-3
-- **Confidence gate** — Hard blocks LLM call when reranker top‑1 score is below config threshold (**default 0.55**); returns language‑appropriate fallback message
+- **Cross-encoder reranking** — BAAI/bge-reranker-base scores top-6 candidates and selects top-3 (lowered from 10 to cut CPU cost ~40% with no Acc@3 loss)
+- **Adaptive confidence gate** — Base threshold 0.55, dynamically adjusted between 0.45 and 0.62 based on reranker score gap and query length. PDF retry path uses a lower 0.35 threshold; extractive floor 0.22 returns grounded snippets instead of "no info" when the gate narrowly fails
+- **PDF gate retry** — When the gate blocks on QA candidates, the pipeline re-retrieves PDF-only candidates and re-ranks them. If the PDF top score beats the QA top score, those documents replace the candidates and the lower 0.35 threshold is used
+- **Roman Urdu / Urdu → English query glossary** — Roman Urdu and Urdu-script tokens like `sarkari mulazim`, `tankhah`, `qist`, `سرکاری`, `ملازم` are appended with English equivalents (`government employee`, `salary`, `installment`, etc.) so BM25 can match English PDF chunks
+- **Source attribution** — Every answer ends with a `Source:` line citing the document name (e.g. "Source: Income Tax Return Fbr") or "Source: Community QA"
 - **Extractive fallback** — If the LLM call fails or returns empty text after the gate passes, the pipeline can return the **top retrieved QA answer** so users still see grounded content
 - **Two-level semantic cache** — L1 (answer cache, sim > 0.95) and L2 (retrieval cache, sim > 0.90) with corpus-version-based automatic invalidation and 48-hour TTL
 - **Metadata pre-filtering** — 8-category keyword detector restricts FAISS search space before retrieval (applied when confidence ≥ 0.65)

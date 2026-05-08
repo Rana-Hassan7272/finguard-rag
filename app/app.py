@@ -310,10 +310,16 @@ def process_query(query: str):
                         gate_retry_pdf_score = float(reranker_scores[0])
 
         reranker_ms = (time.time() - t_rerank) * 1000
+        preview_docs_html = _docs_panel_html(reranked_docs, reranker_scores)
+        retry_note = (
+            f"Generating answer… PDF retry used (top score {gate_retry_pdf_score:.3f})"
+            if gate_retry_used and gate_retry_pdf_score is not None
+            else "Generating answer…"
+        )
 
         yield (
             _format_lang_label(lang_result.label), "", "", "", "", "",
-            _empty_docs_html(), "", "Generating answer…", ""
+            preview_docs_html, "", retry_note, ""
         )
 
         # ── Step 3: Query intent (from diagnostics or router) ───────────
@@ -394,9 +400,10 @@ def process_query(query: str):
 
     except Exception as exc:
         log.error(f"Query processing error: {exc}", exc_info=True)
+        message = f"⚠️ An error occurred: `{exc}`"
         yield (
             "", "", "", "", "", "", _empty_docs_html(),
-            "", f"⚠️ An error occurred: {exc}", ""
+            message, "", message
         )
 
 
@@ -670,8 +677,8 @@ def build_ui():
                 latency_display = gr.HTML()
 
         # ── Status / error line ─────────────────────────────────────────
-        status_line = gr.Markdown(visible=False)
-        error_line = gr.Markdown(visible=False)
+        status_line = gr.Markdown()
+        error_line = gr.Markdown()
 
         # ── Examples ────────────────────────────────────────────────────
         gr.Markdown("---\n### 📝 Example Questions")

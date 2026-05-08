@@ -169,7 +169,7 @@ class Generator:
                     total_ms=round((time.time() - t_total) * 1000, 2),
                     stage_ms=stage_ms,
                 )
-            fallback = build_fallback_message(language)
+            fallback = build_fallback_message(language, query=query)
             log.info(f"Gate BLOCKED: {gate.reason} | query='{query[:50]}'")
             return GenerationOutput(
                 answer=fallback,
@@ -254,7 +254,7 @@ class Generator:
                     total_ms=round((time.time() - t_total) * 1000, 2),
                     stage_ms=stage_ms,
                 )
-            fallback = build_fallback_message(language)
+            fallback = build_fallback_message(language, query=query)
             log.warning(
                 f"LLM failed: {llm_response.error} | "
                 f"returning generic fallback for query='{query[:50]}'"

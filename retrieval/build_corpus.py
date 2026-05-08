@@ -20,6 +20,10 @@ VALID_CATEGORIES = {
 VALID_DIFFICULTIES = {"easy", "medium", "complex"}
 DEDUP_THRESHOLD = 0.97
 
+SELF_REF_LENGTH_RATIO = 0.85
+SELF_REF_TOKEN_OVERLAP = 0.80
+SELF_REF_MIN_QUESTION_LEN = 10
+
 ARTIFACTS = Path("retrieval/artifacts")
 
 
@@ -54,6 +58,43 @@ def _make_doc_id(source_id: str | int) -> str:
     return f"doc_{sid}"
 
 
+def _normalize_for_compare(text: str) -> str:
+    return " ".join(str(text).lower().split())
+
+
+def _is_self_referencing(question: str, answer: str) -> tuple[bool, str]:
+    """
+    Detect QA entries where the answer is essentially the question itself.
+    Triggers when:
+      - One side contains the other after normalization, OR
+      - Token-level Jaccard overlap is very high.
+    """
+    q_norm = _normalize_for_compare(question)
+    a_norm = _normalize_for_compare(answer)
+    if len(q_norm) < SELF_REF_MIN_QUESTION_LEN or len(a_norm) < SELF_REF_MIN_QUESTION_LEN:
+        return False, ""
+
+    if q_norm == a_norm:
+        return True, "answer_equals_question"
+
+    short, long = (q_norm, a_norm) if len(q_norm) <= len(a_norm) else (a_norm, q_norm)
+    if short and short in long:
+        ratio = len(short) / max(1, len(long))
+        if ratio >= SELF_REF_LENGTH_RATIO:
+            return True, f"answer_contains_question_ratio={ratio:.2f}"
+
+    q_tokens = set(q_norm.split())
+    a_tokens = set(a_norm.split())
+    if q_tokens and a_tokens:
+        intersect = len(q_tokens & a_tokens)
+        union = len(q_tokens | a_tokens)
+        jaccard = intersect / union if union else 0.0
+        if jaccard >= SELF_REF_TOKEN_OVERLAP:
+            return True, f"token_overlap_jaccard={jaccard:.2f}"
+
+    return False, ""
+
+
 def _validate_schema(doc: dict, idx: int) -> list[str]:
     errors = []
     for field in REQUIRED_FIELDS:
@@ -63,6 +104,12 @@ def _validate_schema(doc: dict, idx: int) -> list[str]:
         errors.append(f"doc #{idx} ({doc.get('doc_id')}): invalid category '{doc['category']}'")
     if doc.get("difficulty") and doc["difficulty"] not in VALID_DIFFICULTIES:
         errors.append(f"doc #{idx} ({doc.get('doc_id')}): invalid difficulty '{doc['difficulty']}'")
+    if doc.get("question") and doc.get("answer"):
+        is_self_ref, reason = _is_self_referencing(doc["question"], doc["answer"])
+        if is_self_ref:
+            errors.append(
+                f"doc #{idx} ({doc.get('doc_id')}): self-referencing entry — {reason}"
+            )
     return errors
 
 
@@ -120,6 +167,7 @@ def build_corpus(
 
     docs: list[dict] = []
     schema_errors: list[str] = []
+    self_ref_skipped: list[dict] = []
     seen_source_ids: set[str] = set()
     seen_doc_ids: set[str] = set()
 
@@ -150,6 +198,10 @@ def build_corpus(
                 doc[opt] = rec[opt]
 
         errors = _validate_schema(doc, i)
+        if any("self-referencing" in e for e in errors):
+            self_ref_skipped.append(
+                {"doc_id": doc_id, "question_preview": doc["question"][:80]}
+            )
         schema_errors.extend(errors)
         if not errors:
             docs.append(doc)
@@ -185,6 +237,8 @@ def build_corpus(
         "removed_near_duplicates": len(removed_ids),
         "removed_doc_ids": removed_ids,
         "schema_errors": len(schema_errors),
+        "self_referencing_skipped": len(self_ref_skipped),
+        "self_referencing_examples": self_ref_skipped[:10],
         "category_counts": cat_counts,
         "difficulty_counts": diff_counts,
         "avg_question_length_words": round(float(np.mean(q_lengths)), 2) if q_lengths else 0,

@@ -183,11 +183,37 @@ def build_prompt(
     )
 
 
-def build_fallback_message(language: str = "roman_urdu") -> str:
+def build_fallback_message(
+    language: str = "roman_urdu",
+    query: str = "",
+) -> str:
     """
-    Return the generic fallback message in the appropriate language.
-    Used when the confidence gate blocks, or when the LLM fails and no extractive QA answer exists.
+    Return the fallback message in the appropriate language. If the query is
+    very short / vague (≤ 2 tokens), we add a hint asking the user to be
+    more specific instead of just saying "no information".
     """
+    is_vague = bool(query) and len(query.strip().split()) <= 2
+
+    if is_vague:
+        vague_messages = {
+            "urdu": (
+                "آپ کا سوال بہت مختصر ہے۔ براہ کرم زیادہ تفصیل سے پوچھیں — مثلاً "
+                "\"پاکستان میں سرکاری ملازم کے لیے ٹیکس سلیب کیا ہے؟\" یا "
+                "\"بچت کھاتہ کیسے کھولیں؟\""
+            ),
+            "roman_urdu": (
+                "Aap ka sawal bahut chhota hai. Meherbani kar ke thoda detail "
+                "se poochein — jaise \"Pakistan mein sarkari mulazim ka tax slab "
+                "kya hai?\" ya \"Saving account kaise kholein?\""
+            ),
+            "english": (
+                "Your question is very short. Please ask in more detail — for "
+                "example: \"What is the tax slab for government employees in "
+                "Pakistan?\" or \"How do I open a savings account?\""
+            ),
+        }
+        return vague_messages.get(language, vague_messages["roman_urdu"])
+
     messages = {
         "urdu": "معذرت، مجھے اس سوال کا جواب دینے کے لیے کافی معلومات نہیں ملیں۔ براہ کرم سوال کو دوبارہ واضح طریقے سے پوچھیں۔",
         "roman_urdu": "Mujhe is sawal ka jawab dene ke liye kafi information nahi mili. Meherbani kar ke apna sawal dobara poochein.",

@@ -163,7 +163,45 @@ DOMAIN_SPELL_FIXES = {
     "pakstan": "pakistan",
     "pakistn": "pakistan",
     "pakistaan": "pakistan",
+    "managemnt": "management",
+    "managment": "management",
+    "managemant": "management",
+    "managemenrt": "management",
+    "managament": "management",
+    "investmnt": "investment",
+    "invesment": "investment",
+    "investmant": "investment",
+    "exemtion": "exemption",
+    "exempton": "exemption",
+    "exemtption": "exemption",
+    "ordinanace": "ordinance",
+    "ordinence": "ordinance",
+    "regualtion": "regulation",
+    "regulaton": "regulation",
+    "incom": "income",
+    "salaray": "salary",
+    "salry": "salary",
+    "interst": "interest",
+    "intrest": "interest",
+    "loaan": "loan",
+    "fbrr": "fbr",
+    "secpc": "secp",
 }
+
+# Additional domain words that should be in the fuzzy-correction vocabulary
+# even when they don't appear in EXPANSION_MAP (single common nouns).
+EXTRA_TYPO_VOCAB = frozenset({
+    "management", "manage", "managing",
+    "investment", "investments",
+    "exemption", "exemptions",
+    "ordinance", "regulation", "regulations",
+    "income", "salary", "interest", "loan",
+    "government", "employee", "employees",
+    "banking", "finance", "financial",
+    "savings", "account", "transfer",
+    "remittance", "tax", "filer", "non-filer",
+    "policy", "section", "circular",
+})
 
 
 def apply_domain_spell_fixes(tokens: list[str]) -> list[str]:
@@ -230,6 +268,7 @@ def get_typo_vocabulary() -> frozenset[str]:
             words.add(v)
     for v in DOMAIN_SPELL_FIXES.values():
         words.add(v)
+    words.update(EXTRA_TYPO_VOCAB)
     try:
         from retrieval.language import ENGLISH_WORD_SET, ROMAN_URDU_SIGNALS
 

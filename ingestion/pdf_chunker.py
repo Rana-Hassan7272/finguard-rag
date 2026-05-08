@@ -45,6 +45,47 @@ def _prepend_title(title: Optional[str], body: str) -> str:
     return body
 
 
+# Patterns that strongly indicate a cover / front-matter / boilerplate chunk
+# that should NOT be indexed because it never contains an answer.
+_BOILERPLATE_PATTERNS = re.compile(
+    r"(table of contents|copyright|all rights reserved|published by|"
+    r"acknowledg(e)?ment|preface|foreword|disclaimer|about (us|the author)|"
+    r"our vision|our mission|the essential guide to)",
+    re.IGNORECASE,
+)
+
+
+def _is_low_value_chunk(body: str, page_no: Optional[int]) -> tuple[bool, str]:
+    """
+    Drop title pages, ToCs, copyright/disclaimer pages, and very short
+    "marketing" chunks. Returns (drop, reason).
+    """
+    text = body.strip()
+    if len(text) < 80:
+        return True, "too_short"
+
+    word_count = len(text.split())
+    if word_count < 25:
+        return True, "few_words"
+
+    sentence_count = len([s for s in re.split(r"[.!?]\s+", text) if len(s.strip()) > 3])
+    if sentence_count < 2 and word_count < 60:
+        return True, "single_sentence_short"
+
+    upper_chars = sum(1 for c in text if c.isupper())
+    letter_chars = sum(1 for c in text if c.isalpha())
+    if letter_chars > 0 and (upper_chars / letter_chars) > 0.55 and word_count < 80:
+        return True, "all_caps_marketing"
+
+    if _BOILERPLATE_PATTERNS.search(text):
+        return True, "boilerplate"
+
+    if page_no is not None and page_no <= 2 and word_count < 80:
+        return True, "front_matter_short"
+
+    return False, ""
+
+
 def _file_category_hint(filename: str) -> Optional[str]:
     name = filename.lower()
     rules = [
@@ -106,6 +147,7 @@ def load_and_chunk(
 
     raw_chunks = []
     chunk_counters: dict[str, int] = {}
+    skipped_reasons: dict[str, int] = {}
 
     for node in nodes:
         source_file = Path(
@@ -120,12 +162,18 @@ def load_and_chunk(
         except (TypeError, ValueError):
             page_no = None
 
+        body = node.get_content().strip()
+        if not body:
+            skipped_reasons["empty"] = skipped_reasons.get("empty", 0) + 1
+            continue
+
+        drop, reason = _is_low_value_chunk(body, page_no)
+        if drop:
+            skipped_reasons[reason] = skipped_reasons.get(reason, 0) + 1
+            continue
+
         chunk_idx = chunk_counters.get(source_file, 0)
         chunk_counters[source_file] = chunk_idx + 1
-
-        body = node.get_content().strip()
-        if not body or len(body) < 30:
-            continue
 
         title = _infer_section_title(body)
         retrieval_text = _prepend_title(title, body)
@@ -144,5 +192,8 @@ def load_and_chunk(
             "_category_hint": _file_category_hint(source_file),
         })
 
-    log.info(f"Produced {len(raw_chunks)} valid chunks from {len(pdf_files)} PDFs")
+    log.info(
+        f"Produced {len(raw_chunks)} valid chunks from {len(pdf_files)} PDFs "
+        f"(skipped: {skipped_reasons or 'none'})"
+    )
     return raw_chunks
