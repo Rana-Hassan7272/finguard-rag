@@ -180,7 +180,17 @@ def detect_language(text: str) -> LanguageResult:
     if len(tokens) <= 3 and urdu_ratio == 0.0:
         return LanguageResult("roman_urdu", 0.5, urdu_ratio, eng_ratio, ru_ratio)
 
-    # Rule 5: Fallback
+    # Rule 5: Latin-script tie-breaker — pick the higher of english vs roman_urdu signals
+    # rather than falling through to "unknown" which kills retrieval quality.
+    # Pakistani finance queries are overwhelmingly Roman Urdu, so it is the safer default.
+    if urdu_ratio == 0.0:
+        if eng_ratio > ru_ratio and eng_ratio > 0.0:
+            return LanguageResult("english", round(min(0.6, max(0.4, eng_ratio + 0.2)), 2),
+                                  urdu_ratio, eng_ratio, ru_ratio)
+        return LanguageResult("roman_urdu", round(max(0.4, ru_ratio + 0.2), 2),
+                              urdu_ratio, eng_ratio, ru_ratio)
+
+    # Rule 6: Fallback (truly unrecognisable, e.g. only emojis / non-Latin non-Urdu)
     return LanguageResult("unknown", 0.3, urdu_ratio, eng_ratio, ru_ratio)
 
 

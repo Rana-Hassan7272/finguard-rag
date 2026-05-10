@@ -43,11 +43,19 @@ ANSWER:"""
 PDF_TEMPLATE = """\
 You are a helpful financial assistant for Pakistani users.
 Answer ONLY using the provided context below, which is drawn from official financial documents and regulations.
+
+Synthesis rules (mandatory):
+— Re-write the information in your own words. Do NOT copy long phrases verbatim.
+— Do NOT include duplicated phrases, broken OCR fragments, page numbers, or repeated headers from the chunk.
+— Drop boilerplate like "THE GAZETTE OF PAKISTAN", "PART I", repeated headings, or table-of-contents lines.
+— Explain the concept in plain language so a Pakistani reader without a legal background can understand.
+— If the chunk only contains structural / boilerplate text and no real answer, say exactly: "I don't have enough information to answer this."
+
 At the END of your answer, on a new line, write: Source: <document name(s)>
 — Use the document name shown in the Source label (e.g. "Source: Income Tax Return Fbr").
 — If the answer combines multiple documents, list them comma-separated.
 If only Community QA chunks are present, write: Source: Community QA.
-If the context does not contain enough information to answer, say exactly: "I don't have enough information to answer this."
+
 Keep your answer (excluding the Source line) to 2-3 sentences maximum.
 Language rule (mandatory): Write ONLY in the same language as QUESTION below.
 — If QUESTION is in Urdu script (اردو), answer entirely in Urdu script.

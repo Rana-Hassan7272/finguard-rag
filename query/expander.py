@@ -238,15 +238,24 @@ def _apply_glossary(query: str, glossary: dict[str, str], phrases: dict[str, str
     return f"{query} {' '.join(additions)}"
 
 
+import logging
+log = logging.getLogger(__name__)
+
+
 def expand_query(query: str, language: str = "english") -> str:
     normalized = query.strip().lower()
+    original = query
     if language == "urdu":
         result = query
         for key, expansion in URDU_EXPANSION_MAP.items():
             if key in query:
                 result = f"{result} {expansion}"
                 break
-        return _apply_glossary(result, URDU_TO_ENGLISH_GLOSSARY)
+        result = _apply_glossary(result, URDU_TO_ENGLISH_GLOSSARY)
+        if result != original:
+            log.info("expand_query[urdu]: '%s' -> '%s'", original, result)
+        return result
+
     if language == "roman_urdu":
         expansion_map = ROMAN_URDU_EXPANSION_MAP
     else:
@@ -265,5 +274,10 @@ def expand_query(query: str, language: str = "english") -> str:
 
     if language == "roman_urdu":
         expanded = _apply_glossary(expanded, ROMAN_URDU_TO_ENGLISH_GLOSSARY, ROMAN_URDU_TO_ENGLISH_PHRASES)
+
+    if expanded != original:
+        log.info("expand_query[%s]: '%s' -> '%s'", language, original, expanded)
+    else:
+        log.debug("expand_query[%s]: no expansion for '%s'", language, original)
 
     return expanded

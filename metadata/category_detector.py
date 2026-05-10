@@ -237,7 +237,73 @@ DEFAULT_KEYWORD_MAP: dict[str, list[tuple[str, float]]] = {
         ("dividend", 0.8),
         ("capital gain", 0.9),
         ("sarmaya", 0.7),          # Roman Urdu: capital/investment
+        ("sarmaya kari", 0.9),     # Roman Urdu: investment
+        ("paisa lagana", 0.7),     # Roman Urdu: invest money
+        ("paise lagana", 0.7),
+        ("crypto", 0.9),
+        ("cryptocurrency", 1.0),
+        ("bitcoin", 0.9),
+        ("virtual asset", 0.9),
+        ("digital asset", 0.8),
+        ("blockchain", 0.8),
         ("منافع", 0.7),            # Urdu: profit
+        ("سرمایہ", 0.8),           # Urdu: capital
+        ("سرمایہ کاری", 0.9),      # Urdu: investment
+    ],
+
+    "personal_finance": [
+        # Money management, budgeting, savings habits
+        ("money management", 1.0),
+        ("budget", 0.9),
+        ("budgeting", 0.9),
+        ("save money", 0.8),
+        ("savings", 0.6),
+        ("financial planning", 1.0),
+        ("financial wellbeing", 0.9),
+        ("emergency fund", 1.0),
+        ("expense tracking", 0.9),
+        ("paise bachana", 0.9),    # Roman Urdu: save money
+        ("paise ki qadar", 0.8),   # Roman Urdu: value of money
+        ("paise sambhalna", 0.8),  # Roman Urdu: handle money
+        ("kharcha control", 0.8),  # Roman Urdu: expense control
+        ("ghar ka kharcha", 0.7),  # Roman Urdu: household expenses
+        ("pocket money", 0.8),
+        ("jaib kharch", 0.8),      # Roman Urdu: pocket money
+        ("bachay ko", 0.6),
+        ("bachon ko", 0.6),
+        ("teach kids", 0.7),
+        ("financial literacy", 0.9),
+        ("maaliati taleem", 0.8),  # Roman Urdu: financial education
+        ("بچت", 0.7),              # Urdu: savings
+        ("مالی منصوبہ بندی", 0.9), # Urdu: financial planning
+    ],
+
+    "financial_education": [
+        # Generic learning / explanatory queries about finance concepts
+        ("what is", 0.3),
+        ("kya hai", 0.3),
+        ("kya hota hai", 0.4),
+        ("kya hoti hai", 0.4),
+        ("kaise kaam", 0.4),
+        ("how does", 0.3),
+        ("explain", 0.5),
+        ("samjhayen", 0.5),        # Roman Urdu: explain
+        ("samjhao", 0.5),
+        ("difference between", 0.6),
+        ("farq kya", 0.6),         # Roman Urdu: what difference
+        ("regulation", 0.7),
+        ("circular", 0.7),
+        ("ordinance", 0.7),
+        ("act", 0.4),
+        ("section", 0.6),
+        ("law", 0.5),
+        ("policy", 0.6),
+        ("rules", 0.5),
+        ("sbp", 0.7),
+        ("secp", 0.7),
+        ("government employee", 0.8),
+        ("sarkari mulazim", 0.8),
+        ("ٹیکس قانون", 0.8),
     ],
 
     "insurance": [

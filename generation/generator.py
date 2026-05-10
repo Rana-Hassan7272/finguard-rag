@@ -474,6 +474,16 @@ class Generator:
                 reason="empty_doc_text",
             )
 
+        # Hard early-exit: if the top score is essentially zero, retrieval truly failed.
+        # Don't bother running adaptive threshold logic — block immediately.
+        HARD_BLOCK_FLOOR = 0.10
+        if top_score < HARD_BLOCK_FLOOR:
+            return GateResult(
+                passed=False,
+                top_score=top_score,
+                reason=f"hard_block_low_score ({top_score:.4f} < {HARD_BLOCK_FLOOR})",
+            )
+
         if threshold_override is not None:
             effective_threshold = float(threshold_override)
             threshold_reason = f"override (pdf_retry_threshold={effective_threshold:.4f})"
