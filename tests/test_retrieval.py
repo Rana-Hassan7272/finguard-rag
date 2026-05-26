@@ -130,29 +130,27 @@ class TestFusion:
         assert "qa_001" in top_ids or "qa_002" in top_ids
     
     def test_rrf_score_calculation(self):
-        """Test RRF score formula"""
-        from retrieval.fusion import _rrf_score
+        """Test RRF contribution formula"""
+        from retrieval.fusion import _rrf_contribution
         
-        # RRF score = weight * sum(1 / (k + rank))
-        score = _rrf_score(
-            vector_weight=0.6,
-            bm25_weight=0.4,
-            vector_rank=1,
-            bm25_rank=2,
-            rrf_k=60,
-        )
+        # _rrf_contribution(rank, rrf_k, weight) = weight / (rrf_k + rank)
+        vector_contrib = _rrf_contribution(rank=1, rrf_k=60, weight=0.6)
+        bm25_contrib   = _rrf_contribution(rank=2, rrf_k=60, weight=0.4)
+        combined = vector_contrib + bm25_contrib
         
-        # Manual calculation
-        expected = 0.6 * (1 / 61) + 0.4 * (1 / 62)
-        assert abs(score - expected) < 0.0001
+        expected = 0.6 / 61 + 0.4 / 62
+        assert abs(combined - expected) < 0.0001
     
     def test_empty_results_handling(self):
         """Test fusion with empty result sets"""
         from retrieval.fusion import fuse
+        from types import SimpleNamespace
+        
+        bm25_item = SimpleNamespace(doc_id="qa_001", score=0.9, score_norm=0.9, rank=1, doc={})
         
         fused = fuse(
             vector_results=[],
-            bm25_results=[{"doc_id": "qa_001", "score": 0.9}],
+            bm25_results=[bm25_item],
             vector_weight=0.6,
             bm25_weight=0.4,
         )
