@@ -248,11 +248,11 @@ class TestLanguageDetection:
         """Test correct fusion weights are returned per language"""
         from retrieval.language import detect_and_get_weights
         
-        weights = detect_and_get_weights("zakat ka hisab", base_config["fusion"]["language_weights"])
+        lang_result, bm25_w, vec_w = detect_and_get_weights("zakat ka hisab", base_config)
         
-        assert "bm25_weight" in weights
-        assert "vector_weight" in weights
-        assert weights["bm25_weight"] + weights["vector_weight"] == 1.0
+        assert bm25_w + vec_w == pytest.approx(1.0, abs=1e-6)
+        assert 0.0 <= bm25_w <= 1.0
+        assert 0.0 <= vec_w <= 1.0
 
 
 @pytest.mark.unit
