@@ -305,6 +305,42 @@ class Generator:
             stage_ms=stage_ms,
         )
 
+    # Pakistani finance vocabulary — Roman Urdu + English + Urdu script terms
+    _FINANCE_TERMS = frozenset([
+        # Islamic finance
+        "zakat", "zakaat", "zakkat", "riba", "halal", "haram", "murabaha",
+        "ijarah", "musharakah", "mudarabah", "sukuk", "nisab", "takaful",
+        "waqf", "hawl", "ushr", "fidya",
+        # Banking
+        "bank", "account", "savings", "deposit", "loan", "credit", "debit",
+        "atm", "iban", "swift", "cheque", "overdraft", "mortgage", "finance",
+        "interest", "profit", "markup", "installment", "qist", "emi",
+        "hbl", "ubl", "meezan", "nbp", "mcb", "faysal", "askari", "js",
+        "habib", "alfalah", "standard", "chartered", "scb",
+        # Digital finance
+        "easypaisa", "jazzcash", "raast", "nift", "1link", "paypak",
+        "mobile", "wallet", "transfer", "transaction", "payment",
+        # Investment
+        "invest", "mutual", "fund", "stock", "shares", "nsc", "prize",
+        "bond", "treasury", "tbill", "psx", "dividend", "portfolio",
+        "naya", "roshan", "digital",
+        # Tax / regulatory
+        "tax", "fbr", "ntn", "iris", "withholding", "income", "return",
+        "sbp", "secp", "pmex",
+        # General finance
+        "paise", "paisa", "rupee", "rupees", "pkr", "money", "cash",
+        "salary", "income", "expense", "budget", "saving", "kharch",
+        "kamai", "tankhwa", "rozgaar", "insurance", "bima",
+        # Urdu script fragments
+        "بینک", "قرض", "زکوٰۃ", "سود", "سرمایہ", "پیسہ",
+    ])
+
+    @classmethod
+    def _has_finance_terms(cls, query: str) -> bool:
+        """Return True if query contains at least one Pakistani finance keyword."""
+        q_lower = query.lower()
+        return any(term in q_lower for term in cls._FINANCE_TERMS)
+
     @staticmethod
     def _normalize_inputs(
         reranked_docs: list,
@@ -482,6 +518,16 @@ class Generator:
                 passed=False,
                 top_score=top_score,
                 reason=f"hard_block_low_score ({top_score:.4f} < {HARD_BLOCK_FLOOR})",
+            )
+
+        # Out-of-scope domain check: if query has no finance terms AND score is
+        # below OOS_THRESHOLD, reject as out-of-domain.
+        OOS_THRESHOLD = 0.50
+        if top_score < OOS_THRESHOLD and not self._has_finance_terms(query):
+            return GateResult(
+                passed=False,
+                top_score=top_score,
+                reason=f"out_of_scope (score={top_score:.4f} < {OOS_THRESHOLD}, no finance terms detected)",
             )
 
         if threshold_override is not None:
