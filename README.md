@@ -10,7 +10,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Tests](https://github.com/Rana-Hassan7272/finguard-rag/actions/workflows/tests.yml/badge.svg)](https://github.com/Rana-Hassan7272/finguard-rag/actions/workflows/tests.yml)
-[![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)](TESTING.md)
+[![Coverage](https://img.shields.io/badge/coverage-passing-brightgreen)](https://github.com/Rana-Hassan7272/finguard-rag/actions/workflows/tests.yml)
 
 Roman Urdu 🔤 · Urdu 🇵🇰 · English 🇬🇧
 
@@ -510,7 +510,7 @@ pip install -r requirements.txt
 pytest tests/ -v -m unit
 
 # Run with coverage report
-pytest tests/ --cov=finguard --cov-report=html --cov-fail-under=80
+pytest tests/ --cov=retrieval --cov=generation --cov=cache --cov=metadata --cov-report=html
 
 # Run real adversarial evaluation
 python run_real_adversarial.py
