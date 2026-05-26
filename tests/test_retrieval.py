@@ -105,17 +105,16 @@ class TestFusion:
         from retrieval.fusion import fuse, FusedResult
         
         # Create mock results
-        vector_results = [
-            {"doc_id": "qa_001", "score": 0.95},
-            {"doc_id": "qa_002", "score": 0.85},
-            {"doc_id": "qa_003", "score": 0.75},
-        ]
+        from types import SimpleNamespace
         
-        bm25_results = [
-            {"doc_id": "qa_002", "score": 0.90},
-            {"doc_id": "qa_001", "score": 0.80},
-            {"doc_id": "qa_004", "score": 0.70},
-        ]
+        def vec(doc_id, score, rank):
+            return SimpleNamespace(doc_id=doc_id, score=score, rank=rank, doc={})
+        
+        def bm25(doc_id, score, rank):
+            return SimpleNamespace(doc_id=doc_id, score=score, score_norm=score, rank=rank, doc={})
+        
+        vector_results = [vec("qa_001", 0.95, 1), vec("qa_002", 0.85, 2), vec("qa_003", 0.75, 3)]
+        bm25_results   = [bm25("qa_002", 0.90, 1), bm25("qa_001", 0.80, 2), bm25("qa_004", 0.70, 3)]
         
         fused = fuse(
             vector_results=vector_results,
