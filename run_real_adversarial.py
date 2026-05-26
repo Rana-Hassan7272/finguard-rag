@@ -70,7 +70,10 @@ def generate_typo_variations(base_queries: List[Dict], n: int = 20) -> List[Dict
     typo_tests = []
     
     for base in base_queries[:5]:  # Use first 5 base queries
-        query = base.get("question_en", "")
+        if not isinstance(base, dict):
+            continue
+        query = (base.get("question_en") or base.get("question") or base.get("question_ur") or "")
+        category = base.get("category", "unknown")
         if not query:
             continue
             
@@ -86,7 +89,7 @@ def generate_typo_variations(base_queries: List[Dict], n: int = 20) -> List[Dict
         if modified != query.lower():
             typo_tests.append({
                 "query": modified,
-                "category": base.get("category", "unknown"),
+                "category": category,
                 "test_type": "typo",
                 "original": query,
             })
@@ -164,15 +167,31 @@ def run_real_adversarial_evaluation(pipeline, samples: List[Dict]) -> Adversaria
     # Generate test cases
     base_queries = samples[:10]
     
+    def get_query(item):
+        """Extract query text handling multiple field name formats"""
+        if not isinstance(item, dict):
+            return str(item)
+        return (item.get("question_en")
+                or item.get("question")
+                or item.get("question_ur")
+                or "")
+    
+    def get_category(item):
+        if not isinstance(item, dict):
+            return "unknown"
+        return item.get("category", "unknown")
+    
     all_tests = []
     
     # Add clean queries
     for q in base_queries:
-        all_tests.append({
-            "query": q.get("question_en", ""),
-            "category": q.get("category", "unknown"),
-            "test_type": "clean",
-        })
+        query_text = get_query(q)
+        if query_text:
+            all_tests.append({
+                "query": query_text,
+                "category": get_category(q),
+                "test_type": "clean",
+            })
     
     # Add adversarial variations
     all_tests.extend(generate_typo_variations(base_queries, n=15))
@@ -332,23 +351,86 @@ def print_report(report: AdversarialReport):
     print("=" * 70)
 
 
+def load_samples() -> list:
+    """Load dataset from multiple possible locations, handle JSON array and JSONL"""
+    # Possible paths: local dev, Kaggle input, HF download
+    candidate_paths = [
+        Path("data/raw/urdu_finance_qa.jsonl"),
+        Path("/kaggle/input/finguard-rag-dataset/urdu_finance_qa.jsonl"),
+        Path("/kaggle/input/finguard-rag-dataset/data/raw/urdu_finance_qa.jsonl"),
+        Path("/kaggle/input/finguard-rag-dataser/urdu_finance_qa.jsonl"),  # typo variant
+        Path("/kaggle/input/finguard-rag-dataser/data/raw/urdu_finance_qa.jsonl"),
+    ]
+    
+    dataset_path = None
+    for p in candidate_paths:
+        if p.exists():
+            dataset_path = p
+            print(f"📂 Found dataset at: {p}")
+            break
+    
+    if dataset_path is None:
+        print("⚠️ Dataset not found locally, downloading from HuggingFace...")
+        try:
+            from datasets import load_dataset
+            ds = load_dataset("hassan7272/urdu-finance-qa", split="train")
+            items = [dict(item) for item in ds]
+            print(f"✅ Downloaded {len(items)} samples from HF")
+            return items
+        except Exception as e:
+            print(f"❌ HF download failed: {e}")
+            return []
+    
+    # Read file - detect if JSON array or JSONL
+    with open(dataset_path, "r", encoding="utf-8") as f:
+        content = f.read().strip()
+    
+    samples = []
+    if content.startswith("["):  # JSON array
+        try:
+            samples = json.loads(content)
+            print(f"✅ Loaded as JSON array: {len(samples)} samples")
+        except Exception as e:
+            print(f"❌ JSON array parse failed: {e}")
+    else:  # JSONL - one object per line
+        for line in content.splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    samples.append(json.loads(line))
+                except:
+                    continue
+        print(f"✅ Loaded as JSONL: {len(samples)} samples")
+    
+    return samples
+
+
+def load_pdfs_from_kaggle() -> list:
+    """Scan Kaggle input for PDF files"""
+    pdf_dirs = [
+        Path("/kaggle/input/finguard-pdfs"),
+        Path("/kaggle/input/finguard-pdf-corpus"),
+        Path("data/pdfs"),
+    ]
+    
+    pdfs = []
+    for d in pdf_dirs:
+        if d.exists():
+            found = list(d.rglob("*.pdf"))
+            if found:
+                print(f"📂 Found {len(found)} PDFs in {d}")
+                pdfs.extend(found)
+    
+    return pdfs
+
+
 def main():
     print("\n" + "=" * 70)
     print("REAL ADVERSARIAL EVALUATION - FINGUARD RAG")
     print("=" * 70)
     
-    # Load dataset
-    samples = []
-    dataset_path = Path("data/raw/urdu_finance_qa.jsonl")
-    
-    if dataset_path.exists():
-        with open(dataset_path, "r", encoding="utf-8") as f:
-            for line in f:
-                try:
-                    samples.append(json.loads(line.strip()))
-                except:
-                    continue
-    
+    # Load dataset - handles both JSON array and JSONL, local and Kaggle paths
+    samples = load_samples()
     print(f"Loaded {len(samples)} samples from dataset")
     
     # Load pipeline
