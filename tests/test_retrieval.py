@@ -280,10 +280,11 @@ class TestQueryProcessing:
         """Test Roman Urdu query normalization"""
         from retrieval.normalization import normalize_query
         
-        # Test repeated character collapsing
-        result = normalize_query("kyaaaa")  # kyaa with extra 'a'
+        # Normalizer collapses repeated characters (e.g. kyaaaa -> kya or kyaa)
+        result = normalize_query("kyaaaa")
         
-        assert "kyaa" in result or result == "kyaaaa"  # Depends on implementation
+        assert isinstance(result, str)
+        assert len(result) < len("kyaaaa")  # Must be shorter after collapsing
     
     def test_urdu_unicode_normalization(self):
         """Test Urdu Unicode normalization"""
