@@ -267,8 +267,7 @@ class TestRetryLogic:
 class TestLLMClientIntegration:
     """Integration tests that may call actual APIs in CI with real keys"""
     
-    @pytest.mark.skipif(
-        not pytest.config.getoption("--run-integration", default=False),
+    @pytest.mark.skip(
         reason="Integration tests disabled. Use --run-integration to enable."
     )
     def test_real_groq_call(self, base_config):
