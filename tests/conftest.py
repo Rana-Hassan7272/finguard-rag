@@ -341,18 +341,26 @@ def clean_environment():
 
 @pytest.fixture
 def mock_groq_api(mock_groq_response):
-    """Mock the Groq API calls"""
-    with patch("generation.llm_client._call_groq") as mock:
-        mock.return_value = mock_groq_response
-        yield mock
+    """Mock the Groq API calls via _PROVIDER_CALLERS dict (avoids import-time binding issue)"""
+    from unittest.mock import MagicMock
+    import generation.llm_client as llm_mod
+    mock = MagicMock(return_value=mock_groq_response)
+    original = llm_mod._PROVIDER_CALLERS.get("groq")
+    llm_mod._PROVIDER_CALLERS["groq"] = mock
+    yield mock
+    llm_mod._PROVIDER_CALLERS["groq"] = original
 
 
 @pytest.fixture
 def mock_openai_api(mock_openai_response):
-    """Mock the OpenAI API calls"""
-    with patch("generation.llm_client._call_openai") as mock:
-        mock.return_value = mock_openai_response
-        yield mock
+    """Mock the OpenAI API calls via _PROVIDER_CALLERS dict (avoids import-time binding issue)"""
+    from unittest.mock import MagicMock
+    import generation.llm_client as llm_mod
+    mock = MagicMock(return_value=mock_openai_response)
+    original = llm_mod._PROVIDER_CALLERS.get("openai")
+    llm_mod._PROVIDER_CALLERS["openai"] = mock
+    yield mock
+    llm_mod._PROVIDER_CALLERS["openai"] = original
 
 
 @pytest.fixture

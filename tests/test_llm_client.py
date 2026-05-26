@@ -47,14 +47,17 @@ class TestLLMClient:
     
     def test_successful_openai_fallback(self, base_config, mock_openai_api, mock_openai_response):
         """Test fallback to OpenAI when Groq fails"""
+        import generation.llm_client as llm_mod
         from generation.llm_client import LLMClient
         
-        # Make Groq fail
-        mock_groq_api = MagicMock(side_effect=Exception("rate_limit_exceeded"))
-        
-        with patch("generation.llm_client._call_groq", mock_groq_api):
+        failing_groq = MagicMock(side_effect=Exception("rate_limit_exceeded"))
+        original_groq = llm_mod._PROVIDER_CALLERS.get("groq")
+        llm_mod._PROVIDER_CALLERS["groq"] = failing_groq
+        try:
             client = LLMClient(base_config)
             response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = original_groq
         
         assert response.success is True
         assert response.provider == "openai"
@@ -74,10 +77,15 @@ class TestLLMClient:
                 raise Exception("rate_limit_exceeded")
             return mock_groq_response
         
-        with patch("generation.llm_client._call_groq", side_effect=fail_then_succeed):
+        import generation.llm_client as llm_mod
+        original = llm_mod._PROVIDER_CALLERS.get("groq")
+        llm_mod._PROVIDER_CALLERS["groq"] = fail_then_succeed
+        try:
             with patch("time.sleep") as mock_sleep:  # Don't actually sleep
                 client = LLMClient(base_config)
                 response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = original
         
         assert response.success is True
         assert call_count == 2  # Failed once, succeeded on retry
@@ -96,10 +104,15 @@ class TestLLMClient:
                 raise TimeoutError("Request timed out")
             return mock_groq_response
         
-        with patch("generation.llm_client._call_groq", side_effect=timeout_then_succeed):
-            with patch("time.sleep"):  # Don't actually sleep
+        import generation.llm_client as llm_mod
+        original = llm_mod._PROVIDER_CALLERS.get("groq")
+        llm_mod._PROVIDER_CALLERS["groq"] = timeout_then_succeed
+        try:
+            with patch("time.sleep"):
                 client = LLMClient(base_config)
                 response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = original
         
         assert response.success is True
         assert call_count == 2
@@ -108,11 +121,18 @@ class TestLLMClient:
         """Test no retry on non-retryable errors"""
         from generation.llm_client import LLMClient
         
-        # Invalid API key should not retry
-        with patch("generation.llm_client._call_groq", side_effect=Exception("invalid_api_key")):
-            with patch("generation.llm_client._call_openai") as mock_openai:
-                client = LLMClient(base_config)
-                response = client.generate("What is zakat?")
+        import generation.llm_client as llm_mod
+        mock_openai = MagicMock(return_value={"text": "ok", "prompt_tokens": 5, "completion_tokens": 5})
+        orig_groq = llm_mod._PROVIDER_CALLERS.get("groq")
+        orig_openai = llm_mod._PROVIDER_CALLERS.get("openai")
+        llm_mod._PROVIDER_CALLERS["groq"] = MagicMock(side_effect=Exception("invalid_api_key"))
+        llm_mod._PROVIDER_CALLERS["openai"] = mock_openai
+        try:
+            client = LLMClient(base_config)
+            response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = orig_groq
+            llm_mod._PROVIDER_CALLERS["openai"] = orig_openai
         
         # Should fail without retry, then fallback to OpenAI
         mock_openai.assert_called_once()
@@ -121,11 +141,18 @@ class TestLLMClient:
         """Test graceful failure when both providers fail"""
         from generation.llm_client import LLMClient
         
-        with patch("generation.llm_client._call_groq", side_effect=Exception("server_error")):
-            with patch("generation.llm_client._call_openai", side_effect=Exception("server_error")):
-                with patch("time.sleep"):  # Don't sleep
-                    client = LLMClient(base_config)
-                    response = client.generate("What is zakat?")
+        import generation.llm_client as llm_mod
+        orig_groq = llm_mod._PROVIDER_CALLERS.get("groq")
+        orig_openai = llm_mod._PROVIDER_CALLERS.get("openai")
+        llm_mod._PROVIDER_CALLERS["groq"] = MagicMock(side_effect=Exception("server_error"))
+        llm_mod._PROVIDER_CALLERS["openai"] = MagicMock(side_effect=Exception("server_error"))
+        try:
+            with patch("time.sleep"):
+                client = LLMClient(base_config)
+                response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = orig_groq
+            llm_mod._PROVIDER_CALLERS["openai"] = orig_openai
         
         assert response.success is False
         assert response.error is not None
@@ -140,11 +167,15 @@ class TestLLMClient:
             time.sleep(0.1)  # Simulate slow API
             return {"text": "response", "prompt_tokens": 10, "completion_tokens": 5}
         
-        with patch("generation.llm_client._call_groq", side_effect=slow_call):
+        import generation.llm_client as llm_mod
+        original = llm_mod._PROVIDER_CALLERS.get("groq")
+        llm_mod._PROVIDER_CALLERS["groq"] = slow_call
+        try:
             client = LLMClient(base_config)
-            client.timeout = 0.05  # Very short timeout for testing
-            
+            client.timeout = 0.05
             response = client.generate("What is zakat?")
+        finally:
+            llm_mod._PROVIDER_CALLERS["groq"] = original
             
             # Should fail or fallback
             assert response.success is False or response.provider == "openai"
