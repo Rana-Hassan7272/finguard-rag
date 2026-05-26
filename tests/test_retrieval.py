@@ -302,44 +302,44 @@ class TestQueryProcessing:
 class TestCategoryDetector:
     """Test category detection from queries"""
     
-    def test_category_detection_zakat(self):
+    def test_category_detection_zakat(self, base_config):
         """Test detection of Islamic finance category"""
         from metadata.category_detector import CategoryDetector
         
-        detector = CategoryDetector()
+        detector = CategoryDetector(base_config)
         result = detector.detect("zakat ka hisab kaise karein")
         
-        assert result.category in ["islamic_finance", None]
-        if result.category:
+        assert result.predicted_category in ["islamic_finance", None]
+        if result.predicted_category:
             assert result.confidence > 0
     
-    def test_category_detection_easypaisa(self):
+    def test_category_detection_easypaisa(self, base_config):
         """Test detection of digital finance category"""
         from metadata.category_detector import CategoryDetector
         
-        detector = CategoryDetector()
+        detector = CategoryDetector(base_config)
         result = detector.detect("easypaisa se paise bhejein")
         
-        assert result.category in ["digital_finance", None]
+        assert result.predicted_category in ["digital_finance", None]
     
-    def test_category_detection_loan(self):
+    def test_category_detection_loan(self, base_config):
         """Test detection of loans category"""
         from metadata.category_detector import CategoryDetector
         
-        detector = CategoryDetector()
+        detector = CategoryDetector(base_config)
         result = detector.detect("home loan ka rate kya hai")
         
-        assert result.category in ["loans_credit", "loans", None]
+        assert result.predicted_category in ["loans_credit", "loans", None]
     
-    def test_unknown_category(self):
+    def test_unknown_category(self, base_config):
         """Test handling of queries without clear category"""
         from metadata.category_detector import CategoryDetector
         
-        detector = CategoryDetector()
+        detector = CategoryDetector(base_config)
         result = detector.detect("random query about nothing specific")
         
         # Should return None or low confidence
-        assert result.category is None or result.confidence < 0.5
+        assert result.predicted_category is None or result.confidence < 0.5
 
 
 @pytest.mark.unit
