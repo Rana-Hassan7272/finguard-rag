@@ -2,7 +2,7 @@
 
 # 🏦 FinGuard RAG
 
-**Production-ready multilingual RAG system for Pakistani financial queries**
+**Production ready multilingual RAG system for Pakistani financial queries**
 
 [![HuggingFace Space](https://img.shields.io/badge/🤗%20Space-Live%20Demo-blue)](https://huggingface.co/spaces/hassan7272/finguard-rag)
 [![Model](https://img.shields.io/badge/🤗%20Model-urdu--finance--embeddings-purple)](https://huggingface.co/hassan7272/urdu-finance-embeddings)
