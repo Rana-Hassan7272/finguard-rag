@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-05-26T23:47:03.158879",
+  "total_tests": 47,
+  "retrieval_accuracy_top1": 0.0,
+  "retrieval_accuracy_top3": 0.0,
+  "retrieval_accuracy_top10": 0.0,
+  "retrieval_mrr": 0.0,
+  "answer_relevance_avg": 0.1355,
+  "groundedness_rate": 0.0,
+  "hallucination_rate": 0.0,
+  "gate_pass_rate": 1.0,
+  "avg_confidence_score": 0.75,
+  "per_category_results": {
+    "islamic_finance": {
+      "total": 13,
+      "top3_hits": 0,
+      "gate_passed": 13,
+      "top3_accuracy": 0.0,
+      "pass_rate": 1.0
+    },
+    "digital_finance": {
+      "total": 11,
+      "top3_hits": 0,
+      "gate_passed": 11,
+      "top3_accuracy": 0.0,
+      "pass_rate": 1.0
+    },
+    "loans_credit": {
+      "total": 7,
+      "top3_hits": 0,
+      "gate_passed": 7,
+      "top3_accuracy": 0.0,
+      "pass_rate": 1.0
+    },
+    "financial_education": {
+      "total": 1,
+      "top3_hits": 0,
+      "gate_passed": 1,
+      "top3_accuracy": 0.0,
+      "pass_rate": 1.0
+    },
+    "unknown": {
+      "total": 15,
+      "top3_hits": 0,
+      "gate_passed": 15,
+      "top3_accuracy": 0.0,
+      "pass_rate": 1.0
+    }
+  },
+  "typos_resilience": 0.0,
+  "paraphrase_resilience": 0.0,
+  "edge_case_handling": 1.0,
+  "out_of_scope_rejection": 0.0
+}
