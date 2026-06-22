@@ -1,7 +1,7 @@
 """
 generation/llm_client.py
 
-LLM API wrapper for the FinGuard generation layer.
+LLM API wrapper for the UrduFinance generation layer.
 
 Primary:  Groq  (Llama-3 70B or Mixtral) — fast inference, free tier
 Fallback: OpenAI (GPT-4o-mini) — higher quality, paid

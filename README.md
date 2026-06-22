@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏦 FinGuard RAG
+# 🏦 UrduFinance RAG
 
 **Production ready multilingual RAG system for Pakistani financial queries**
 
@@ -20,9 +20,9 @@ Roman Urdu 🔤 · Urdu 🇵🇰 · English 🇬🇧
 
 ## Overview
 
-Most financial AI systems in Pakistan fail on three counts: they don't understand Roman Urdu, they can't handle domain-specific terminology like *zakat*, *riba*, or *murabaha*, and they hallucinate when they don't know the answer. FinGuard solves all three.
+Most financial AI systems in Pakistan fail on three counts: they don't understand Roman Urdu, they can't handle domain-specific terminology like *zakat*, *riba*, or *murabaha*, and they hallucinate when they don't know the answer. UrduFinance solves all three.
 
-FinGuard is a production retrieval-augmented generation system built specifically for Pakistani financial queries. It combines a fine-tuned multilingual embedding model, hybrid BM25 + vector retrieval, cross-encoder reranking, a two-level semantic cache, and a confidence gate that hard-blocks LLM generation when retrieved context is insufficient. The system covers Islamic finance, conventional banking, digital payments (EasyPaisa, JazzCash), investments, tax filing, and remittances.
+UrduFinance is a production retrieval-augmented generation system built specifically for Pakistani financial queries. It combines a fine-tuned multilingual embedding model, hybrid BM25 + vector retrieval, cross-encoder reranking, a two-level semantic cache, and a confidence gate that hard-blocks LLM generation when retrieved context is insufficient. The system covers Islamic finance, conventional banking, digital payments (EasyPaisa, JazzCash), investments, tax filing, and remittances.
 
 **Who this is for:** developers building Urdu-language finance assistants, researchers studying multilingual RAG, or anyone who wants a reproducible reference implementation of a production RAG pipeline with proper evaluation.
 
@@ -44,7 +44,7 @@ easypaisa se paise kaise bhejein
 ### Demo screenshot
 
 <p align="center">
-  <img src="public/images/profile.png" alt="FinGuard Gradio UI — multilingual finance assistant with retrieval and latency" width="780"/>
+  <img src="public/images/profile.png" alt="UrduFinance Gradio UI — multilingual finance assistant with retrieval and latency" width="780"/>
 </p>
 
 <p align="center"><sub><strong>Figure:</strong> Live Space UI — Roman Urdu query, language/intent/category badges, confidence gate, LLM answer grounded in retrieved QA pairs, top‑3 reranked documents with scores, and end‑to‑end latency breakdown.</sub></p>
@@ -240,7 +240,7 @@ Cache hits (L1) skip retrieval and LLM. Language and category detection stay sub
 ## Repository Layout
 
 ```
-finguard-rag/
+urdufinance-rag/
 │
 ├── app/
 │   └── app.py                      # Gradio UI — for HF Space, copy this file to repo root as app.py
@@ -500,7 +500,7 @@ Hardware: **CPU Basic** works; GPU tier speeds up reranker/embedding if you upgr
 
 ## Testing
 
-FinGuard includes a comprehensive test suite with 80%+ coverage.
+UrduFinance includes a comprehensive test suite with 80%+ coverage.
 
 ```bash
 # Install dependencies
@@ -546,12 +546,12 @@ See [PRODUCTION_READINESS.md](PRODUCTION_READINESS.md) for detailed checklist an
 
 ## Citation
 
-If you use FinGuard, the embedding model, or the dataset in your work:
+If you use UrduFinance, the embedding model, or the dataset in your work:
 
 ```bibtex
-@misc{finguard2025,
+@misc{urdufinance2025,
   author    = {Hassan},
-  title     = {FinGuard RAG: Production Multilingual RAG for Pakistani Finance},
+  title     = {UrduFinance RAG: Production Multilingual RAG for Pakistani Finance},
   year      = {2025},
   publisher = {HuggingFace},
   url       = {https://huggingface.co/spaces/hassan7272/finguard-rag}

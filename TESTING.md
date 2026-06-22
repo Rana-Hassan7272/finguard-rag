@@ -1,6 +1,6 @@
-# FinGuard RAG - Testing & Evaluation
+# UrduFinance RAG - Testing & Evaluation
 
-This document describes the comprehensive testing suite for FinGuard RAG, including unit tests, adversarial evaluation, and human evaluation frameworks.
+This document describes the comprehensive testing suite for UrduFinance RAG, including unit tests, adversarial evaluation, and human evaluation frameworks.
 
 ## Test Suite Overview
 

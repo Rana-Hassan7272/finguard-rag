@@ -19,7 +19,7 @@ def run_demo(
     rerank_top_k: int = 3,
 ) -> None:
     print(f"\n{'═' * 65}")
-    print("  FINGUARD RERANKING DEMO")
+    print("  URDUFINANCE RERANKING DEMO")
     print(f"{'═' * 65}")
     print(f"  Query : {query}")
 
@@ -89,7 +89,7 @@ def run_demo(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Finguard Reranking Demo")
+    parser = argparse.ArgumentParser(description="UrduFinance Reranking Demo")
     parser.add_argument("--query", type=str, required=True, help="Query to test")
     parser.add_argument("--config", type=str, default="retrieval/configs/retrieval_config.yaml")
     parser.add_argument("--top_k", type=int, default=3, help="Reranker top-k (default 3)")

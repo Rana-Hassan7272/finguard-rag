@@ -72,7 +72,7 @@ def run_adversarial():
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description="FinGuard Test Runner")
+    parser = argparse.ArgumentParser(description="UrduFinance Test Runner")
     parser.add_argument(
         "--type",
         choices=["all", "unit", "coverage", "adversarial"],

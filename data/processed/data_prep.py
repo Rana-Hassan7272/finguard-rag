@@ -1,5 +1,5 @@
 """
-data_prep.py — Phase 1 Data Pipeline for Finguard RAG
+data_prep.py — Phase 1 Data Pipeline for UrduFinance RAG
 ======================================================
 Steps:
   1. Load raw JSONL dataset
@@ -365,7 +365,7 @@ def save_jsonl(records: list[dict], path: Path) -> None:
 
 def run_pipeline(raw_path: Path = RAW_FILE) -> None:
     log.info("=" * 60)
-    log.info("Finguard RAG — Phase 1 Data Pipeline")
+    log.info("UrduFinance RAG — Phase 1 Data Pipeline")
     log.info("=" * 60)
 
     # ── Step 1: Load ─────────────────────────────────────────────

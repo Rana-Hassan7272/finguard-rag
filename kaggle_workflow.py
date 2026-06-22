@@ -20,7 +20,7 @@ def run_command(cmd, description):
 def main():
     print("""
 ╔══════════════════════════════════════════════════════════════════════╗
-║                    FinGuard Kaggle GPU Workflow                       ║
+║                    UrduFinance Kaggle GPU Workflow                       ║
 ║                     Train → Build → Test                             ║
 ╚══════════════════════════════════════════════════════════════════════╝
     """)

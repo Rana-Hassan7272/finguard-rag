@@ -1,7 +1,7 @@
 """
 retrieval/fusion.py
 ====================
-Reciprocal Rank Fusion (RRF) for the FinGuard hybrid search pipeline.
+Reciprocal Rank Fusion (RRF) for the UrduFinance hybrid search pipeline.
 
 Implements language-aware weighted RRF that combines vector and BM25 results
 into a single ranked list, with full per-source contribution tracing.

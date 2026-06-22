@@ -1,4 +1,4 @@
-# FinGuard RAG - Production Readiness Checklist
+# UrduFinance RAG - Production Readiness Checklist
 
 ## ✅ What's Already Production-Ready
 

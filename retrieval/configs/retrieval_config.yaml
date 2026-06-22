@@ -1,5 +1,5 @@
 # =============================================================================
-# FinGuard RAG — Retrieval Configuration
+# UrduFinance RAG — Retrieval Configuration
 # =============================================================================
 # All retrieval components read from this single source of truth.
 # Update version strings here when retraining; all safety checks use these.

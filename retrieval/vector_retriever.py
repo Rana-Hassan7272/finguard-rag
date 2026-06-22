@@ -1,7 +1,7 @@
 """
 retrieval/vector_retriever.py
 ==============================
-FAISS-based vector retriever for the FinGuard RAG pipeline.
+FAISS-based vector retriever for the UrduFinance RAG pipeline.
 
 Responsibilities:
   - Load FAISS index, id_map, and docstore at startup

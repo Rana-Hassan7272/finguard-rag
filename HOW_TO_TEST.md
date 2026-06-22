@@ -1,4 +1,4 @@
-# How to Test FinGuard RAG
+# How to Test UrduFinance RAG
 
 This guide shows you how to run all the tests I created.
 

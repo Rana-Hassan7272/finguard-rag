@@ -363,7 +363,7 @@ def generate_report(all_results: Dict):
 def main():
     """Main test runner"""
     print("\n" + "=" * 70)
-    print("FINGUARD RAG - REAL TEST SUITE")
+    print("URDUFINANCE RAG - REAL TEST SUITE")
     print("=" * 70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     

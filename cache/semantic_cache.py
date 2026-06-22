@@ -1,7 +1,7 @@
 """
 cache/semantic_cache.py
 
-Two-level in-memory semantic cache for the FinGuard RAG pipeline.
+Two-level in-memory semantic cache for the UrduFinance RAG pipeline.
 
 Level 1 — Answer cache  (threshold 0.95):
     Query embedding matches a cached query closely enough that we can

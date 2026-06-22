@@ -1,5 +1,5 @@
 """
-adversarial_eval.py - Adversarial evaluation suite for FinGuard RAG
+adversarial_eval.py - Adversarial evaluation suite for UrduFinance RAG
 
 This module provides adversarial testing to challenge the 100% accuracy claims
 and provide realistic metrics on system robustness.

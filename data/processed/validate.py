@@ -193,7 +193,7 @@ def validate_all() -> int:
     total_warnings = 0
 
     log.info("=" * 60)
-    log.info("Finguard RAG — Data Validation")
+    log.info("UrduFinance RAG — Data Validation")
     log.info("=" * 60)
 
     # ── 1. train_pairs.jsonl ─────────────────────────────────────

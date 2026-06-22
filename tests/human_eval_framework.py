@@ -296,7 +296,7 @@ class HumanEvalGenerator:
         html = """<!DOCTYPE html>
 <html>
 <head>
-    <title>FinGuard RAG Human Evaluation</title>
+    <title>UrduFinance RAG Human Evaluation</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
         .sample { border: 1px solid #ccc; padding: 20px; margin-bottom: 30px; background: #f9f9f9; }
@@ -315,7 +315,7 @@ class HumanEvalGenerator:
     </style>
 </head>
 <body>
-    <h1>FinGuard RAG - Human Evaluation</h1>
+    <h1>UrduFinance RAG - Human Evaluation</h1>
     
     <div class="rubric">
         <h3>Scoring Guide:</h3>

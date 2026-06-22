@@ -1,6 +1,6 @@
 """
 app.py
-FinGuard RAG — Gradio UI for HuggingFace Spaces
+UrduFinance RAG — Gradio UI for HuggingFace Spaces
 
 Single-file deployment. All pipeline components are loaded once at startup
 and reused across requests. Handles the full flow:
@@ -90,7 +90,7 @@ def startup() -> None:
             os.environ.get("HF_ARTIFACTS_DATASET") or "(not set)",
         )
 
-        log.info("FinGuard startup: loading configuration...")
+        log.info("UrduFinance startup: loading configuration...")
         _cfg = _load_config()
 
         from deployment.ensure_hf_artifacts import ensure_hf_artifacts
@@ -130,7 +130,7 @@ def startup() -> None:
         )
 
         _ready = True
-        log.info("FinGuard startup complete ✓")
+        log.info("UrduFinance startup complete ✓")
 
     except Exception as exc:
         _startup_error = str(exc)
@@ -576,7 +576,7 @@ def _latency_html(retrieval_ms: float, reranker_ms: float, llm_ms: float, total_
 
 def _startup_error_ui():
     import gradio as gr
-    with gr.Blocks(title="FinGuard RAG — Error") as demo:
+    with gr.Blocks(title="UrduFinance RAG — Error") as demo:
         gr.Markdown(f"## ⚠️ Startup Failed\n\n```\n{_startup_error}\n```\n\nCheck logs for details.")
     return demo
 
@@ -693,7 +693,7 @@ def build_ui():
             """
             ---
             <div style="text-align:center;color:#9CA3AF;font-size:12px;">
-            FinGuard RAG · Embedding: <code>hassan7272/urdu-finance-embeddings</code> ·
+            UrduFinance RAG · Embedding: <code>hassan7272/urdu-finance-embeddings</code> ·
             Reranker: <code>BAAI/bge-reranker-base</code> ·
             Built with FAISS · BM25 · RRF · MMR · Groq LLM
             </div>

@@ -1,4 +1,4 @@
-# FinGuard RAG - Evaluation Guide
+# UrduFinance RAG - Evaluation Guide
 
 ## Corrected Accuracy Claims
 
@@ -137,12 +137,12 @@ Point estimates (e.g., "84.7%") are misleading without variance. We report 95% C
 
 | System | Dataset | Acc@3 | MRR |
 |--------|---------|-------|-----|
-| FinGuard (ours) | Adversarial PK Finance | 84.7% | 0.794 |
+| UrduFinance (ours) | Adversarial PK Finance | 84.7% | 0.794 |
 | NASA RAG | Domain-specific | ~80% | ~0.75 |
 | MS Marco (public) | Web search | ~85% | ~0.82 |
 | Typical RAG | Generic | 60-75% | 0.55-0.70 |
 
-FinGuard performs well for a domain-specific, multilingual system.
+UrduFinance performs well for a domain-specific, multilingual system.
 
 ## Known Failure Modes
 
@@ -168,11 +168,11 @@ FinGuard performs well for a domain-specific, multilingual system.
 
 ## Citation
 
-When reporting FinGuard results, use:
+When reporting UrduFinance results, use:
 
 ```bibtex
-@misc{finguard2025eval,
-  title={FinGuard RAG: Realistic Evaluation of Multilingual Financial RAG},
+@misc{urdufinance2025eval,
+  title={UrduFinance RAG: Realistic Evaluation of Multilingual Financial RAG},
   author={Hassan},
   year={2025},
   note={Acc@3=84.7% [CI: 81.2-88.2%], Human Overall=3.67/5}

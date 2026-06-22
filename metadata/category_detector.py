@@ -1,7 +1,7 @@
 """
 metadata/category_detector.py
 ===============================
-Pre-retrieval category detector for the FinGuard RAG pipeline.
+Pre-retrieval category detector for the UrduFinance RAG pipeline.
 
 Detects the likely category of a query BEFORE retrieval so we can
 apply a metadata pre-filter to restrict the search space.

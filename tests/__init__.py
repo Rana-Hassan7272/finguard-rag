@@ -1,1 +1,1 @@
-"""FinGuard RAG Test Suite"""
+"""UrduFinance RAG Test Suite"""

@@ -1,4 +1,4 @@
-# requirements.txt — Finguard RAG Phase 1
+# requirements.txt — UrduFinance RAG Phase 1
 # Minimal, Kaggle-compatible versions
 # Install: pip install -r requirements.txt
 

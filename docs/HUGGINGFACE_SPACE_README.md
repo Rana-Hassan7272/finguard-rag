@@ -1,5 +1,5 @@
 ---
-title: FinGuard RAG
+title: UrduFinance RAG
 emoji: 🏦
 colorFrom: blue
 colorTo: slate
@@ -9,7 +9,7 @@ pinned: false
 license: apache-2.0
 ---
 
-# FinGuard — Pakistani Finance Assistant
+# UrduFinance — Pakistani Finance Assistant
 
 Ask questions about **Islamic finance**, **banking**, **digital payments**, **tax**, **investments**, and related topics — in **Urdu**, **Roman Urdu**, or **English**.
 
@@ -73,4 +73,4 @@ Development layout, evaluation scripts, and training notes live on GitHub — **
 
 ## Citation / attribution
 
-If you use this demo in research or blogs, cite the embedding model and reranker URLs above and mention FinGuard RAG. Model licenses apply to third-party checkpoints.
+If you use this demo in research or blogs, cite the embedding model and reranker URLs above and mention UrduFinance RAG. Model licenses apply to third-party checkpoints.

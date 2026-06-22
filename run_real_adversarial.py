@@ -426,7 +426,7 @@ def load_pdfs_from_kaggle() -> list:
 
 def main():
     print("\n" + "=" * 70)
-    print("REAL ADVERSARIAL EVALUATION - FINGUARD RAG")
+    print("REAL ADVERSARIAL EVALUATION - URDUFINANCE RAG")
     print("=" * 70)
     
     # Load dataset - handles both JSON array and JSONL, local and Kaggle paths

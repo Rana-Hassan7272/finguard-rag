@@ -462,7 +462,7 @@ def train(config_path: str = "embedding/embedding_train.yaml") -> None:
 # ═══════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Finguard Embedding Training")
+    parser = argparse.ArgumentParser(description="UrduFinance Embedding Training")
     parser.add_argument(
         "--config",
         type=str,

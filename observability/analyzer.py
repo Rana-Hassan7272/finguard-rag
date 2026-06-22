@@ -331,7 +331,7 @@ def full_report(df: "pd.DataFrame") -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Analyze FinGuard request logs")
+    p = argparse.ArgumentParser(description="Analyze UrduFinance request logs")
     p.add_argument("--log_file", default=None, help="Path to specific JSONL log file")
     p.add_argument("--log_dir", default=str(DEFAULT_LOG_DIR), help="Log directory")
     p.add_argument("--tail", type=int, default=None, help="Analyze only last N records")

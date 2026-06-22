@@ -1,7 +1,7 @@
 """
 retrieval/bm25_retriever.py
 ============================
-BM25 keyword retriever for the FinGuard hybrid search pipeline.
+BM25 keyword retriever for the UrduFinance hybrid search pipeline.
 
 Responsibilities:
   - Load tokenized corpus and reconstruct BM25Okapi at startup
